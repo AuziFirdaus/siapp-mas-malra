@@ -3,150 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiAPP Mas | Inspektorat Maluku Tenggara</title>
+    <title>SiAPP Mas | Maluku Tenggara Modern</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-        .btn-gradient { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); transition: all 0.3s ease; }
-        .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
+        .input-focus { transition: all 0.3s ease; }
+        .input-focus:focus { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); border-color: #2563eb; }
+        #video-preview { transform: scaleX(-1); border-radius: 1rem; width: 100%; max-width: 300px; margin: 0 auto; display: none; }
+        #face-canvas { display: none; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <!-- Navigasi Elegan -->
-    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2.5 rounded-xl shadow-lg shadow-blue-200 text-white leading-none">
-                    <i class="fas fa-shield-heart text-xl"></i>
+                <div class="bg-blue-600 p-2.5 rounded-xl text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-fingerprint text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold tracking-tight text-slate-800 leading-none">SiAPP <span class="text-blue-600">Mas</span></h1>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1 italic">Maluku Tenggara Integrity</p>
+                    <h1 class="text-xl font-extrabold text-slate-800">SiAPP <span class="text-blue-600">Mas</span></h1>
+                    <p class="text-[9px] font-bold text-slate-400 tracking-widest uppercase">Edisi Auditor Firdaus</p>
                 </div>
-            </div>
-            <div class="hidden md:block">
-                 <span class="text-[10px] bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full font-extrabold border border-blue-100">AUDITOR EXPERT FIRST</span>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-xl mx-auto px-6 py-12">
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Suarakan Aduan Anda</h2>
-            <p class="text-slate-500 mt-2 font-medium italic">"Membangun Maluku Tenggara yang Bersih & Berwibawa"</p>
-        </div>
-
-        <!-- Form Card -->
-        <div class="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/60 p-8 border border-slate-100 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                <i class="fas fa-gavel text-9xl"></i>
+    <main class="max-w-2xl mx-auto px-6 py-10">
+        <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 p-8">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight text-balance">Formulir Aduan Berintegritas</h2>
+                <p class="text-sm text-slate-500 font-medium mt-1">Kabupaten Maluku Tenggara</p>
             </div>
-            
-            <form id="complaintForm" class="space-y-6 relative">
-                <!-- Kategori -->
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2 px-1">Tipe Laporan</label>
-                    <select id="kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all font-semibold text-slate-700">
-                        <option value="Korupsi">🚫 Dugaan Tindak Pidana Korupsi</option>
-                        <option value="Pungli">💸 Pungutan Liar (Pungli)</option>
-                        <option value="Layanan Publik">🏢 Buruknya Layanan Publik</option>
-                        <option value="Infrastruktur">🏗️ Masalah Infrastruktur Daerah</option>
-                        <option value="Lainnya">📝 Laporan Lain-lain</option>
-                    </select>
+
+            <form id="complaintForm" class="space-y-6">
+                <!-- SCAN WAJAH (FACE SCAN) -->
+                <div class="bg-blue-50 rounded-3xl p-6 border-2 border-dashed border-blue-200 text-center">
+                    <label class="block text-sm font-extrabold text-blue-800 mb-4 uppercase italic">Verification: Scan Wajah Pelapor</label>
+                    <video id="video-preview" autoplay playsinline class="shadow-xl mb-4"></video>
+                    <canvas id="face-canvas"></canvas>
+                    <img id="face-result" class="mx-auto rounded-2xl shadow-lg mb-4 hidden border-4 border-white" style="max-width: 200px;">
+                    
+                    <button type="button" id="start-camera" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 mx-auto transition-all shadow-md">
+                        <i class="fas fa-camera"></i> Aktifkan Scan Wajah
+                    </button>
+                    <button type="button" id="take-photo" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold text-sm hidden items-center gap-2 mx-auto transition-all shadow-md">
+                        <i class="fas fa-check-circle"></i> Ambil Scan (Verifikasi)
+                    </button>
                 </div>
 
-                <!-- Judul -->
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2 px-1">Perihal Utama</label>
-                    <input type="text" id="judul" placeholder="Apa inti masalahnya?" required
-                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- NOMOR TELEPON -->
+                    <div>
+                        <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Nomor HP / WA</label>
+                        <input type="number" id="no_hp" placeholder="08..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700">
+                    </div>
+                    <!-- KATEGORI -->
+                    <div>
+                        <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Kategori</label>
+                        <select id="kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700 appearance-none">
+                            <option value="Korupsi">🚫 Dugaan Korupsi</option>
+                            <option value="Pungli">💸 Pungutan Liar</option>
+                            <option value="Layanan Publik">🏢 Layanan Publik</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Deskripsi -->
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2 px-1">Uraian Kejadian</label>
-                    <textarea id="deskripsi" rows="5" placeholder="Sebutkan lokasi, oknum terlibat, dan kronologis singkat..." required
-                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"></textarea>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- KECAMATAN -->
+                    <div>
+                        <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Kecamatan</label>
+                        <select id="kecamatan" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700">
+                            <option value="">Pilih Kecamatan</option>
+                            <option value="Kei Kecil">Kei Kecil</option>
+                            <option value="Kei Kecil Barat">Kei Kecil Barat</option>
+                            <option value="Kei Kecil Timur">Kei Kecil Timur</option>
+                            <option value="Kei Besar">Kei Besar</option>
+                            <option value="Kei Besar Utara Timur">Kei Besar Utara Timur</option>
+                            <option value="Kei Besar Selatan">Kei Besar Selatan</option>
+                        </select>
+                    </div>
+                    <!-- DESA / OHOI -->
+                    <div>
+                        <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Desa / Ohoi</label>
+                        <input type="text" id="desa" placeholder="Nama Desa" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700">
+                    </div>
                 </div>
 
-                <!-- Tombol Submit -->
-                <button type="submit" id="btnSubmit" class="w-full btn-gradient text-white font-extrabold py-5 rounded-2xl shadow-lg transform active:scale-[0.98]">
-                    KIRIM PENGADUAN KE INSPEKTORAT
+                <!-- JUDUL -->
+                <div>
+                    <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Judul Pengaduan</label>
+                    <input type="text" id="judul" placeholder="Inti dari masalah..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700">
+                </div>
+
+                <!-- DESKRIPSI -->
+                <div>
+                    <label class="text-xs font-extrabold text-slate-600 ml-1 uppercase">Detail Kronologis</label>
+                    <textarea id="deskripsi" rows="4" placeholder="Ceritakan secara detail..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none input-focus mt-1 font-semibold text-slate-700"></textarea>
+                </div>
+
+                <!-- UNGGAH BUKTI -->
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6">
+                    <label class="block text-xs font-extrabold text-slate-600 mb-2 uppercase">Unggah Bukti (Max 3MB)</label>
+                    <input type="file" id="bukti" accept="image/*, .pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-extrabold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                    <p id="file-error" class="text-red-500 text-[10px] font-bold mt-2 hidden italic">PERINGATAN: File lebih dari 3MB!</p>
+                </div>
+
+                <button type="submit" id="btnSubmit" class="w-full bg-slate-900 hover:bg-black text-white font-extrabold py-5 rounded-2xl shadow-2xl transform active:scale-95 transition-all text-sm tracking-widest uppercase">
+                    Kirim Aduan Profesional
                 </button>
             </form>
         </div>
-
-        <!-- Footer -->
-        <div class="mt-10 flex flex-col items-center justify-center gap-4 text-center">
-            <div class="flex gap-4">
-                <div class="flex items-center gap-1 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded border border-green-100 italic">
-                    <i class="fas fa-lock"></i> DATA TERENKRIPSI
-                </div>
-                <div class="flex items-center gap-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100 italic">
-                    <i class="fas fa-user-secret"></i> ANONIMITAS TERJAMIN
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed font-medium">
-                Sesuai visi Auditor Ahli Pertama, FIRDAUS. <br>
-                Sistem Informasi Pengaduan Masyarakat (SiAPP Mas) - © 2024
-            </p>
-        </div>
     </main>
 
-    <!-- Firebase System -->
+    <!-- FIREBASE SYSTEM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        // Konfigurasi Baru Bapak Firdaus
         const firebaseConfig = {
-          apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
-          authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
-          projectId: "siapp-mas-malra-aa6c4",
-          storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app",
-          messagingSenderId: "18948056709",
-          appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
+            apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
+            authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
+            projectId: "siapp-mas-malra-aa6c4",
+            storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app",
+            messagingSenderId: "18948056709",
+            appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Aksi Submit Laporan
+        // --- SISTEM SCAN WAJAH (BIOMETRIC CAMERA) ---
+        const startCam = document.getElementById('start-camera');
+        const takePhoto = document.getElementById('take-photo');
+        const video = document.getElementById('video-preview');
+        const canvas = document.getElementById('face-canvas');
+        const faceResult = document.getElementById('face-result');
+        let faceBase64 = null;
+
+        startCam.onclick = async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.style.display = "block";
+            startCam.style.display = "none";
+            takePhoto.style.display = "flex";
+        };
+
+        takePhoto.onclick = () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            faceBase64 = canvas.toDataURL('image/jpeg');
+            faceResult.src = faceBase64;
+            faceResult.classList.remove('hidden');
+            video.style.display = "none";
+            takePhoto.innerText = "Ulangi Scan";
+            video.srcObject.getTracks().forEach(t => t.stop());
+        };
+
+        // --- SUBMIT ADUAN ---
         document.getElementById('complaintForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin mr-2'></i> MENGIRIM DATA...";
-            btn.disabled = true;
+            const fileInput = document.getElementById('bukti');
+            const fileError = document.getElementById('file-error');
 
-            const kategori = document.getElementById('kategori').value;
-            const judul = document.getElementById('judul').value;
-            const deskripsi = document.getElementById('deskripsi').value;
+            // Cek Ukuran File
+            if (fileInput.files.length > 0 && fileInput.files[0].size > 3 * 1024 * 1024) {
+                fileError.classList.remove('hidden');
+                return;
+            } else {
+                fileError.classList.add('hidden');
+            }
+
+            // Validasi Scan Wajah
+            if (!faceBase64) {
+                alert("Wajib melakukan Scan Wajah sebagai verifikasi biometrik!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> Memproses Audit...";
 
             try {
-                // Menanam data ke Firestore koleksi "pengaduan"
-                const docRef = await addDoc(collection(db, "pengaduan"), {
-                    ticket_id: "SPM-" + Math.floor(1000 + Math.random() * 9000),
-                    kategori: kategori,
-                    judul: judul,
-                    deskripsi: deskripsi,
-                    status: "MASUK",
-                    prioritas: kategori === 'Korupsi' ? 'SANGAT TINGGI' : 'NORMAL',
+                await addDoc(collection(db, "pengaduan"), {
+                    ticket_id: "MALRA-" + Math.floor(1000 + Math.random() * 9000),
+                    face_data: faceBase64, // Menyimpan hasil scan wajah
+                    no_hp: document.getElementById('no_hp').value,
+                    kategori: document.getElementById('kategori').value,
+                    kecamatan: document.getElementById('kecamatan').value,
+                    desa: document.getElementById('desa').value,
+                    judul: document.getElementById('judul').value,
+                    deskripsi: document.getElementById('deskripsi').value,
+                    status: "DIPROSES",
                     created_at: serverTimestamp()
                 });
 
-                alert("ALHAMDULILLAH! Laporan Bapak/Ibu sudah kami terima di sistem Inspektorat Malra. Kami akan segera melakukan validasi.");
-                document.getElementById('complaintForm').reset();
-            } catch (error) {
-                console.error("Firebase Error: ", error);
-                alert("Sistem sibuk! Mohon pastikan koneksi internet lancar dan Rules Firestore di set ke 'true'.");
-            } finally {
-                btn.innerHTML = originalText;
+                alert("ADUAN DITERIMA! Terima kasih atas laporan Anda bagi Maluku Tenggara.");
+                window.location.reload();
+            } catch (err) {
+                alert("Error: " + err.message);
                 btn.disabled = false;
             }
         });
