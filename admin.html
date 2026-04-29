@@ -3,146 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | SiAPP Mas Malra</title>
+    <title>Pusat Audit SiAPP Mas | Maluku Tenggara</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
-        .sidebar { background: #0f172a; transition: all 0.3s; }
-        .report-card { transition: all 0.2s; border-left: 5px solid transparent; }
-        .report-card:hover { transform: translateX(5px); }
-        .badge-Korupsi { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
-        .badge-Pungli { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-        .status-MASUK { color: #2563eb; font-weight: 800; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
+        .sidebar { background: #0f172a; }
+        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+        .badge-korupsi { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .badge-pungli { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+        .modal-blur { backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.7); }
     </style>
 </head>
-<body class="flex">
+<body class="flex min-h-screen overflow-hidden text-slate-900">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar w-64 min-h-screen text-slate-300 hidden md:block flex-shrink-0 p-6">
-        <div class="flex items-center gap-3 text-white mb-10">
-            <i class="fas fa-shield-halved text-2xl text-blue-500"></i>
-            <span class="font-extrabold tracking-tighter text-lg uppercase">SiAPP Admin</span>
+    <aside class="sidebar w-72 hidden lg:flex flex-col text-slate-300 p-8 shadow-2xl z-50">
+        <div class="flex items-center gap-3 mb-12 border-b border-slate-700 pb-8">
+            <div class="bg-blue-600 p-3 rounded-2xl text-white shadow-lg">
+                <i class="fas fa-gavel text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-black text-white leading-none uppercase tracking-tighter">SiAPP <span class="text-blue-500">Admin</span></h1>
+                <p class="text-[9px] font-bold text-slate-500 mt-1 uppercase tracking-widest">Digital Auditor Panel</p>
+            </div>
         </div>
-        <nav class="space-y-4 font-semibold text-sm">
-            <a href="#" class="flex items-center gap-3 text-white bg-blue-600/20 p-3 rounded-xl border border-blue-600/30">
-                <i class="fas fa-chart-line w-5 text-blue-400"></i> Dashboard Utama
+
+        <nav class="space-y-6 flex-1 font-bold text-sm">
+            <a href="#" class="flex items-center gap-4 text-white bg-blue-600/10 p-4 rounded-2xl border border-blue-500/20 group">
+                <i class="fas fa-chart-pie w-5 group-hover:text-blue-500"></i> Dashboard Utama
             </a>
-            <a href="#" class="flex items-center gap-3 hover:text-white p-3 transition-all group">
-                <i class="fas fa-folder-open w-5 group-hover:text-blue-400 transition-all"></i> Data Pengaduan
+            <a href="#" class="flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
+                <i class="fas fa-folder-tree w-5 group-hover:text-blue-500"></i> Inventaris Aduan
             </a>
-            <a href="#" class="flex items-center gap-3 hover:text-white p-3 transition-all group">
-                <i class="fas fa-users w-5 group-hover:text-blue-400 transition-all"></i> Pengguna Akun
+            <a href="#" class="flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
+                <i class="fas fa-file-invoice w-5 group-hover:text-blue-500"></i> Laporan Audit
             </a>
         </nav>
-        <div class="mt-40 border-t border-slate-700 pt-10">
-            <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700">
-                <p class="text-xs font-bold text-slate-500">USER LOGGED IN</p>
-                <p class="text-sm text-blue-400 font-bold mt-1">FIRDAUS, AUDITOR</p>
+
+        <div class="mt-auto pt-8 border-t border-slate-800">
+            <div class="bg-slate-800/50 p-5 rounded-3xl border border-slate-700">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic underline">Identitas Petugas</span>
+                </div>
+                <p class="text-sm font-extrabold text-white uppercase italic">FIRDAUS, S.T (Pjs)</p>
+                <p class="text-[10px] text-slate-500 font-bold mt-1 italic tracking-tight leading-relaxed px-0.5">Auditor Ahli Pertama @ Maluku Tenggara</p>
             </div>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 p-6 md:p-12 overflow-y-auto">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+    <!-- MAIN DASHBOARD -->
+    <main class="flex-1 overflow-y-auto px-6 py-10 md:px-12 relative">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 border-b pb-10">
             <div>
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Pusat Audit Aduan</h1>
-                <p class="text-slate-500 font-medium">Inspektorat Kabupaten Maluku Tenggara</p>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight italic">Audit Monitor <span class="text-blue-600 underline">SiAPP Mas</span></h2>
+                <p class="text-slate-400 text-sm font-bold mt-1 flex items-center gap-2 italic">
+                    <i class="fas fa-clock text-blue-500"></i> <span id="realtimeClock">Memuat waktu...</span>
+                </p>
             </div>
-            <button onclick="window.location.reload()" class="bg-white border border-slate-200 px-6 py-3 rounded-2xl font-bold shadow-sm hover:bg-slate-50 active:scale-95 transition-all text-sm">
-                <i class="fas fa-sync-alt mr-2 text-blue-600"></i> PERBARUI DATA
+            <button onclick="window.location.reload()" class="bg-white px-6 py-4 rounded-2xl font-black text-[10px] tracking-[0.2em] shadow-sm border border-slate-200 hover:shadow-md active:scale-95 transition-all text-slate-600 flex items-center gap-3">
+                REFRESH DATA SERVER <i class="fas fa-sync-alt text-blue-600 animate-spin-slow"></i>
             </button>
         </header>
 
-        <!-- Stats Bar -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <p class="text-slate-500 text-sm font-bold">TOTAL LAPORAN</p>
-                <p id="totalCount" class="text-4xl font-extrabold mt-1 text-slate-800">0</p>
+        <!-- KPI CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 italic">
+            <div class="bg-white p-7 rounded-[2rem] card-shadow border border-slate-100 border-l-[6px] border-l-blue-600 relative overflow-hidden group hover:-translate-y-1 transition-all">
+                <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase italic font-bold">Total Pengaduan Masuk</p>
+                <p id="statTotal" class="text-5xl font-black mt-2 text-slate-800">0</p>
+                <i class="fas fa-inbox absolute right-[-20px] bottom-[-20px] text-8xl text-slate-50 opacity-10"></i>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <p class="text-red-500 text-sm font-bold italic underline">🚨 PERINGATAN KORUPSI</p>
-                <p id="corruptionCount" class="text-4xl font-extrabold mt-1 text-red-600">0</p>
+            <div class="bg-white p-7 rounded-[2rem] card-shadow border border-slate-100 border-l-[6px] border-l-red-600 group hover:-translate-y-1 transition-all">
+                <p class="text-[10px] font-black text-red-400 tracking-widest uppercase italic font-bold leading-tight px-1">⚠️ Urgent: Prioritas Korupsi</p>
+                <p id="statUrgent" class="text-5xl font-black mt-2 text-red-600 leading-none px-0.5 italic">0</p>
             </div>
         </div>
 
-        <!-- Tabel / Daftar Laporan -->
-        <div class="space-y-4" id="containerAduan">
-            <!-- Loading Indicator -->
-            <div class="text-center py-20">
-                <i class="fas fa-spinner fa-spin text-3xl text-blue-500 mb-4"></i>
-                <p class="text-slate-500 font-medium tracking-widest">MENGHUBUNGKAN KE SERVER DATA...</p>
+        <!-- DAFTAR LAPORAN (SISTEM CARD MODERN) -->
+        <div class="grid grid-cols-1 gap-6" id="complaintContainer">
+            <!-- Loading indicator -->
+            <div class="text-center py-40 opacity-30 italic">
+                <i class="fas fa-cog fa-spin text-5xl mb-4"></i>
+                <p class="font-black tracking-[0.4em] uppercase">Mensinkronisasi Basis Data Auditor...</p>
             </div>
         </div>
     </main>
 
-    <!-- Firebase SDK & Script -->
+    <!-- MODAL DETAIL AUDIT -->
+    <div id="modalDetail" class="fixed inset-0 z-[60] hidden modal-blur p-4 overflow-y-auto">
+        <div class="max-w-4xl mx-auto bg-white rounded-[3rem] mt-10 p-8 md:p-12 relative shadow-2xl border border-white">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-slate-300 hover:text-slate-800 transition-all text-2xl">
+                <i class="fas fa-circle-xmark"></i>
+            </button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- FIREBASE SYSTEM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        // Konfigurasi Sama dengan yang Bapak berikan tadi
         const firebaseConfig = {
-          apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
-          authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
-          projectId: "siapp-mas-malra-aa6c4",
-          storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app",
-          messagingSenderId: "18948056709",
-          appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
+            apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
+            authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
+            projectId: "siapp-mas-malra-aa6c4",
+            storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app",
+            messagingSenderId: "18948056709",
+            appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Ambil data
-        async function renderData() {
-            const q = query(collection(db, "pengaduan"), orderBy("created_at", "desc"));
-            const querySnapshot = await getDocs(q);
-            const container = document.getElementById('containerAduan');
-            const totalCountEl = document.getElementById('totalCount');
-            const corruptionCountEl = document.getElementById('corruptionCount');
+        // Update Waktu
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('realtimeClock').innerText = now.toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' });
+        }, 1000);
 
-            container.innerHTML = "";
-            let counter = 0;
-            let korupsiCounter = 0;
+        async function loadReports() {
+            const container = document.getElementById('complaintContainer');
+            const statTotal = document.getElementById('statTotal');
+            const statUrgent = document.getElementById('statUrgent');
 
-            querySnapshot.forEach((doc) => {
-                const item = doc.data();
-                counter++;
-                if(item.kategori === 'Korupsi') korupsiCounter++;
+            try {
+                const q = query(collection(db, "pengaduan"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                container.innerHTML = "";
+                let count = 0;
+                let korupsi = 0;
 
-                // Konversi tanggal
-                const dateObj = item.created_at?.toDate ? item.created_at.toDate() : new Array();
-                const displayDate = dateObj.toLocaleString ? dateObj.toLocaleString('id-ID') : 'Belum Tersedia';
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    count++;
+                    if(data.kategori === 'Korupsi') korupsi++;
 
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center report-card gap-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-[10px] font-extrabold uppercase bg-blue-100 text-blue-700 px-3 py-1 rounded-full">${item.ticket_id}</span>
-                                <span class="text-[10px] font-extrabold uppercase px-3 py-1 rounded-full badge-${item.kategori}">${item.kategori}</span>
+                    const date = data.timestamp?.toDate ? data.timestamp.toDate().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : 'N/A';
+                    
+                    container.innerHTML += `
+                        <div class="bg-white p-6 rounded-[2rem] card-shadow border border-slate-50 flex flex-col lg:flex-row items-start lg:items-center gap-6 group hover:border-blue-100 transition-all">
+                            <div class="w-20 h-20 rounded-2xl bg-slate-100 flex-shrink-0 overflow-hidden border-2 border-slate-100 shadow-inner group-hover:scale-105 transition-transform cursor-pointer" onclick='viewFace("${data.validasi_wajah || data.wajah}")'>
+                                <img src="${data.validasi_wajah || data.wajah}" class="w-full h-full object-cover">
                             </div>
-                            <h3 class="text-xl font-extrabold text-slate-800 mb-1 leading-tight">${item.judul}</h3>
-                            <p class="text-sm text-slate-500 font-medium mb-3 max-w-2xl">${item.deskripsi.substring(0, 150)}...</p>
-                            <div class="flex gap-4 items-center">
-                                <p class="text-[11px] text-slate-400"><i class="far fa-clock mr-1"></i> ${displayDate}</p>
-                                <p class="text-[11px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded italic tracking-widest uppercase">${item.status}</p>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap gap-2 mb-3 items-center px-0.5">
+                                    <span class="text-[9px] font-black bg-slate-900 text-white px-3 py-1 rounded-full uppercase italic">${data.ticket_id}</span>
+                                    <span class="text-[9px] font-black uppercase px-3 py-1 rounded-full badge-${data.kategori.toLowerCase().split(' ')[0]} italic font-bold underline tracking-tighter">${data.kategori}</span>
+                                    <span class="text-[9px] font-extrabold text-blue-500 bg-blue-50 px-3 py-1 rounded-full italic uppercase">${data.kecamatan}</span>
+                                </div>
+                                <h3 class="text-xl font-black text-slate-800 uppercase tracking-tighter mb-1 leading-none italic">${data.perihal || data.judul}</h3>
+                                <p class="text-xs text-slate-400 font-bold mb-4 italic leading-relaxed px-0.5">Kecamatan: <span class="text-slate-600 underline px-1 font-extrabold tracking-widest leading-loose uppercase">${data.kecamatan}</span> / Ohoi: <span class="text-slate-600 px-1 font-extrabold underline italic uppercase tracking-wider">${data.desa}</span></p>
+                                <div class="flex gap-4 items-center px-0.5">
+                                    <p class="text-[10px] text-slate-400 font-bold flex items-center gap-2 italic font-extrabold"><i class="fas fa-calendar text-blue-300"></i> ${date}</p>
+                                    <p class="text-[10px] text-emerald-600 font-black uppercase bg-emerald-50 px-3 py-1 rounded italic">${data.status || 'ANTREAN AUDIT'}</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 w-full lg:w-auto px-1 italic">
+                                <button onclick='showDetail(${JSON.stringify(data).replace(/'/g, "\\'")})' class="flex-1 lg:flex-none bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-4 rounded-2xl text-[10px] shadow-lg shadow-blue-100 tracking-[0.2em] transition-all italic underline uppercase">Audit Berkas</button>
+                                <button class="p-4 rounded-2xl bg-slate-100 text-slate-400 hover:text-red-500 transition-all border border-slate-200 shadow-md transition-all active:scale-95 italic font-extrabold font-sans">ARSIP</button>
                             </div>
                         </div>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <button class="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-2xl font-bold text-sm shadow-md shadow-blue-200 transition-all">VERIFIKASI</button>
-                            <button class="flex-1 md:flex-none bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-3 rounded-2xl font-bold text-sm transition-all">ARSIPKAN</button>
-                        </div>
-                    </div>
-                `;
-            });
-            totalCountEl.innerText = counter;
-            corruptionCountEl.innerText = korupsiCounter;
+                    `;
+                });
+                statTotal.innerText = count;
+                statUrgent.innerText = korupsi;
+            } catch (error) { console.error(error); }
         }
 
-        renderData();
+        window.showDetail = (data) => {
+            const modal = document.getElementById('modalDetail');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <p class="text-[10px] font-black text-blue-500 tracking-[0.3em] uppercase mb-4 italic underline decoration-blue-600 decoration-4">Bukti Biometrik</p>
+                        <div class="rounded-[2rem] overflow-hidden border-8 border-slate-50 shadow-2xl shadow-blue-200">
+                            <img src="${data.validasi_wajah || data.wajah}" class="w-full h-auto grayscale-0 transition-all active:scale-110 active:duration-300 active:cursor-pointer shadow-xl rounded-2xl">
+                        </div>
+                        <div class="mt-8 space-y-3 bg-blue-50 p-6 rounded-3xl italic">
+                            <p class="text-[10px] font-bold text-slate-400 tracking-wider font-bold italic underline decoration-blue-500">Kecamatan: <span class="text-blue-900 px-1 font-extrabold underline italic uppercase leading-relaxed font-sans text-balance text-wrap">${data.kecamatan}</span></p>
+                            <p class="text-[10px] font-bold text-slate-400 tracking-wider italic font-extrabold font-sans underline leading-relaxed text-wrap">Desa / Ohoi: <span class="text-blue-900 italic font-black font-sans uppercase underline text-wrap">${data.desa}</span></p>
+                            <p class="text-[10px] font-bold text-slate-400 tracking-wider font-bold font-sans uppercase underline leading-relaxed text-wrap italic tracking-tight">Pelapor: <span class="text-blue-900 font-black italic tracking-wider leading-relaxed underline">${data.no_hp}</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="inline-block bg-slate-900 text-white text-[10px] font-black px-4 py-1.5 rounded-full mb-4 tracking-widest italic">${data.ticket_id}</span>
+                        <h2 class="text-4xl font-black text-slate-900 leading-[1.1] mb-6 tracking-tight italic underline uppercase decoration-blue-500 font-sans">${data.perihal || data.judul}</h2>
+                        <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 shadow-xl overflow-hidden text-balance mb-4 overflow-y-auto italic">
+                             <p class="text-sm text-slate-600 leading-relaxed italic text-wrap uppercase text-justify px-2.5 px-0 font-sans py-4 font-black">${data.laporan_detail || data.deskripsi}</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 mt-8 underline font-black uppercase text-justify italic">
+                             <button class="bg-blue-600 text-white p-5 rounded-2xl font-black text-[10px] tracking-widest underline decoration-white shadow-xl italic uppercase active:scale-95 duration-100 shadow-blue-300 shadow-lg px-0 px-2 px-1 text-xs">Cetak PDF</button>
+                             <button onclick="closeModal()" class="bg-slate-100 text-slate-900 p-5 rounded-2xl font-black text-[10px] tracking-widest underline shadow-xl font-bold uppercase active:scale-95 italic">Tutup Audit</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.closeModal = () => { document.getElementById('modalDetail').classList.add('hidden'); };
+        window.viewFace = (src) => { window.open(src, '_blank'); };
+        
+        loadReports();
     </script>
 </body>
 </html>
