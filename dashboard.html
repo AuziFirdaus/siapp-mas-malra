@@ -3,110 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Auditor SiAPP Mas | Malra</title>
-    
-    <!-- Library Eksternal untuk Excel -->
+    <title>Pusat Data Auditor - Malra</title>
+    <!-- LIBRARY UNTUK EXCEL & UI -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; }
-        .sidebar { background: #0f172a; transition: all 0.3s; }
-        .card-modern { border-radius: 2.5rem; transition: all 0.3s ease; border-left: 8px solid transparent; }
-        .card-modern:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-        }
-        .print-only { display: none; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #2563eb; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: white; }
+        .sidebar { background: #1e293b; border-right: 1px solid #334155; }
+        .tombol-excel { background: #10b981; color: white; }
+        .kartu-aduan { background: #1e293b; border: 1px solid #334155; transition: 0.3s; }
+        .kartu-aduan:hover { border-color: #3b82f6; }
+        @media print { .no-print { display: none !important; } .print-area { display: block !important; color: black; background: white; } }
+        .print-area { display: none; }
     </style>
 </head>
-<body class="flex min-h-screen text-slate-800 uppercase font-black italic tracking-tighter">
+<body class="flex min-h-screen">
 
-    <!-- SIDEBAR (No Print) -->
-    <aside class="sidebar w-72 hidden lg:flex flex-col text-slate-400 p-8 z-50 no-print flex-shrink-0">
-        <div class="flex items-center gap-3 mb-10 pb-6 border-b border-slate-800">
-            <div class="bg-blue-600 text-white p-3 rounded-2xl shadow-lg shadow-blue-500/20"><i class="fas fa-gavel"></i></div>
-            <div class="text-white">
-                <h1 class="text-xl font-black italic">SiAPP <span class="text-blue-500 underline decoration-white">ADMIN</span></h1>
-                <p class="text-[9px] opacity-50 tracking-[0.2em] font-extrabold uppercase">Kab. Maluku Tenggara</p>
-            </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar w-64 p-8 hidden lg:flex flex-col no-print shrink-0">
+        <div class="mb-10 flex items-center gap-3">
+            <div class="bg-blue-600 p-2 rounded-lg"><i class="fas fa-shield-alt text-white"></i></div>
+            <h1 class="text-xl font-black italic">SiAPP <span class="text-blue-500 underline">MAS</span></h1>
         </div>
-
         <nav class="space-y-4">
-            <a href="#" class="flex items-center gap-4 text-white bg-white/10 p-4 rounded-2xl border border-white/10">
-                <i class="fas fa-home w-5 text-blue-500"></i> Dashboard
-            </a>
-            <button onclick="exportExcel()" class="w-full flex items-center gap-4 p-4 hover:bg-emerald-600/10 hover:text-emerald-500 rounded-2xl transition-all group">
-                <i class="fas fa-file-excel w-5 group-hover:scale-125 transition-transform"></i> Ekspor Excel
+            <div class="p-4 bg-blue-600/20 text-blue-400 rounded-xl font-bold border border-blue-600/30">
+                <i class="fas fa-database mr-2"></i> Dashboard Audit
+            </div>
+            <!-- TOMBOL EXCEL DI SIDEBAR -->
+            <button onclick="unduhExcel()" class="w-full text-left p-4 hover:bg-emerald-600/20 text-emerald-400 rounded-xl font-bold border border-emerald-500/20 transition-all">
+                <i class="fas fa-file-excel mr-2 text-xl"></i> EKSPOR EXCEL
             </button>
         </nav>
-
-        <div class="mt-auto pt-6 border-t border-slate-800 bg-slate-900/50 p-6 rounded-3xl border border-slate-800">
-            <p class="text-[9px] text-slate-500 uppercase italic font-bold">Identitas Auditor:</p>
-            <p class="text-sm font-black text-white italic underline decoration-blue-600">FIRDAUS, S.T (Pjs)</p>
-            <p class="text-[9px] text-slate-500 mt-1">AUDITOR AHLI PERTAMA</p>
+        <div class="mt-auto p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+            <p class="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Auditor Aktif:</p>
+            <p class="text-sm font-black italic">FIRDAUS, S.T</p>
         </div>
     </aside>
 
-    <!-- MAIN -->
-    <main class="flex-1 overflow-y-auto px-6 py-10 md:px-12 relative no-print">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+    <!-- KONTEN UTAMA -->
+    <main class="flex-1 p-8 md:p-12 no-print overflow-y-auto">
+        <header class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
             <div>
-                <h2 class="text-4xl font-black text-slate-900 tracking-tight italic">COMMAND <span class="text-blue-600 underline">CENTER AUDIT</span></h2>
-                <p class="text-slate-400 text-xs font-bold mt-1 tracking-widest italic" id="liveClock"></p>
+                <h2 class="text-4xl font-black italic text-white tracking-tighter uppercase underline decoration-blue-600 decoration-8">Admin <span class="text-blue-500">Monitor</span></h2>
+                <p id="jamDigital" class="text-slate-500 font-bold mt-2"></p>
             </div>
-            <div class="flex gap-4">
-                <button onclick="window.location.reload()" class="bg-white border p-5 rounded-2xl hover:shadow-lg transition-all active:scale-95 no-print"><i class="fas fa-sync text-blue-600"></i></button>
-                <button onclick="exportExcel()" class="bg-emerald-600 text-white px-8 py-5 rounded-3xl font-black text-[10px] tracking-widest uppercase italic shadow-2xl shadow-emerald-200/50 hover:bg-emerald-700 transition-all">Download Rekap Excel <i class="fas fa-download ml-2"></i></button>
-            </div>
+            <!-- TOMBOL EXCEL UTAMA -->
+            <button onclick="unduhExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-emerald-500/30 transition-all flex items-center gap-3 active:scale-95">
+                UNDUH REKAP EXCEL <i class="fas fa-download"></i>
+            </button>
         </header>
 
-        <!-- KPI -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 italic font-sans font-black tracking-tight underline">
-            <div class="bg-white p-8 rounded-[3rem] shadow-xl border-l-[12px] border-blue-600">
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mb-2 font-black italic">Aduan Terdaftar</p>
-                <h3 id="statTotal" class="text-6xl font-black text-slate-900 leading-none">0</h3>
+        <!-- KARTU STATISTIK -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 italic">
+            <div class="p-8 rounded-[2rem] bg-blue-600/5 border-l-8 border-blue-600 kartu-aduan">
+                <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Aduan Malra</p>
+                <p id="txtTotal" class="text-6xl font-black italic tracking-tighter">0</p>
             </div>
-            <div class="bg-white p-8 rounded-[3rem] shadow-xl border-l-[12px] border-red-600">
-                <p class="text-xs text-red-500 font-bold uppercase tracking-[0.2em] mb-2 italic underline px-1 font-sans">Kategori Korupsi</p>
-                <h3 id="statUrgent" class="text-6xl font-black text-red-600 leading-none italic tracking-tighter">0</h3>
+            <div class="p-8 rounded-[2rem] bg-red-600/5 border-l-8 border-red-600 kartu-aduan text-red-500 underline decoration-red-900/30">
+                <p class="text-[11px] font-black uppercase tracking-widest mb-2 px-1">Kasus Korupsi</p>
+                <p id="txtUrgent" class="text-6xl font-black italic tracking-tighter text-red-500 px-1">0</p>
             </div>
         </div>
 
-        <!-- LIST CONTAINER -->
-        <div id="loading" class="flex flex-col items-center py-20 italic">
-            <div class="spinner"></div>
-            <p class="mt-6 font-black tracking-widest opacity-30 animate-pulse uppercase">Mengsinkronisasi Basis Data Inspektorat Malra...</p>
+        <div id="loadingInfo" class="text-center py-20 opacity-30 italic font-black text-blue-500">
+             <i class="fas fa-circle-notch fa-spin text-4xl mb-4"></i><br>SINKRONISASI DATABASE...
         </div>
-        <div id="containerAduan" class="grid grid-cols-1 gap-6 pb-20"></div>
+
+        <div id="dataDashboard" class="space-y-4"></div>
     </main>
 
-    <!-- AREA CETAK PDF -->
-    <div id="printArea" class="print-only p-12 bg-white text-black font-serif italic text-balance font-black uppercase text-justify text-xs">
-        <div class="text-center border-b-[5px] border-double border-black pb-4 mb-8">
+    <!-- STRUKTUR CETAK PDF -->
+    <div id="boxPrint" class="print-area hidden p-10 font-sans italic font-black uppercase text-justify text-[11px]">
+        <center class="border-b-4 border-double border-black mb-10 pb-5 uppercase">
             <h1 class="text-2xl font-bold italic tracking-tighter">PEMERINTAH KABUPATEN MALUKU TENGGARA</h1>
-            <h1 class="text-3xl font-bold tracking-tight italic uppercase decoration-4 underline">INSPEKTORAT DAERAH</h1>
-            <p class="italic font-bold font-sans">Alamat: Jl. Sudirman - Kabupaten Maluku Tenggara</p>
-        </div>
-        <h2 class="text-center font-bold text-xl underline mb-10 italic">DOKUMEN AUDIT HASIL PENGADUAN SiAPP MAS</h2>
-        <div id="printContent" class="space-y-6 text-lg tracking-normal font-sans border-t-2 py-8 italic font-extrabold uppercase"></div>
-        <div class="mt-20 grid grid-cols-2 text-center text-xs">
-             <div>PELAPOR BIOMETRIC (SiAPP MAS)</div>
-             <div>Mengetahui, AUDITOR AHLI PERTAMA,<br><br><br><br><br><br><b>( FIRDAUS, S.T )</b></div>
+            <h1 class="text-3xl font-bold underline italic tracking-tight decoration-4">INSPEKTORAT DAERAH</h1>
+            <p class="mt-2 text-xs font-sans">Dokumen Audit Hasil Laporan SiAPP Mas - Auditor Firdaus</p>
+        </center>
+        <div id="isiPrint" class="leading-relaxed space-y-6 underline italic"></div>
+        <div class="mt-32 grid grid-cols-2 text-center underline font-bold uppercase italic tracking-tighter">
+             <div>TTD PELAPOR VERIFIED</div>
+             <div>MENGETAHUI,<br>AUDITOR AHLI PERTAMA,<br><br><br><br><br><br><b>( FIRDAUS, S.T )</b></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
             authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
             projectId: "siapp-mas-malra-aa6c4",
@@ -115,92 +100,73 @@
             appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
         };
 
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(config);
         const db = getFirestore(app);
-        let currentData = [];
+        let storageData = [];
 
-        // Update Waktu
-        setInterval(() => {
-            document.getElementById('liveClock').innerText = new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' });
-        }, 1000);
-
-        async function fetchAudit() {
-            const container = document.getElementById('containerAduan');
-            const load = document.getElementById('loading');
-            
+        async function perbaruiData(){
+            const container = document.getElementById('dataDashboard');
+            const loadIcon = document.getElementById('loadingInfo');
             try {
-                // SESUAIKAN DENGAN NAMA FIELD DI FIREBASE (index.html baru)
                 const q = query(collection(db, "pengaduan"), orderBy("timestamp", "desc"));
-                const querySnap = await getDocs(q);
+                const snap = await getDocs(q);
                 
-                load.classList.add('hidden');
-                container.innerHTML = "";
-                currentData = [];
-                let t=0; let k=0;
+                loadIcon.style.display = 'none';
+                container.innerHTML = ""; storageData = [];
+                let tot = 0, kor = 0;
 
-                querySnap.forEach((dSnap) => {
-                    const docID = dSnap.id;
-                    const d = dSnap.data();
-                    currentData.push(d);
-                    t++; if(d.kategori === 'Korupsi') k++;
-
-                    // LOGIKA RENDERING
-                    const tgl = d.timestamp?.toDate ? d.timestamp.toDate().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : 'No Date';
+                snap.forEach(d => {
+                    const i = d.data();
+                    storageData.push(i);
+                    tot++; if(i.kategori === 'Korupsi') kor++;
+                    
+                    const tgl = i.timestamp?.toDate ? i.timestamp.toDate().toLocaleString('id-ID') : 'N/A';
 
                     container.innerHTML += `
-                        <div class="bg-white p-8 card-modern shadow-xl flex flex-col md:flex-row items-center gap-8 border-l-blue-600 border border-slate-50 relative group">
-                            <img src="${d.validasi_wajah}" class="w-20 h-20 rounded-[1.5rem] shadow-xl border-4 border-white object-cover group-hover:scale-125 transition-transform">
-                            <div class="flex-1 italic">
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="text-[9px] font-black bg-slate-900 text-white px-3 py-1 rounded-full uppercase">${d.ticket_id}</span>
-                                    <span class="text-[9px] font-black bg-blue-100 text-blue-700 px-3 py-1 rounded-full uppercase italic decoration-4 underline tracking-tight">${d.kecamatan}</span>
-                                </div>
-                                <h4 class="text-xl font-black text-slate-800 tracking-tight leading-tight uppercase underline mb-2">${d.perihal}</h4>
-                                <div class="flex items-center gap-6 text-[10px] text-slate-400 font-extrabold italic uppercase underline">
-                                    <span><i class="far fa-calendar mr-1"></i> ${tgl}</span>
-                                    <span class="text-blue-500 font-sans tracking-widest leading-loose italic uppercase"><i class="fas fa-map-marker-alt mr-1"></i> ${d.desa}</span>
-                                </div>
+                        <div class="kartu-aduan p-6 rounded-3xl flex items-center gap-6 group hover:border-blue-500 shadow-xl shadow-blue-900/10 transition-all cursor-default">
+                            <img src="${i.validasi_wajah || i.wajah}" class="w-16 h-16 rounded-2xl object-cover grayscale shadow-2xl border border-slate-700">
+                            <div class="flex-1 italic tracking-tighter uppercase px-1">
+                                <p class="text-[9px] font-black text-blue-500 decoration-white decoration-2 underline">${i.ticket_id} | ${tgl}</p>
+                                <h3 class="text-xl font-black text-white decoration-blue-600 underline">${i.perihal || i.judul}</h3>
+                                <p class="text-[10px] text-slate-500 font-bold italic tracking-widest mt-1">${i.kecamatan} | OHOI: ${i.desa}</p>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick='detailModal(${JSON.stringify(d).replace(/'/g, "&apos;")})' class="bg-blue-600 hover:bg-black text-white px-6 py-4 rounded-2xl font-black text-[10px] tracking-widest shadow-xl shadow-blue-200 transition-all italic underline uppercase decoration-4 leading-loose px-2">BUKA BERKAS</button>
-                            </div>
+                            <button onclick='detailPDF(${JSON.stringify(i).replace(/'/g, "&apos;")})' class="bg-blue-600 px-6 py-4 rounded-xl text-[11px] font-black uppercase shadow-2xl shadow-blue-500/20 active:scale-95 italic">PROSES AUDIT (PDF)</button>
                         </div>
                     `;
                 });
-                document.getElementById('statTotal').innerText = t;
-                document.getElementById('statUrgent').innerText = k;
-
-            } catch (err) {
-                load.innerHTML = "GAGAL TERHUBUNG! Error: " + err.message;
-            }
+                document.getElementById('totalCount')?.innerText ? "" : ""; // Dummy
+                document.getElementById('txtTotal').innerText = tot;
+                document.getElementById('txtUrgent').innerText = kor;
+                if(tot === 0) loadIcon.innerHTML = "DATA MASIH KOSONG DI DATABASE BAPAK FIRDAUS.";
+            } catch (err) { loadIcon.innerHTML = "DATABASE DISKONEK: " + err.message; }
         }
 
-        window.detailModal = (data) => {
-            // FUNGSI PRINT PDF UNTUK SATU BERKAS
-            document.getElementById('printContent').innerHTML = `
-                <table class="w-full border-collapse">
-                    <tr><td class="py-2 w-1/3">NO. TICKET</td><td>: <b>${data.ticket_id}</b></td></tr>
-                    <tr><td class="py-2">KECAMATAN</td><td>: <b>${data.kecamatan}</b></td></tr>
-                    <tr><td class="py-2">DESA/OHOI</td><td>: <b>${data.desa}</b></td></tr>
-                    <tr><td class="py-2 text-wrap font-sans underline font-extrabold italic uppercase text-xs decoration-2 text-balance leading-loose font-black px-0 px-1 py-1 italic tracking-widest">KATEGORI</td><td>: <b>${data.kategori}</b></td></tr>
-                    <tr><td class="py-2 font-black italic tracking-wider leading-relaxed px-0 py-4 underline">JUDUL ADUAN</td><td class="px-2 underline uppercase px-1 text-wrap text-xs tracking-tighter decoration-black font-sans leading-relaxed text-wrap"><b>${data.perihal}</b></td></tr>
+        window.unduhExcel = () => {
+            if(storageData.length === 0) return alert("Maaf, tidak ada data di server Malra!");
+            const ws = XLSX.utils.json_to_sheet(storageData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Aduan_Warga");
+            XLSX.writeFile(wb, `Audit_SiAPP_Mas_Malra_${Date.now()}.xlsx`);
+        }
+
+        window.detailPDF = (data) => {
+            const printBox = document.getElementById('isiPrint');
+            printBox.innerHTML = `
+                <table width="100%" border="1" style="border-collapse: collapse; border: 2px solid black;">
+                    <tr style="padding: 15px;"><td><b>KECAMATAN</b></td><td><b>${data.kecamatan}</b></td></tr>
+                    <tr style="padding: 15px;"><td><b>DESA / OHOI</b></td><td><b>${data.desa}</b></td></tr>
+                    <tr style="padding: 15px;"><td><b>HAL PENGADUAN</b></td><td><b>${data.perihal || data.judul}</b></td></tr>
                 </table>
-                <br>
-                <div class="p-6 border-2 border-black italic font-black uppercase text-justify text-wrap underline font-sans text-xs decoration-blue-600 leading-loose py-4 tracking-tighter italic decoration-2 uppercase px-4">${data.laporan_detail}</div>
-                <div class="mt-8 italic font-sans font-black underline uppercase text-justify">Bukti Visual Biometric Terlampir pada Server Utama Inspektorat.</div>
+                <br><b>RINCIAN LAPORAN:</b><br>
+                <div style="border: 2px solid black; padding: 25px; margin-top: 10px;">
+                    ${data.laporan_detail || data.deskripsi}
+                </div>
             `;
             window.print();
-        };
-
-        window.exportExcel = () => {
-            if(currentData.length === 0) return alert("Belum ada data.");
-            const ws = XLSX.utils.json_to_sheet(currentData);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Pengaduan");
-            XLSX.writeFile(wb, `Laporan-Audit-SiAPP-Mas.xlsx`);
         }
 
-        fetchAudit();
+        setInterval(() => { document.getElementById('jamDigital').innerText = new Date().toLocaleString('id-ID'); }, 1000);
+        perbaruiData();
     </script>
 </body>
 </html>
