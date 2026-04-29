@@ -12,117 +12,125 @@
         .form-focus:focus { transform: translateY(-2px); border-color: #2563eb; ring: 4px; ring-color: rgba(37, 99, 235, 0.1); }
         #video-preview { transform: scaleX(-1); border-radius: 20px; width: 100%; max-width: 280px; margin: 0 auto; display: none; background: #000; }
         #face-canvas { display: none; }
-        .gradient-btn { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .alert-shield { background: linear-gradient(90deg, #eff6ff 0%, #ffffff 100%); border-left: 4px solid #2563eb; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- Header dengan Logo Dinas -->
     <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 py-4 shadow-sm">
         <div class="max-w-xl mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2.5 rounded-xl text-white shadow-lg">
-                    <i class="fas fa-fingerprint"></i>
-                </div>
+                <div class="bg-blue-600 p-2.5 rounded-xl text-white shadow-lg"><i class="fas fa-fingerprint"></i></div>
                 <div>
                     <h1 class="text-xl font-extrabold text-slate-800 leading-none">SiAPP <span class="text-blue-600">Mas</span></h1>
-                    <p class="text-[9px] font-extrabold text-slate-400 tracking-[0.2em] mt-1">INSPEKTORAT MALRA</p>
+                    <p class="text-[9px] font-extrabold text-slate-400 tracking-[0.2em] mt-1 italic text-balance px-0.5">INSPEKTORAT MALUKU TENGGARA</p>
                 </div>
-            </div>
-            <div class="text-right">
-                <p class="text-[10px] font-bold text-slate-400 leading-none uppercase">Admin Kontrol:</p>
-                <p class="text-[10px] font-extrabold text-blue-600 leading-none mt-1 uppercase">Auditor Firdaus</p>
             </div>
         </div>
     </nav>
 
     <main class="max-w-xl mx-auto px-6 py-8">
-        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 p-7 md:p-10">
-            <div class="mb-10 text-center">
-                <h2 class="text-2xl font-extrabold text-slate-800">Formulir Pengaduan</h2>
-                <p class="text-xs text-slate-500 font-bold mt-1 italic tracking-wider">Keamanan & Anonimitas Terjamin Sistem</p>
+        <!-- Catatan Kerahasiaan (Jaminan Instansi) -->
+        <div class="alert-shield rounded-2xl p-5 mb-6 shadow-sm flex items-center gap-4 border border-blue-100">
+            <div class="bg-blue-600 text-white p-3 rounded-full animate-pulse shadow-md">
+                <i class="fas fa-user-shield text-lg"></i>
             </div>
+            <div>
+                <h4 class="text-xs font-black text-blue-900 uppercase tracking-tight">Jaminan Perlindungan Pelapor</h4>
+                <p class="text-[11px] font-bold text-blue-700 italic leading-relaxed mt-0.5">
+                    "Identitas Pelapor DIJAMIN KERAHASIAANNYA oleh Instansi sesuai peraturan perundang-undangan yang berlaku."
+                </p>
+            </div>
+        </div>
 
+        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 p-7 md:p-10">
             <form id="complaintForm" class="space-y-6">
                 <!-- SCAN WAJAH - VALIDASI IDENTITAS -->
                 <div class="bg-slate-50 rounded-3xl p-6 border-2 border-dashed border-slate-200 text-center">
-                    <span class="inline-block bg-blue-100 text-blue-700 text-[10px] font-black px-4 py-1 rounded-full mb-4">TAHAP 1: VALIDASI BIOMETRIK</span>
+                    <span class="inline-block bg-slate-200 text-slate-700 text-[9px] font-black px-4 py-1 rounded-full mb-4 tracking-widest uppercase italic font-sans">Verification Mode: Camera</span>
                     <video id="video-preview" autoplay playsinline class="shadow-2xl mb-4 mx-auto border-4 border-white"></video>
                     <canvas id="face-canvas"></canvas>
                     <img id="face-result" class="mx-auto rounded-3xl shadow-2xl mb-4 hidden border-4 border-white" style="max-width: 220px;">
                     
-                    <button type="button" id="start-camera" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-camera"></i> Aktifkan Kamera Scan
+                    <button type="button" id="start-camera" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-xl active:scale-95">
+                        <i class="fas fa-camera"></i> Mulai Scan Wajah
                     </button>
-                    <button type="button" id="take-photo" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-bold text-sm hidden items-center justify-center gap-2 animate-bounce">
-                        <i class="fas fa-face-smile"></i> Ambil Foto Verifikasi
+                    <button type="button" id="take-photo" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-bold text-sm hidden items-center justify-center gap-2 shadow-xl animate-bounce">
+                        <i class="fas fa-check-double"></i> Capture Verifikasi
                     </button>
                 </div>
 
-                <div class="space-y-5 pt-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- NOMOR TELEPON -->
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Nomor HP/WhatsApp</label>
-                            <input type="number" id="no_hp" placeholder="08..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none transition-all font-bold text-slate-700 form-focus">
-                        </div>
-                        <!-- KATEGORI -->
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Jenis Aduan</label>
-                            <select id="kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 appearance-none">
-                                <option value="Korupsi">Dugaan Tindak Pidana Korupsi</option>
-                                <option value="Pungli">Pungutan Liar (Pungli)</option>
-                                <option value="Layanan Publik">Layanan Publik Buruk</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- KECAMATAN (UPDATE BAPAK FIRDAUS) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Kecamatan</label>
-                            <select id="kecamatan" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 appearance-none">
-                                <option value="">- Pilih Kecamatan -</option>
-                                <option value="Kei Kecil">Kecamatan Kei Kecil</option>
-                                <option value="Manyeuw">Kecamatan Manyeuw</option>
-                                <option value="Kei Kecil Timur">Kecamatan Kei Kecil Timur</option>
-                                <option value="Kei Kecil Timur Selatan">Kecamatan Kei Kecil Timur Selatan</option>
-                                <option value="Kei Kecil Barat">Kecamatan Kei Kecil Barat</option>
-                                <option value="Hoat Sorbay">Kecamatan Hoat Sorbay</option>
-                                <option value="Kei Besar">Kecamatan Kei Besar</option>
-                                <option value="Kei Besar Selatan">Kecamatan Kei Besar Selatan</option>
-                                <option value="Kei Besar Selatan Barat">Kecamatan Kei Besar Selatan Barat</option>
-                                <option value="Kei Besar Utara Barat">Kecamatan Kei Besar Utara Barat</option>
-                                <option value="Kei Besar Utara Timur">Kecamatan Kei Besar Utara Timur</option>
-                            </select>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Desa / Ohoi</label>
-                            <input type="text" id="desa" placeholder="Tulis nama Desa..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 form-focus">
-                        </div>
-                    </div>
-
-                    <!-- DESKRIPSI -->
+                <!-- NOMOR TELEPON & KATEGORI -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Isi Laporan / Judul</label>
-                        <input type="text" id="judul" placeholder="Inti permasalahan..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 mb-3 font-bold text-slate-800 form-focus">
-                        <textarea id="deskripsi" rows="4" placeholder="Detail kronologi, saksi, dan waktu kejadian..." required class="w-full bg-slate-50 border border-slate-200 rounded-3xl px-5 py-4 outline-none font-medium text-slate-600 form-focus"></textarea>
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Nomor WhatsApp Aktif</label>
+                        <input type="number" id="no_hp" placeholder="Contoh: 0812..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none transition-all font-bold text-slate-700 form-focus">
                     </div>
-
-                    <!-- FILE UPLOAD MAX 3MB -->
-                    <div class="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-                        <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase tracking-tighter italic">Dokumen/Foto Bukti (Max 3MB)</label>
-                        <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-[10px] file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
-                        <p id="file-error" class="text-red-500 text-[10px] font-bold mt-2 hidden italic">UKURAN FILE TERLALU BESAR (BATAS 3MB)</p>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic">Kategori Laporan</label>
+                        <select id="kategori" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 appearance-none">
+                            <option value="Korupsi">🚫 Dugaan Korupsi</option>
+                            <option value="Pungli">💸 Pungutan Liar (Pungli)</option>
+                            <option value="Layanan Publik">🏢 Layanan Publik Buruk</option>
+                        </select>
                     </div>
                 </div>
 
-                <button type="submit" id="btnSubmit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-5 rounded-[1.5rem] shadow-2xl shadow-blue-200 transform active:scale-95 transition-all text-sm tracking-widest flex items-center justify-center gap-3">
-                    SUBMIT LAPORAN SEKARANG <i class="fas fa-paper-plane"></i>
+                <!-- KECAMATAN & DESA -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic font-sans">Lokasi Kecamatan</label>
+                        <select id="kecamatan" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 appearance-none">
+                            <option value="">- Pilih Kecamatan -</option>
+                            <option value="Kei Kecil">Kecamatan Kei Kecil</option>
+                            <option value="Manyeuw">Kecamatan Manyeuw</option>
+                            <option value="Kei Kecil Timur">Kecamatan Kei Kecil Timur</option>
+                            <option value="Kei Kecil Timur Selatan">Kecamatan Kei Kecil Timur Selatan</option>
+                            <option value="Kei Kecil Barat">Kecamatan Kei Kecil Barat</option>
+                            <option value="Hoat Sorbay">Kecamatan Hoat Sorbay</option>
+                            <option value="Kei Besar">Kecamatan Kei Besar</option>
+                            <option value="Kei Besar Selatan">Kecamatan Kei Besar Selatan</option>
+                            <option value="Kei Besar Selatan Barat">Kecamatan Kei Besar Selatan Barat</option>
+                            <option value="Kei Besar Utara Barat">Kecamatan Kei Besar Utara Barat</option>
+                            <option value="Kei Besar Utara Timur">Kecamatan Kei Besar Utara Timur</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic font-sans">Desa / Ohoi</label>
+                        <input type="text" id="desa" placeholder="Nama Desa..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none font-bold text-slate-700 form-focus font-sans text-sm">
+                    </div>
+                </div>
+
+                <!-- PERIHAL & ISI LAPORAN -->
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic font-sans">Perihal Utama</label>
+                    <input type="text" id="judul" placeholder="Inti dari laporan Bapak/Ibu..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 mb-2 font-bold text-slate-800 form-focus">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-2 tracking-widest italic font-sans">Kronologi Lengkap</label>
+                    <textarea id="deskripsi" rows="4" placeholder="Jelaskan secara rinci kejadian, pelaku, waktu, dan saksi..." required class="w-full bg-slate-50 border border-slate-200 rounded-3xl px-5 py-4 outline-none font-medium text-slate-600 form-focus leading-relaxed text-sm"></textarea>
+                </div>
+
+                <!-- FILE BUKTI MAX 3MB -->
+                <div class="bg-blue-50/40 p-5 rounded-3xl border border-blue-100 flex flex-col gap-2 shadow-sm italic font-sans">
+                    <label class="text-[10px] font-black text-blue-900 uppercase flex items-center gap-2"><i class="fas fa-file-pdf"></i> Upload Dokumen/Foto Bukti (Maks. 3MB)</label>
+                    <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-[10px] file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
+                    <p id="file-error" class="text-red-500 text-[10px] font-bold hidden px-1 tracking-tighter">* UKURAN FILE TIDAK BOLEH LEBIH DARI 3MB</p>
+                </div>
+
+                <button type="submit" id="btnSubmit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-5 rounded-[1.8rem] shadow-2xl shadow-blue-300 transform active:scale-95 transition-all text-xs tracking-[0.2em] flex items-center justify-center gap-3">
+                    KIRIM ADUAN SECARA AMAN <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
         </div>
-        <p class="text-center text-[10px] text-slate-400 mt-8 font-bold italic uppercase tracking-widest">Digital Audit System - FIRDAUS @ 2024</p>
+        
+        <!-- Watermark Khusus -->
+        <div class="mt-8 flex flex-col items-center opacity-60">
+            <div class="flex items-center gap-2 text-slate-400">
+                <span class="w-12 h-[1px] bg-slate-300"></span>
+                <i class="fas fa-balance-scale"></i>
+                <span class="w-12 h-[1px] bg-slate-300"></span>
+            </div>
+            <p class="text-[9px] text-slate-400 mt-2 font-bold italic uppercase tracking-[0.3em]">Auditor Expert System • FIRDAUS MALRA • 2024</p>
+        </div>
     </main>
 
     <script type="module">
@@ -165,11 +173,11 @@
             faceResult.src = faceBase64;
             faceResult.classList.remove('hidden');
             video.style.display = "none";
-            takePhoto.innerText = "ULANGI SCAN WAJAH";
+            takePhoto.innerText = "GANTI SCAN WAJAH";
             video.srcObject.getTracks().forEach(t => t.stop());
         };
 
-        // --- VALIDASI FILE ---
+        // --- VALIDASI FILE 3MB ---
         const fileInput = document.getElementById('bukti');
         fileInput.onchange = () => {
             const error = document.getElementById('file-error');
@@ -184,29 +192,29 @@
         // --- PROSES SUBMIT ---
         document.getElementById('complaintForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!faceBase64){ alert("Wajib melakukan Scan Wajah sebagai Verifikasi!"); return; }
+            if(!faceBase64){ alert("Wajib Verifikasi Scan Wajah!"); return; }
             
             const btn = document.getElementById('btnSubmit');
             btn.disabled = true;
-            btn.innerHTML = "<i class='fas fa-sync fa-spin'></i> MENDAFTARKAN ADUAN...";
+            btn.innerHTML = "<i class='fas fa-sync fa-spin'></i> MENGIRIM DATA SECARA ENKRIPSI...";
 
             try {
                 await addDoc(collection(db, "pengaduan"), {
-                    ticket_id: "MALRA-" + Math.floor(Math.random() * 9999),
-                    wajah: faceBase64,
+                    ticket_id: "MLRA-" + Math.floor(1000 + Math.random() * 8999),
+                    validasi_wajah: faceBase64,
                     no_hp: document.getElementById('no_hp').value,
                     kategori: document.getElementById('kategori').value,
                     kecamatan: document.getElementById('kecamatan').value,
                     desa: document.getElementById('desa').value,
-                    judul: document.getElementById('judul').value,
-                    deskripsi: document.getElementById('deskripsi').value,
-                    status: "ANTRIAN AUDIT",
+                    perihal: document.getElementById('judul').value,
+                    laporan_detail: document.getElementById('deskripsi').value,
+                    status: "ANTREAN AUDIT",
                     timestamp: serverTimestamp()
                 });
-                alert("ADUAN BERHASIL TERKIRIM KE SISTEM INSPEKTORAT MALRA!");
+                alert("ALHAMDULILLAH! Laporan berhasil terkirim. Inspektorat Maluku Tenggara akan menjamin data kerahasiaan Bapak/Ibu.");
                 window.location.reload();
             } catch (err) {
-                alert("Error Kirim: " + err.message);
+                alert("Gagal Kirim. Hubungi Administrator System.");
                 btn.disabled = false;
             }
         });
