@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiAPP Mas | Malra Modern Portal</title>
+    <title>SiAPP Mas | Malra Government Modern System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* TEMA CERAH BERSIH (PATRIOTIK) */
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfd; color: #1e293b; }
         .form-focus:focus { border-color: #ef4444; ring: 3px; ring-color: rgba(239, 68, 68, 0.1); outline: none; }
         
-        /* PREVIEW KAMERA - COMPACT SIZE */
-        #video-preview, #ktp-video-preview, #doc-preview-cam { transform: scaleX(-1); border-radius: 20px; width: 100%; max-width: 250px; margin: 0 auto; display: none; background: #f1f5f9; border: 4px solid #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        #ktp-video-preview, #doc-preview-cam { transform: scaleX(1); }
+        #video-preview, #ktp-video-preview, #doc-preview-cam { border-radius: 20px; width: 100%; max-width: 260px; margin: 0 auto; display: none; background: #f1f5f9; border: 4px solid #ffffff; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        #video-preview { transform: scaleX(-1); }
         
-        .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; }
-        .status-fail { background: #ef4444; color: white; }
-        .status-pass { background: #10b981; color: white; }
+        .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; letter-spacing: 1px; }
+        .status-fail { background: #ef4444; color: white; border: 1px solid #dc2626; }
+        .status-pass { background: #10b981; color: white; border: 1px solid #059669; }
         .ribbon-merah { height: 8px; background: repeating-linear-gradient(45deg, #ef4444, #ef4444 20px, #ffffff 20px, #ffffff 40px); }
         
-        /* STYLING BUTTON COLORS (PERINTAH KHUSUS BAPAK) */
-        .btn-biometrik { background: #38bdf8 !important; color: white !important; } /* Biru Langit */
-        .btn-kamera { background: #fbbf24 !important; color: black !important; }   /* Kuning */
-        .input-file-hijau::-webkit-file-upload-button { background: #10b981 !important; color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; }
+        /* TOMBOL IDENTITAS KHUSUS BAPAK */
+        .btn-biru-langit { background: #0ea5e9 !important; color: white !important; transition: 0.3s; }
+        .btn-kuning { background: #fbbf24 !important; color: #422006 !important; transition: 0.3s; border-bottom: 4px solid #d97706; }
+        .btn-hijau-official { background: #10b981 !important; color: white !important; padding: 12px 25px; border-radius: 12px; font-weight: 900; transition: 0.3s; }
         
-        /* PATRIO CARDS - COMPACT SIZE */
-        .patriotic-card { background: white; border: 1px solid #f1f5f9; box-shadow: 0 15px 35px rgba(0,0,0,0.04); }
+        .patriotic-card { background: white; border: 1px solid #f3f4f6; box-shadow: 0 20px 50px rgba(0,0,0,0.04); }
     </style>
 </head>
 <body class="min-h-screen italic font-black uppercase tracking-tight overflow-x-hidden text-balance">
@@ -37,128 +34,131 @@
     <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 py-4 shadow-sm px-4 backdrop-blur-xl">
         <div class="max-w-xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <img src="./logo_malra.png" alt="Logo Malra" class="h-14 w-auto drop-shadow-md">
+                <img src="./logo_malra.png" alt="Logo Malra" class="h-12 w-auto drop-shadow-md">
                 <div class="flex flex-col border-l border-red-500 pl-4 leading-tight">
                     <h1 class="text-xl font-black text-slate-800">SiAPP <span class="text-red-600">MAS</span></h1>
-                    <h2 class="text-[9px] font-black text-slate-400 tracking-wider">INSPEKTORAT MALUKU TENGGARA</h2>
+                    <h2 class="text-[9px] font-black text-slate-400 tracking-wider">INSPEKTORAT KABUPATEN MALUKU TENGGARA</h2>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- CONTAINER MAX-W-LG UNTUK KESAN "IMUT & STYLE" -->
+    <!-- UKURAN KOLOM MAX-W-LG : IMUT & BERKELAS SESUAI PERINTAH -->
     <main class="max-w-lg mx-auto px-4 py-8 no-print">
         
-        <div class="bg-red-50 p-6 rounded-[2rem] mb-8 border border-red-100 flex items-start gap-4">
-            <div class="bg-red-600 text-white p-3.5 rounded-xl shadow-lg animate-pulse"><i class="fas fa-shield-halved text-xl"></i></div>
-            <div class="flex-1">
-                <h2 class="text-sm font-black text-red-700 decoration-slate-800 underline">SISTEM APLIKASI PENGADUAN MASYARAKAT</h2>
-                <p class="text-[10px] text-slate-500 mt-1 italic tracking-widest font-black uppercase opacity-60 underline decoration-red-200">PRIVACY SYSTEM ENCRYPTED</p>
-                <p class="text-[9px] text-slate-400 font-sans tracking-tight mt-2 italic leading-relaxed uppercase">"Kerahasiaan Identitas Pelapor Dijamin 100% Oleh Negara."</p>
+        <div class="bg-red-50 p-7 rounded-[2rem] mb-10 border border-red-100 shadow-sm relative">
+            <div class="bg-red-600 text-white w-12 h-12 flex items-center justify-center rounded-xl absolute -top-4 -left-4 shadow-xl rotate-12">
+                <i class="fas fa-gavel"></i>
             </div>
+            <h2 class="text-[12px] font-black text-red-700 decoration-slate-300 underline mb-2 tracking-tight">SISTEM APLIKASI PENGADUAN MASYARAKAT</h2>
+            <p class="text-[9px] text-slate-500 font-black italic tracking-widest uppercase opacity-60 underline decoration-red-200">PRIVACY SYSTEM ENCRYPTED</p>
+            <p class="text-[10px] text-slate-600 mt-4 leading-relaxed font-sans font-black italic border-t pt-4">"Kerahasian identitas dijamin 100% berdasarkan aturan perundangan negara."</p>
         </div>
 
-        <div class="patriotic-card rounded-[2.5rem] p-6 md:p-8 relative">
-            <form id="complaintForm" class="space-y-6">
+        <div class="patriotic-card rounded-[3rem] p-7 md:p-10 relative">
+            <form id="complaintForm" class="space-y-10">
                 
-                <!-- 1. BIOMETRIK (SKY BLUE BUTTON) -->
-                <div class="bg-slate-50 p-6 rounded-[1.8rem] border-2 border-dashed border-red-100 text-center">
-                    <span class="text-[9px] text-red-500 mb-4 block font-black underline underline-offset-4 decoration-slate-300 uppercase tracking-widest">I. VALIDASI WAJAH AI (BIOMETRIK)</span>
+                <!-- I. BIOMETRIK (SKY BLUE) - SENSOR KETAT CAHAYA -->
+                <div class="bg-slate-50 p-6 rounded-[2.2rem] border-2 border-dashed border-red-100 text-center relative italic">
+                    <span class="text-[8px] text-red-600 mb-5 block font-black underline tracking-[0.2em] decoration-slate-200 uppercase">I. VERIFIKASI WAJAH AI (BIOMETRIK)</span>
                     <video id="video-preview" autoplay playsinline></video>
                     <canvas id="face-canvas" class="hidden"></canvas>
-                    <img id="face-result" class="mx-auto rounded-[1.5rem] shadow-xl mb-4 hidden border-4 border-red-500" style="max-width: 180px;">
+                    <img id="face-result" class="mx-auto rounded-[1.8rem] shadow-xl mb-4 hidden border-4 border-white" style="max-width: 180px;">
                     
-                    <div id="qualityInfo" class="mb-4 flex justify-center gap-2 hidden font-sans italic">
-                         <span id="badgeBright" class="quality-badge status-fail italic">Sensor Cahaya</span>
-                         <span id="badgeSharp" class="quality-badge status-pass">Fokus Valid</span>
+                    <div id="qualityInfoW" class="mb-4 flex justify-center gap-2 hidden font-sans italic font-bold">
+                         <span id="badgeW-B" class="quality-badge status-fail px-4">SENSOR CAHAYA</span>
                     </div>
 
-                    <button type="button" id="start-camera" class="w-full btn-biometrik py-4 rounded-2xl text-[10px] font-black uppercase shadow-lg shadow-sky-100 active:scale-95 transition-all">AKTIFKAN MODUL BIOMETRIK</button>
-                    <button type="button" id="take-photo" class="w-full bg-red-600 text-white py-4 rounded-2xl text-[10px] font-black hidden animate-pulse underline decoration-white uppercase tracking-widest">CAPTURE IDENTITAS WAJAH</button>
+                    <button type="button" id="start-camera" class="w-full btn-biru-langit py-4 rounded-[1.2rem] text-[10px] font-black uppercase shadow-lg shadow-sky-100 active:scale-95 underline">BUKA KAMERA BIOMETRIK (BIRU)</button>
+                    <button type="button" id="take-photo" class="w-full bg-red-600 text-white py-4 rounded-[1.2rem] text-[10px] hidden animate-bounce font-black italic">VERIFIKASI WAJAH VALID</button>
                 </div>
 
-                <!-- IDENTITAS -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-[8px] text-slate-400 px-1 font-black uppercase underline decoration-red-500">Nama Pelapor (KTP)</label>
-                        <input type="text" id="nama_ktp" required placeholder="INPUT NAMA LENGKAP..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-red-700 font-black italic text-xs form-focus shadow-inner">
-                    </div>
+                <div class="space-y-5 px-1 uppercase underline italic font-black">
+                    <input type="text" id="nama_ktp" required placeholder="NAMA LENGKAP PELAPOR (SESUAI KTP)" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 text-red-700 text-[11px] font-black italic form-focus shadow-inner">
                     
-                    <div class="grid grid-cols-2 gap-3 italic">
-                        <input type="number" id="no_hp" required placeholder="WHATSAPP 08..." class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs font-black shadow-inner outline-none">
-                        <select id="kategori" class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[9px] font-black underline decoration-red-100">
-                            <option value="Korupsi">🚫 TIPIKOR (Dugaan)</option>
-                            <option value="Pungli">💸 PUNGLI</option>
-                            <option value="Layanan Publik">🏢 LAYANAN BURUK</option>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="no_hp" required placeholder="WHATSAPP 08..." class="bg-white border border-slate-200 rounded-2xl p-4 text-[10px] font-bold shadow-sm outline-none">
+                        <select id="kategori" class="bg-white border border-slate-200 rounded-2xl p-4 text-[8px] font-black underline decoration-red-100">
+                            <option value="Korupsi">TIPIKOR / PENYALAHGUNAAN</option>
+                            <option value="Pungli">PUNGUTAN LIAR (PUNGLI)</option>
+                            <option value="Layanan Publik">LAYANAN BURUK DINAS</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- 3. KTP SECTION (HIJAU + KUNING BUTTON) -->
-                <div class="bg-red-50/50 p-6 rounded-[2rem] border border-red-100 text-center italic uppercase font-black shadow-sm">
-                    <label class="block text-[8px] text-red-600 mb-5 tracking-widest decoration-red-200 underline italic underline-offset-4">II. VALIDASI KTP PELAPOR</label>
+                <!-- II. KTP SECTION (KUNING + HIJAU) - SENSOR KETAT CAHAYA -->
+                <div class="bg-slate-50/50 p-6 rounded-[2.5rem] border border-red-50 text-center font-black uppercase italic shadow-inner">
+                    <label class="block text-[8px] text-red-600 mb-5 tracking-widest decoration-red-100 underline italic underline-offset-4 font-black px-1">II. VALIDASI FISIK KTP (OFFICIAL)</label>
                     
-                    <div id="ktp-cam-box" class="mb-4 hidden">
-                        <video id="ktp-video-preview" autoplay playsinline class="mx-auto rounded-xl shadow-lg border-2 border-white mb-2"></video>
-                        <button type="button" id="take-ktp-photo" class="bg-emerald-600 text-white p-3 rounded-xl text-[9px] font-black underline">OK : CAPTURE KTP</button>
+                    <div id="ktp-cam-box" class="mb-4 hidden text-center">
+                        <video id="ktp-video-preview" autoplay playsinline class="mx-auto rounded-2xl border-4 border-white shadow-xl"></video>
+                        <button type="button" id="take-ktp-photo" class="bg-red-600 text-white p-3 rounded-xl mt-3 text-[9px] font-black px-8">VERIFIKASI FISIK KTP</button>
                     </div>
-                    
-                    <img id="ktpPreview" class="rounded-2xl w-full hidden border-2 border-white shadow-md mb-4">
+                    <img id="ktpPreview" class="rounded-2xl w-full hidden border-4 border-white shadow-md mb-4 font-black">
 
-                    <div class="flex flex-col gap-3">
-                        <input type="file" id="ktp_file" accept="image/*" class="w-full text-[9px] text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:bg-emerald-600 file:text-white file:font-black shadow-sm">
-                        
-                        <button type="button" id="start-ktp-camera" class="w-full btn-kamera py-4 rounded-xl text-[10px] font-black flex items-center justify-center gap-3 transition-all hover:scale-[1.01] active:scale-95 shadow-md">
-                             <i class="fas fa-camera text-sm"></i> KAMERA KTP
-                        </button>
+                    <div class="flex flex-col gap-3 font-black">
+                        <div class="flex items-center gap-3">
+                            <input type="file" id="ktp_file" accept="image/*" class="w-full text-[9px] text-slate-400 file:btn-hijau-official file:border-0 file:mr-2 shadow-sm font-black italic">
+                            <button type="button" id="start-ktp-camera" class="btn-kuning py-4 px-6 rounded-xl text-[10px] font-black shadow-lg shadow-amber-50 shadow-inner flex items-center justify-center gap-2 transition-all active:scale-95 italic">
+                                 <i class="fas fa-camera text-sm"></i> KUNING (KTP)
+                            </button>
+                        </div>
                     </div>
-                    <p id="ktpQuality" class="quality-badge status-fail hidden mt-4 italic font-black uppercase">DATA KTP KURANG TERANG!</p>
+                    <div id="qualityInfoK" class="mt-4 flex justify-center gap-2 hidden">
+                         <span id="badgeK-B" class="quality-badge status-fail italic px-4 font-black">PENILAIAN PIXEL KTP</span>
+                    </div>
                 </div>
 
-                <!-- LOKASI -->
-                <div class="grid grid-cols-2 gap-3 italic">
-                    <select id="kecamatan" required class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[8px] font-black text-slate-800">
-                        <option value="">- KECAMATAN -</option>
+                <!-- LOKASI MALRA (LENGKAP 11 KECAMATAN) -->
+                <div class="grid grid-cols-2 gap-4 italic uppercase">
+                    <select id="kecamatan" required class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[9px] font-black text-slate-800 shadow-inner decoration-red-600 underline">
+                        <option value="">- PILIH KECAMATAN -</option>
                         <option value="Kei Kecil">Kei Kecil</option><option value="Manyeuw">Manyeuw</option><option value="Kei Kecil Timur">Kei Kecil Timur</option>
                         <option value="Kei Kecil Timur Selatan">Kei Kecil Timur Selatan</option><option value="Kei Kecil Barat">Kei Kecil Barat</option>
                         <option value="Hoat Sorbay">Hoat Sorbay</option><option value="Kei Besar">Kei Besar</option>
-                        <option value="KEI BESAR SELATAN">KEI BESAR SELATAN</option><option value="KEI BESAR SELATAN BARAT">KEI BESAR SELATAN BARAT</option>
-                        <option value="KEI BESAR UTARA BARAT">KEI BESAR UTARA BARAT</option><option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
+                        <option value="KEI BESAR SELATAN">KEI BESAR SELATAN</option>
+                        <option value="KEI BESAR SELATAN BARAT">KEI BESAR SELATAN BARAT</option>
+                        <option value="KEI BESAR UTARA BARAT">KEI BESAR UTARA BARAT</option>
+                        <option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
                     </select>
-                    <input type="text" id="desa" required placeholder="DESA/OHOI" class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[9px] font-black uppercase italic shadow-inner">
+                    <input type="text" id="desa" required placeholder="OHOI / DESA" class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[10px] font-black decoration-red-600 underline shadow-inner uppercase outline-none">
                 </div>
 
-                <!-- KOMUNIKASI (DIPERTAHANKAN) -->
-                <div class="bg-red-50 p-5 rounded-[1.5rem] italic underline decoration-red-100">
-                    <label class="block text-red-600 mb-3 font-black uppercase text-[8px] tracking-widest px-1">INISIASI KOMUNIKASI CHAT</label>
-                    <input type="text" id="chat_init" required placeholder="TULIS PESAN CHAT UNTUK AUDITOR..." class="w-full bg-white border border-red-100 p-4 rounded-xl text-slate-900 font-black italic uppercase text-[10px] outline-none shadow-md">
+                <div class="bg-red-50 p-6 rounded-2xl italic font-black shadow-inner border border-red-100 uppercase italic">
+                    <label class="text-[9px] text-red-600 block mb-3 px-1 font-bold underline underline-offset-4 tracking-[0.05em]"><i class="fas fa-comment"></i> INISIASI KOMUNIKASI CHAT</label>
+                    <input type="text" id="chat_init" required placeholder="TULIS PESAN AWAL UNTUK AUDITOR..." class="w-full bg-white border border-red-200 p-4 rounded-xl text-slate-950 text-[10px] font-bold italic outline-none decoration-blue-200 underline shadow-xl font-sans italic tracking-wide">
                 </div>
 
-                <textarea id="deskripsi" rows="4" required placeholder="NARASI DETAIL ADUAN PENYALAHGUNAAN..." class="w-full bg-slate-50 border border-red-100 rounded-3xl p-6 text-[12px] text-slate-700 italic font-black uppercase text-justify shadow-inner leading-relaxed"></textarea>
+                <textarea id="deskripsi" rows="4" required placeholder="CERITAKAN DETAIL KEJADIAN / KRONOLOGIS SEBAGAIBAHAN AUDIT..." class="w-full bg-slate-50 border border-red-50 rounded-3xl p-8 text-[12px] text-slate-600 italic font-black shadow-inner leading-relaxed uppercase text-justify underline decoration-red-100 font-sans"></textarea>
 
-                <!-- LAPORAN TERTULIS (HIJAU + KUNING BUTTON) -->
-                <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 italic font-black shadow-inner">
-                    <label class="block text-[10px] mb-4 uppercase text-slate-950 font-black italic tracking-widest decoration-slate-200 underline">KIRIM LAPORAN PENGADUAN TERTULIS</label>
-                    <div class="flex flex-col gap-3">
-                        <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-[9px] text-slate-400 file:bg-emerald-600 file:text-white file:rounded-xl file:px-4 file:py-3 italic shadow-sm">
-                        <button type="button" id="start-doc-camera" class="w-full btn-kamera py-4 rounded-xl flex items-center justify-center gap-2 font-black transition-all active:scale-95 text-[9px]">
-                             <i class="fas fa-camera px-1"></i> SCAN FISIK SURAT 
-                        </button>
+                <!-- III. LAPORAN TERTULIS (HIJAU + KUNING) - SENSOR KETAT CAHAYA -->
+                <div class="bg-slate-50 p-7 rounded-[2.5rem] border border-slate-200 italic font-black shadow-inner decoration-white">
+                    <label class="block text-[11px] mb-5 uppercase text-black font-black italic tracking-tighter decoration-slate-300 underline font-sans">KIRIM LAPORAN PENGADUAN TERTULIS</label>
+                    <div class="flex flex-col gap-4 font-black">
+                        <div class="flex items-center gap-3">
+                             <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-[9px] text-slate-400 file:btn-hijau-official file:border-0 italic font-black font-sans uppercase italic decoration-white">
+                             <button type="button" id="start-doc-camera" class="btn-kuning py-4 px-6 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all text-[9px] shadow-lg shadow-inner font-black px-1 leading-relaxed">
+                                  <i class="fas fa-camera"></i> KUNING (SURAT)
+                             </button>
+                        </div>
                     </div>
-                    <div id="camDocBox" class="mt-6 hidden">
-                        <video id="doc-preview-cam" autoplay playsinline class="mx-auto rounded-lg mb-2 shadow-lg border border-white"></video>
-                        <button type="button" id="take-doc-photo" class="bg-red-600 text-white w-full py-3 rounded-xl text-[9px] font-black underline animate-pulse">OK : AMBIL FOTO SURAT</button>
+                    <div id="camDocBox" class="mt-8 hidden border-t pt-8 text-center italic uppercase underline font-black tracking-widest decoration-white font-black underline underline-offset-4 decoration-2 text-justify">
+                        <video id="doc-preview-cam" autoplay playsinline></video>
+                        <button type="button" id="take-doc-photo" class="bg-emerald-600 text-white w-full py-4 mt-4 rounded-[1.2rem] text-[10px] font-black underline animate-pulse shadow-emerald-500 shadow-2xl px-0 py-4 decoration-blue-200 decoration-[0.1px] tracking-tight">CAPTURE FISIK DOKUMEN TERTULIS</button>
                     </div>
-                    <img id="doc-result" class="mt-4 rounded-xl w-full hidden border border-emerald-300 shadow-md">
+                    <img id="doc-result" class="mt-6 rounded-2xl w-full hidden border-4 border-white shadow-2xl transition-all font-black decoration-white">
+                    <div id="qualityInfoD" class="mt-4 flex justify-center gap-2 hidden font-black">
+                         <span id="badgeD-B" class="quality-badge status-fail px-4">SENSOR PIXEL DOKUMEN</span>
+                    </div>
                 </div>
 
-                <button type="submit" id="btnSubmit" class="w-full bg-red-600 text-white p-7 rounded-[2rem] font-black italic tracking-[0.2em] shadow-xl opacity-40 cursor-not-allowed transition-all text-[10px] uppercase shadow-red-100 no-underline" disabled>
-                    VALIDASI AI : HARAP SCAN WAJAH & KTP!
+                <button type="submit" id="btnSubmit" class="w-full bg-red-600 text-white p-8 rounded-[2.5rem] font-black italic tracking-[0.4em] shadow-2xl opacity-40 cursor-not-allowed transition-all text-[11px] uppercase decoration-white no-underline border-b-8 border-red-950 px-2 py-4" disabled>
+                    VERIFIKATOR : HARAP SCAN WAJAH, KTP & DOKUMEN JELAS!
                 </button>
             </form>
         </div>
         
-        <p class="text-center text-[8px] mt-16 font-black italic opacity-20 tracking-[0.4em] underline uppercase font-sans">DESIGNED BY: FIRDAUS SETITIT, S.KOM @ 2026</p>
+        <p class="text-center text-[8px] mt-24 font-black italic opacity-30 tracking-[0.5em] underline uppercase font-sans decoration-slate-300">ARCHITECTURE DEVELOPED BY: FIRDAUS SETITIT, S.KOM @ 2026 • OFFICIAL MALRA</p>
     </main>
 
     <script type="module">
@@ -175,95 +175,119 @@
         };
         const app = initializeApp(config); const db = getFirestore(app);
 
-        // -- UTUH: LOGIKA SENSOR & KAMERA (AS PER COMMAND) --
-        const v = document.getElementById('video-preview'); const cv = document.getElementById('face-canvas');
-        const fR = document.getElementById('face-result'); const sub = document.getElementById('btnSubmit');
-        const bB = document.getElementById('badgeBright'); let fBase = null; let kBase = null; let docBase = null;
-        let qStatus = { face: false, ktp: false };
+        // Core Sensors
+        const sub = document.getElementById('btnSubmit');
+        let fBase = null; let kBase = null; let docBase = null;
+        let sensorStatus = { face: false, ktp: false, doc: false };
 
-        function updateLock() {
-            if (qStatus.face && qStatus.ktp) {
+        function evalSecurity() {
+            if (sensorStatus.face && sensorStatus.ktp && sensorStatus.doc) {
                 sub.disabled = false; sub.classList.remove('opacity-40', 'cursor-not-allowed');
-                sub.innerText = "SENSOR SAH : KIRIM ADUAN SEKARANG";
+                sub.innerText = "AUTHENTICATION VALID : KIRIM DATA SEKARANG";
                 sub.classList.add('bg-slate-900', 'animate-pulse');
             } else {
                 sub.disabled = true; sub.classList.add('opacity-40', 'cursor-not-allowed');
-                sub.innerText = "PENOLAKAN SENSOR : FOTO HARAP JELAS!";
+                sub.innerText = "STANDAR GAGAL : DATA FISIK BELUM TERBACA JELAS!";
             }
         }
 
-        function sensorAI(canvas, mode) {
-            const ctx = canvas.getContext('2d'); const d = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-            let L = 0; for(let i=0; i<d.length; i+=4) L += (d[i]+d[i+1]+d[i+2])/3;
-            L = L/(d.length/4); const OK = L > 61;
-            if(mode==='W'){
-                document.getElementById('qualityInfo').classList.remove('hidden');
-                bB.className=OK?"quality-badge status-pass italic":"quality-badge status-fail italic";
-                bB.innerText=OK?"PIXEL VALID":"GELAP!"; qStatus.face=OK;
-            } else {
-                const ks=document.getElementById('ktpQuality'); ks.classList.remove('hidden');
-                ks.className=OK?"quality-badge status-pass italic":"quality-badge status-fail italic";
-                ks.innerText=OK?"KTP LOLOS SENSOR":"IDENTITAS TIDAK JELAS!"; qStatus.ktp=OK;
-            } updateLock();
+        // INTEGRATED LUMINANCE SENSOR (STANDARD KEMENTERIAN)
+        function analyzeLux(canvas, target) {
+            const ctx = canvas.getContext('2d'); const pix = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+            let L = 0; for(let i=0; i<pix.length; i+=4) L += (pix[i]+pix[i+1]+pix[i+2])/3;
+            L = L/(pix.length/4); const PASSED = L > 65; // STRICT MINIMUM LIGHT THRESHOLD
+            
+            if(target==='W'){ 
+                document.getElementById('qualityInfoW').classList.remove('hidden'); 
+                const b = document.getElementById('badgeW-B'); b.className = PASSED ? "quality-badge status-pass" : "quality-badge status-fail";
+                b.innerText = PASSED ? "Cahaya Valid" : "Terlalu Gelap!"; sensorStatus.face = PASSED;
+            } else if(target==='K'){ 
+                document.getElementById('qualityInfoK').classList.remove('hidden'); 
+                const b = document.getElementById('badgeK-B'); b.className = PASSED ? "quality-badge status-pass" : "quality-badge status-fail";
+                b.innerText = PASSED ? "Data KTP Jelas" : "Ulangi KTP (Gelap)"; sensorStatus.ktp = PASSED;
+            } else { 
+                document.getElementById('qualityInfoD').classList.remove('hidden'); 
+                const b = document.getElementById('badgeD-B'); b.className = PASSED ? "quality-badge status-pass" : "quality-badge status-fail";
+                b.innerText = PASSED ? "Dokumen Jelas" : "Laporan Buram/Gelap"; sensorStatus.doc = PASSED;
+            } evalSecurity();
         }
 
+        // I. CAMERA FACE
+        const vW = document.getElementById('video-preview'); const cvW = document.getElementById('face-canvas'); const imgW = document.getElementById('face-result');
         document.getElementById('start-camera').onclick = async () => {
-            const st = await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720}});
-            v.srcObject=st; v.style.display="block"; document.getElementById('start-camera').style.display="none";
-            document.getElementById('take-photo').style.display="block";
+            const s = await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720}}); vW.srcObject=s; vW.style.display="block";
+            document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block";
         };
         document.getElementById('take-photo').onclick = () => {
-            cv.width=v.videoWidth; cv.height=v.videoHeight; cv.getContext('2d').drawImage(v,0,0);
-            fBase=cv.toDataURL('image/jpeg'); sensorAI(cv,'W');
-            if(qStatus.face){ fR.src=fBase; fR.classList.remove('hidden'); v.style.display="none"; }
-            else{ alert("AUDIT WARNING: Ruangan terlalu gelap!"); }
+            cvW.width=vW.videoWidth; cvW.height=vW.videoHeight; cvW.getContext('2d').drawImage(vW,0,0);
+            fBase=cvW.toDataURL('image/jpeg'); analyzeLux(cvW, 'W');
+            if(sensorStatus.face){ imgW.src=fBase; imgW.classList.remove('hidden'); vW.style.display="none"; }
+            else { alert("Ruangan gelap! Cari lampu atau sinar matahari."); }
         };
 
-        const ktpV = document.getElementById('ktp-video-preview');
+        // II. CAMERA KTP
+        const vK = document.getElementById('ktp-video-preview');
         document.getElementById('start-ktp-camera').onclick = async () => {
-            const stK = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
-            ktpV.srcObject = stK; ktpV.style.display="block"; document.getElementById('ktp-cam-box').classList.remove('hidden');
+            const sk = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}); vK.srcObject=sk; vK.style.display="block";
+            document.getElementById('ktp-cam-box').classList.remove('hidden');
         };
         document.getElementById('take-ktp-photo').onclick = () => {
-            const cx=document.createElement('canvas'); cx.width=ktpV.videoWidth; cx.height=ktpV.videoHeight;
-            cx.getContext('2d').drawImage(ktpV,0,0); kBase=cx.toDataURL('image/jpeg');
-            sensorAI(cx,'K');
-            if(qStatus.ktp){
+            const cX = document.createElement('canvas'); cX.width=vK.videoWidth; cX.height=vK.videoHeight;
+            cX.getContext('2d').drawImage(vK,0,0); kBase=cX.toDataURL('image/jpeg');
+            analyzeLux(cX, 'K');
+            if(sensorStatus.ktp){
                 document.getElementById('ktpPreview').src=kBase; document.getElementById('ktpPreview').classList.remove('hidden');
-                document.getElementById('ktp-cam-box').classList.add('hidden'); ktpV.srcObject.getTracks().forEach(t=>t.stop());
-            } else { alert("DITOLAK AI : Hasil foto gelap/kabur!"); }
+                document.getElementById('ktp-cam-box').classList.add('hidden'); vK.srcObject.getTracks().forEach(t=>t.stop());
+            } else { alert("Data KTP gelap/kabur!"); }
         };
 
-        const vdDoc = document.getElementById('doc-preview-cam');
+        // III. CAMERA WRITTEN DOC
+        const vD = document.getElementById('doc-preview-cam');
         document.getElementById('start-doc-camera').onclick = async () => {
-            const sd=await navigator.mediaDevices.getUserMedia({video:{facingMode: "environment"}});
-            vdDoc.srcObject=sd; vdDoc.style.display="block"; document.getElementById('camDocBox').classList.remove('hidden');
+            const sd = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}); vD.srcObject=sd; vD.style.display="block";
+            document.getElementById('camDocBox').classList.remove('hidden');
         };
         document.getElementById('take-doc-photo').onclick = () => {
-            const cd=document.createElement('canvas'); cd.width=vdDoc.videoWidth; cd.height=vdDoc.videoHeight;
-            cd.getContext('2d').drawImage(vdDoc,0,0); docBase=cd.toDataURL('image/jpeg');
-            document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden');
-            document.getElementById('camDocBox').classList.add('hidden'); vdDoc.srcObject.getTracks().forEach(t=>t.stop());
+            const cD = document.createElement('canvas'); cD.width=vD.videoWidth; cD.height=vD.videoHeight;
+            cD.getContext('2d').drawImage(vD,0,0); docBase = cD.toDataURL('image/jpeg');
+            analyzeLux(cD, 'D');
+            if(sensorStatus.doc){
+                document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden');
+                document.getElementById('camDocBox').classList.add('hidden'); vD.srcObject.getTracks().forEach(t=>t.stop());
+            } else { alert("Laporan pengaduan tertulis harus dipotret di tempat terang agar audit akurat!"); }
         };
 
-        // --- SUBMIT + WHATSAPP ENGINE UTUH (PERINTAH BAPAK) ---
-        document.getElementById('complaintForm').onsubmit = async (ev) => {
-            ev.preventDefault(); const procB = document.getElementById('btnSubmit');
-            const targetP = document.getElementById('no_hp').value;
-            const tiketVal = "MLRA-ID-" + Math.floor(1000+Math.random()*8999).toString();
-            procB.disabled=true; procB.innerText="AUDIT SECURE SYNC...";
+        // IV. UPLOAD FILE VALIDATION (3MB + SENSOR)
+        document.getElementById('ktp_file').onchange = (e) => {
+            const f = e.target.files[0]; if(f.size > 3*1024*1024) return alert("FILE MAX 3MB!");
+            const rd = new FileReader(); rd.onload = (re) => {
+                const i = new Image(); i.onload=() => {
+                    const cx = document.createElement('canvas'); cx.width=i.width; cx.height=i.height;
+                    cx.getContext('2d').drawImage(i,0,0); analyzeLux(cx, 'K'); kBase=re.target.result;
+                    if(sensorStatus.ktp){ document.getElementById('ktpPreview').src=kBase; document.getElementById('ktpPreview').classList.remove('hidden'); }
+                }; i.src=re.target.result;
+            }; rd.readAsDataURL(f);
+        };
+
+        // --- SUBMIT PROCESS ---
+        document.getElementById('complaintForm').onsubmit = async (ex) => {
+            ex.preventDefault(); const pBtn = document.getElementById('btnSubmit');
+            const userP = document.getElementById('no_hp').value; const userN = document.getElementById('nama_ktp').value;
+            const tiket = "MLRA-FINAL-" + Math.floor(1000+Math.random()*8999).toString();
+            pBtn.disabled = true; pBtn.innerText = "UPLOADING TO MALRA SECURE CLOUD...";
             try {
                 await addDoc(collection(db, "pengaduan"), {
-                    ticket_id: tiketVal, pelapor_identitas: document.getElementById('nama_ktp').value,
-                    foto_biometrik: fBase, foto_ktp_legal: kBase, doc_fisik: docBase, 
-                    kontak: targetP, kec: document.getElementById('kecamatan').value, ohoi: document.getElementById('desa').value,
-                    init_chat: document.getElementById('chat_init').value, uraian_lengkap: document.getElementById('deskripsi').value,
-                    status_server: "CLEAN_Patriot", audit_status: "DILIHAT", timestamp: serverTimestamp()
+                    ticket_id: tiket, name_verified: userN, phone: userP,
+                    face_bio: fBase, id_ktp: kBase, doc_evidence: docBase, 
+                    dist: document.getElementById('kecamatan').value, vill: document.getElementById('desa').value,
+                    cat: document.getElementById('kategori').value, init_chat: document.getElementById('chat_init').value, 
+                    description: document.getElementById('deskripsi').value,
+                    audit_status: "DILIHAT", timestamp: serverTimestamp()
                 });
-                const msg = `NOTIFIKASI RESMI SiAPP MAS\n\nNo TICKET ID : ${tiketVal}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.\n\nPanduan Pelapor:\nSilakan masukan nomor TICKET ID ini pada kolom FITUR KOMUNIKASI DUA ARAH (CHAT) untuk berkomunikasi interaktif dengan Admin Inspektorat.`;
-                alert(`LAPORAN TERSIMPAN!\nNo ID: ${tiketVal}\n\nKlik OK untuk terima salinan WhatsApp.`);
-                window.location.href=`https://api.whatsapp.com/send?phone=${targetP}&text=${encodeURIComponent(msg)}`;
-            } catch(e) { alert("RE-TRY"); procB.disabled=false; }
+                const msg = `NOTIFIKASI SiAPP MAS\nID TIKET: ${tiket}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.\n\nSimpan Ticket ID untuk Komunikasi Chat.`;
+                alert(`LAPORAN DITERIMA! ID: ${tiket}\n\nKlik OK untuk data ke WhatsApp.`);
+                window.location.href = `https://api.whatsapp.com/send?phone=${userP}&text=${encodeURIComponent(msg)}`;
+            } catch(e) { pBtn.disabled = false; alert("RE-TRY"); }
         };
     </script>
 </body>
