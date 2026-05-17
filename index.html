@@ -62,7 +62,7 @@
         <div class="patriotic-card rounded-[3rem] p-7 md:p-10 relative font-black">
             <form id="complaintForm" class="space-y-10 uppercase italic">
                 
-                <!-- 1. BIOMETRIK (BIRU LANGIT) - UTUH -->
+                <!-- 1. BIOMETRIK - UTUH -->
                 <div class="bg-slate-50 p-6 rounded-[2rem] border-2 border-dashed border-red-100 text-center relative italic underline-offset-4 decoration-red-200">
                     <span class="text-[8px] text-red-600 mb-5 block tracking-widest uppercase">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
                     <video id="video-preview" autoplay playsinline></video>
@@ -87,7 +87,7 @@
                         <input type="number" id="no_hp" required placeholder="08..." class="w-full bg-white border border-slate-200 rounded-2xl p-4 text-[11px] shadow-sm font-black italic underline outline-none decoration-red-600">
                     </div>
                     <div class="space-y-1 px-1 font-black underline decoration-red-200 italic underline-offset-4 decoration-2">
-                        <label class="text-[9px] text-slate-400 uppercase italic">Kategori Khusus</label>
+                        <label class="text-[9px] text-slate-400 uppercase italic">Kategori Pengaduan</label>
                         <select id="kategori" class="w-full bg-white border border-slate-200 rounded-2xl p-4 text-[9px] font-black underline decoration-red-100 text-slate-700 uppercase italic underline-offset-4 leading-loose py-4 tracking-tighter decoration-slate-800">
                             <option value="Dana Desa">PENGAWASAN DANA DESA</option>
                             <option value="Dana BOS">PENGAWASAN DANA BOS/BOP PAUD</option>
@@ -107,7 +107,7 @@
                     <div class="flex items-center gap-3 italic">
                         <input type="file" id="ktp_file" accept="image/*" class="w-full text-[9px] text-slate-400 file:btn-hijau-official file:border-0 underline decoration-white">
                         <button type="button" id="start-ktp-camera" class="btn-kuning py-4 px-6 rounded-xl text-[10px] shadow-lg flex items-center gap-2 transition-all font-black">
-                            <i class="fas fa-camera"></i> KUNING (KTP)
+                            <i class="fas fa-camera"></i> (KTP)
                         </button>
                     </div>
                     <div id="qualityInfoK" class="mt-4 flex justify-center hidden font-black">
@@ -138,11 +138,11 @@
 
                 <!-- LAPORAN TERTULIS (CERAH + SENSOR KETAT) - UTUH -->
                 <div class="bg-slate-50 p-6 rounded-[2.5rem] border border-slate-200 font-black italic uppercase decoration-white shadow-inner leading-loose tracking-tighter">
-                    <label class="block text-[10px] mb-5 text-black underline underline-offset-4 decoration-black">KIRIM LAPORAN PENGADUAN TERTULIS (HITAM)</label>
+                    <label class="block text-[10px] mb-5 text-black underline underline-offset-4 decoration-black">KIRIM LAPORAN PENGADUAN TERTULIS </label>
                     <div class="flex items-center gap-3 italic">
                         <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-[9px] text-slate-400 file:btn-hijau-official file:border-0 italic font-black uppercase tracking-tight font-sans">
                         <button type="button" id="start-doc-camera" class="btn-kuning py-4 px-6 rounded-xl text-[9px] flex items-center justify-center gap-2 active:scale-95 italic">
-                             <i class="fas fa-camera italic px-0 px-2 py-0 font-black"></i> KUNING (DOC)
+                             <i class="fas fa-camera italic px-0 px-2 py-0 font-black"></i> (DOC)
                         </button>
                     </div>
                     <div id="camDocBox" class="mt-8 hidden border-t pt-6 text-center italic uppercase underline font-black decoration-white">
