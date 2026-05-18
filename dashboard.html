@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pusat Audit SiAPP Mas | Government Multi-Data Portal</title>
+    <title>SiAPP MAS | Official Government Commander Portal</title>
+    <!-- Library Aktif (Dilarang Hapus) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
@@ -12,90 +13,112 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; margin: 0; }
         .sidebar { background: #1e293b; border-right: 1px solid #334155; height: 100vh; position: sticky; top: 0; }
         .login-overlay { background: #0f172a; position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .kartu-adu { background: #1e293b; border: 1px solid #334155; border-radius: 2.5rem; transition: 0.3s; }
-        .status-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; letter-spacing: 1px; display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+        .kartu-adu { background: #1e293b; border: 1px solid #334155; border-radius: 2.5rem; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .kartu-adu:hover { border-color: #3b82f6; box-shadow: 0 0 50px rgba(59,130,246,0.1); }
+        .status-badge { font-size: 8px; font-weight: 900; padding: 5px 12px; border-radius: 99px; letter-spacing: 1.5px; border: 1px solid rgba(255,255,255,0.1); }
         .bg-Dilihat { background: #64748b; color: white; }
         .bg-Diverifikasi { background: #d97706; color: white; }
-        .bg-Diproses { background: #2563eb; color: white; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .bg-Diproses { background: #2563eb; color: white; border-color: #3b82f6; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
+        /* AREA PRINT SATU HALAMAN PRESISI */
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
             @page { size: A4 portrait; margin: 0; }
-            .a4-container { width: 210mm; height: 296mm; padding: 15mm; margin: 0 auto; position: relative; box-sizing: border-box; display: flex; flex-direction: column; }
+            .a4-container { width: 210mm; height: 297mm; padding: 15mm; margin: 0 auto; position: relative; box-sizing: border-box; }
             .kop-surat { position: relative; border-bottom: 5px solid black; padding-bottom: 10px; text-align: center; }
-            .kop-surat img { position: absolute; left: 0; top: 0; width: 85px; }
-            .text-kop-1 { font-size: 15pt; font-weight: bold; }
-            .text-kop-2 { font-size: 24pt; font-weight: 900; letter-spacing: 1.5px; }
-            .kop-line-2 { border-bottom: 1.5px solid black; margin-top: 2px; }
-            .signature-box { position: absolute; bottom: 25mm; right: 15mm; width: 80mm; text-align: center; font-size: 11pt; font-weight: bold; }
+            .kop-surat img { position: absolute; left: 0; top: 0; width: 90px; }
+            .text-kop-1 { font-size: 15pt; font-weight: bold; line-height: 1.2; }
+            .text-kop-2 { font-size: 26pt; font-weight: 900; letter-spacing: 1px; margin: 5px 0; }
+            .text-alamat { font-size: 10pt; font-style: italic; font-weight: bold; }
+            .kop-line-2 { border-bottom: 1.5px solid black; margin-top: 3px; }
+            .box-laporan { border: 2.5px solid black; padding: 25px; margin-top: 25px; height: 110mm; overflow: hidden; text-align: justify; font-size: 11pt; }
+            .sig-area { position: absolute; bottom: 30mm; right: 15mm; width: 85mm; text-align: center; font-weight: 900; font-size: 12pt; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            td { border: 1px solid black; padding: 10px; font-weight: bold; font-size: 10pt; }
         }
         .print-only { display: none; }
+        .no-line { text-decoration: none !important; }
     </style>
 </head>
-<body class="flex min-h-screen">
+<body class="flex">
 
-    <!-- LOGIN PANEL -->
+    <!-- LOGIN SCREEN itkabmalra1 | itkabmalra01 -->
     <div id="authGate" class="login-overlay no-print font-black italic">
-        <div class="bg-slate-900 border-2 border-blue-600/30 p-12 rounded-[4rem] shadow-2xl max-w-sm w-full text-center">
-            <img src="./logo_malra.png" class="h-32 mx-auto mb-10 drop-shadow-xl">
-            <h2 class="text-white text-2xl uppercase underline decoration-blue-600 font-black italic">Akses Auditor</h2>
-            <div class="mt-10 space-y-4">
-                <input type="text" id="userInput" placeholder="USER ID" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-2xl text-blue-500 font-bold outline-none border-b-4">
-                <input type="password" id="passInput" placeholder="PIN" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-2xl text-blue-500 font-bold outline-none border-b-4">
-                <button id="goLogin" class="w-full bg-blue-600 py-6 rounded-[2.2rem] text-white font-black italic shadow-xl transition-all">SIGN IN SYSTEM</button>
+        <div class="bg-slate-900 border-2 border-blue-900/40 p-14 rounded-[4rem] shadow-2xl max-w-md w-full text-center">
+            <!-- LOGO NORMAL - DILARANG GREYSCALE -->
+            <img src="./logo_malra.png" class="h-32 mx-auto mb-10 drop-shadow-2xl">
+            <h2 class="text-white text-3xl font-black italic tracking-tighter decoration-blue-600 underline uppercase mb-2 leading-none">Command Gateway</h2>
+            <p class="text-slate-500 text-[10px] tracking-[0.4em] mb-10 uppercase italic font-bold">Integritas Inspektorat Malra</p>
+            <div class="space-y-4">
+                <input type="text" id="userInput" placeholder="USER ID" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-3xl text-blue-500 font-bold outline-none border-b-4 focus:border-blue-600 uppercase text-center tracking-widest italic">
+                <input type="password" id="passInput" placeholder="PASSCODE" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-3xl text-blue-500 font-bold outline-none border-b-4 focus:border-blue-600 uppercase text-center tracking-widest">
+                <button id="doAuth" class="w-full bg-blue-600 py-6 rounded-full text-white font-black italic shadow-blue-500/20 shadow-2xl active:scale-95 transition-all text-xs tracking-widest mt-4">INITIATE ACCESS <i class="fas fa-lock-open ml-2"></i></button>
+                <p id="authFail" class="hidden text-red-500 font-black italic mt-4 text-[10px]">VERIFIKASI ID AUDITOR GAGAL!</p>
             </div>
         </div>
     </div>
 
-    <!-- SIDEBAR -->
-    <aside id="sideB" class="sidebar w-80 hidden flex-col p-8 no-print shrink-0 border-r border-slate-800 uppercase italic font-black">
-        <div class="text-center mb-14 underline decoration-slate-800">
-            <img src="./logo_malra.png" class="h-20 mx-auto mb-6 grayscale shadow-2xl">
-            <h1 class="text-xl">SiAPP <span class="text-blue-500 underline decoration-white">MAS</span></h1>
+    <!-- SIDEBAR COMMANDER (DILARANG HAPUS LOGO) -->
+    <aside id="mainSide" class="sidebar w-80 hidden flex-col p-8 no-print shrink-0 border-r border-slate-800">
+        <div class="text-center mb-14 px-1 py-1 italic no-line">
+            <img src="./logo_malra.png" alt="Malra" class="h-20 mx-auto mb-5 drop-shadow-xl">
+            <h1 class="text-xl font-black italic uppercase tracking-tighter leading-none no-line underline-offset-0">SiAPP <span class="text-blue-500 no-line decoration-transparent underline-offset-0">MAS</span></h1>
+            <p class="text-[9px] text-slate-500 tracking-[0.2em] mt-3 italic uppercase font-sans font-bold no-line underline decoration-transparent">Auditor Hub Center</p>
         </div>
         <nav class="space-y-6">
-             <div class="p-5 bg-blue-600/10 text-blue-400 border border-blue-600/30 rounded-3xl text-center underline decoration-blue-700 font-sans tracking-widest text-[10px]">CENTER OF AUDIT</div>
-             <button onclick="downloadExcelData()" class="w-full text-left p-5 hover:bg-emerald-600/10 text-emerald-500 rounded-3xl border border-emerald-500/20 font-black text-xs underline uppercase tracking-widest">
-                <i class="fas fa-file-excel mr-4 text-xl"></i> Export Excel (FULL)
-             </button>
+             <div class="p-5 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-full text-[10px] italic tracking-widest text-center uppercase no-line font-black underline decoration-blue-800 leading-relaxed font-sans px-2">INVESTIGATION TERMINAL</div>
+             <button id="excelBtn" class="w-full text-left p-5 hover:bg-emerald-600/10 text-emerald-500 rounded-[1.8rem] border border-emerald-500/20 font-black italic text-xs uppercase no-line"><i class="fas fa-file-excel mr-4 text-lg"></i> Ekspor Excel Laporan</button>
         </nav>
-        <div class="mt-auto p-7 bg-slate-900 border border-slate-800 rounded-[2.5rem] italic underline underline-offset-4 decoration-blue-800">
-            <p class="text-[9px] text-slate-600 uppercase mb-2">Authenticated S.Kom:</p>
-            <p class="text-[13px] text-white tracking-tighter uppercase font-sans decoration-blue-500 underline px-1 py-1">FIRDAUS SETITIT, S.Kom</p>
-            <button onclick="location.reload()" class="mt-6 w-full py-4 bg-red-600/5 text-red-600 rounded-xl text-[9px] border border-red-950 underline shadow-inner active:scale-95 transition-all font-black">OUT</button>
+
+        <div class="mt-auto p-7 bg-slate-900 border border-slate-800 rounded-[2.5rem] italic underline underline-offset-8 font-black decoration-blue-700 uppercase no-line shadow-2xl">
+            <p class="text-[9px] text-slate-500 uppercase leading-none mb-2 no-line italic font-sans px-1">Petugas Inovator:</p>
+            <p class="text-[13px] text-white tracking-tighter uppercase font-black no-line underline-offset-2 italic font-sans leading-none px-0.5 underline">FIRDAUS SETITIT, S.Kom</p>
+            <p class="text-[8px] text-blue-500 uppercase mt-2 font-sans font-black tracking-normal px-1 no-line leading-none">Auditor Ahli Pertama Malra</p>
+            <button onclick="location.reload()" class="mt-8 w-full py-4 bg-red-600/5 text-red-600 rounded-2xl text-[9px] font-black italic shadow-inner active:scale-95 no-line uppercase decoration-white leading-loose underline">SIGNOUT <i class="fas fa-power-off ml-2"></i></button>
         </div>
     </aside>
 
-    <!-- CONTENT DATA (UI BERSALAH HILANG) -->
-    <main id="mainContent" class="flex-1 p-10 md:p-14 overflow-y-auto no-print hidden font-black uppercase italic tracking-tighter underline">
-        <header class="flex justify-between items-center mb-16 border-b border-slate-800 pb-12 decoration-slate-800">
-            <h2 class="text-3xl font-black">PUSAT DATA <span class="text-blue-500 px-2 no-underline font-sans uppercase text-4xl">AUDIT DIGITAL</span></h2>
-            <button onclick="downloadExcelData()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-6 rounded-[2.5rem] font-black text-[11px] italic shadow-emerald-500/10 shadow-2xl active:scale-95 transition-all">UNDUH MASTER EXCEL</button>
+    <!-- CONTENT DATA INVESTIGATION -->
+    <main id="mainPortal" class="flex-1 p-10 md:p-14 overflow-y-auto no-print hidden uppercase italic font-black">
+        <header class="flex justify-between items-center mb-16 border-b border-slate-800 pb-12 decoration-transparent no-line font-black uppercase">
+            <div>
+                <h2 class="text-4xl italic font-black uppercase no-line leading-none tracking-tight">DATA COMMANDER <span class="text-blue-500 font-sans tracking-[0.2em] italic font-black no-line decoration-transparent underline-offset-0 px-2 py-4">AUDIT HUB</span></h2>
+                <p id="idClock" class="text-slate-600 font-black text-xs mt-5 italic tracking-widest font-sans opacity-40 px-1"></p>
+            </div>
+            <button id="excelMain" class="bg-emerald-600 text-white px-8 py-5 rounded-[2rem] font-black italic shadow-xl transition-all hover:bg-emerald-700 active:scale-90 text-[10px] tracking-widest underline decoration-white no-line uppercase">MASTER DOWNLOAD EXCEL</button>
         </header>
 
-        <div id="divDaftar" class="space-y-12"></div>
+        <!-- KPI SUMMARY (FEATURE LOCKED) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20 italic underline underline-offset-4 decoration-transparent no-line tracking-widest text-center px-1">
+            <div class="p-12 kartu-adu border-l-8 border-l-blue-600"><p class="text-[11px] mb-3 opacity-20 italic no-line">Pusat Data Masuk</p><h3 id="statTotal" class="text-7xl italic font-black text-white no-line underline underline-offset-2 leading-none py-1">0</h3></div>
+            <div class="p-12 kartu-adu border-l-8 border-l-red-600 text-red-500 font-sans italic font-black no-line underline"><p class="text-[11px] mb-3 opacity-50 underline decoration-red-950 font-black no-line tracking-tight px-1">Alert : TIPIKOR & BOS</p><h3 id="statUrgent" class="text-7xl font-black italic no-line leading-none py-1">0</h3></div>
+        </div>
+
+        <div id="loading" class="text-center py-20 italic animate-pulse font-black text-blue-500 tracking-[0.5em] no-line uppercase"><i class="fas fa-satellite-dish fa-spin text-5xl mb-10"></i><br>DECRYPTING DATABASE PORTAL...</div>
+        <div id="dataList" class="space-y-12"></div>
     </main>
 
-    <!-- AREA PDF PRINT -->
-    <div id="printArea" class="print-only">
-        <div class="a4-container font-bold italic underline decoration-black uppercase tracking-tight text-justify">
+    <!-- PRINT SECTION -->
+    <div id="pdfOutput" class="print-only">
+        <div class="a4-container uppercase font-bold italic underline-offset-1 text-[11px] tracking-tight decoration-transparent no-line">
             <div class="kop-surat">
                 <img src="./logo_malra.png">
                 <div class="kop-teks italic">
-                    <div class="text-kop-1 uppercase italic font-bold font-sans px-2 underline-offset-8">PEMERINTAH KABUPATEN MALUKU TENGGARA</div>
-                    <div class="text-kop-2 font-black italic underline decoration-black decoration-[5px] font-sans py-4 font-black">INSPEKTORAT</div>
-                    <div style="font-size: 10pt; font-style:italic;" class="font-black italic px-4 font-black">Jalan Merdeka Raya No.2 Ohoijang ☎ (0916) 21303 LANGGUR ✉ 97611<br>Email : inspektorat@malukutenggarakab.go.id</div>
+                    <div class="text-kop-1 uppercase italic no-line leading-none">PEMERINTAH KABUPATEN MALUKU TENGGARA</div>
+                    <div class="text-kop-2 italic no-line decoration-black decoration-[5px] px-1 font-black underline uppercase">INSPEKTORAT</div>
+                    <div class="text-alamat font-black italic no-line leading-tight mt-2 font-sans underline underline-offset-2 decoration-transparent uppercase">Jalan Merdeka Raya No.2 Ohoijang ☎ (0916) 21303 LANGGUR ✉ 97611<br>Email : inspektorat@malukutenggarakab.go.id</div>
                 </div>
             </div>
-            <div class="kop-line-2 italic decoration-black"></div>
-            <h2 style="text-align:center; font-weight:bold; font-size:12pt; text-decoration:underline; margin: 25px 0;">BERITA ACARA AUDIT HASIL PEMERIKSAAN ADUAN (SiAPP MAS)</h2>
-            <div id="printContent"></div>
-            <div class="signature-box italic uppercase font-black font-sans underline decoration-black decoration-[2px] leading-loose text-center">
-                MENGETAHUI,<br><b style="font-size:13pt; text-decoration:underline; decoration-black" class="underline-offset-8 decoration-[5px] uppercase font-black">INSPEKTUR,</b><br><br><br><br><br><br><br>
-                ( ................................................................ )<br>NIP.
+            <div class="kop-line-2"></div>
+            <h2 style="text-align:center; font-size:12pt; text-decoration:underline; font-weight:bold; margin-top:20px;">BERITA ACARA AUDIT PENATAUSAHAAN ADUAN (SiAPP MAS MALRA)</h2>
+            <div id="contentAudit" class="mt-8 italic underline font-bold leading-loose text-justify text-wrap font-sans text-xs"></div>
+            <div class="sig-area">
+                MENGETAHUI,<br><b class="text-xl">INSPEKTUR,</b><br><br><br><br><br><br><br>
+                ( ................................................................ )<br>
+                NIP.
             </div>
         </div>
     </div>
@@ -113,101 +136,119 @@
             appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
         };
         const app = initializeApp(config); const db = getFirestore(app);
-        let listGlobal = [];
+        let listReports = [];
 
-        document.getElementById('goLogin').onclick = () => {
-            if(document.getElementById('userInput').value === 'itkabmalra1' && document.getElementById('passInput').value === 'itkabmalra01') {
-                document.getElementById('authGate').style.display='none'; document.getElementById('sideB').classList.replace('hidden','flex'); document.getElementById('mainContent').classList.remove('hidden'); ambilSyncMaster();
-            }
+        document.getElementById('doAuth').onclick = () => {
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            if(u === 'itkabmalra1' && p === 'itkabmalra01') {
+                document.getElementById('authGate').classList.add('hidden');
+                document.getElementById('mainSide').classList.replace('hidden', 'flex');
+                document.getElementById('mainPortal').classList.remove('hidden'); ambilSyncResilient();
+            } else { document.getElementById('authFail').classList.remove('hidden'); setTimeout(()=>document.getElementById('authFail').classList.add('hidden'), 2500); }
         };
 
-        async function ambilSyncMaster() {
-            const list = document.getElementById('divDaftar');
+        async function ambilSyncResilient() {
+            const listArea = document.getElementById('dataList'); const ldr = document.getElementById('loading');
             try {
                 const q = query(collection(db, "pengaduan"), orderBy("timestamp", "desc"));
-                const sn = await getDocs(q); list.innerHTML = ""; listGlobal = [];
+                const sn = await getDocs(q); ldr.style.display='none'; listArea.innerHTML=""; listReports=[];
+                let t=0, k=0;
 
-                sn.forEach(docSnap => {
-                    const id = docSnap.id; const i = docSnap.data(); listGlobal.push({...i, f_id: id});
-                    const stat = i.audit_status || 'DILIHAT';
+                sn.forEach(d => {
+                    const i = d.data(); const dID = d.id; listReports.push(i);
+                    t++;
+                    // Super Logic Kategori Tipikor
+                    const categoryCheck = (i.category || i.kat || i.tipe_laporan || i.kategori || i.kat_masalah || "").toUpperCase();
+                    if(categoryCheck.includes("DANA DESA") || categoryCheck.includes("KORUPSI") || categoryCheck.includes("TIPIKOR") || categoryCheck.includes("BOS") || categoryCheck.includes("PBJ")) k++;
 
-                    // --- MAPPING DATA SUPER-INTELLIGENT : AGAR FOTO KTP & DOC PASTI MUNCUL ---
-                    const pF = i.face_bio || i.face || i.scan_wajah || i.validasi_wajah || i.foto_biometrik || i.face_audit || "";
-                    const pK = i.id_ktp || i.official_ktp || i.id_scan || i.ektp_official || i.ktp_val || i.data_ktp || i.foto_ktp_legal || i.ktp_identity || i.foto_ktp || "";
-                    const pD = i.document_proof || i.evidence_doc || i.physical_letter || i.doc_fisik || i.doc_val || i.doc_scr || i.report_evidence || "";
-                    const pN = i.name_verified || i.legal_name || i.name_real || i.identitas_ktp || i.pelapor_ktp || i.nama_ktp || i.pelapor_official || i.full_name_official || i.identitas_pelapor || "DATA PENDUDUK SAH";
-                    const hA = i.init_chat || i.pembuka_chat || i.chat_awal || i.chat || i.pembuka_chat || i.subj || i.perihal || i.judul || "INISIASI PEMERIKSAAN";
+                    const timeS = i.timestamp?.toDate ? i.timestamp.toDate().toLocaleString('id-ID') : 'REC-SINKRON';
+                    const stat = i.audit_status || 'MASUK';
 
-                    list.innerHTML += `
-                        <div class="kartu-adu p-10 flex flex-col md:flex-row items-center gap-10 shadow-2xl relative border-l-[20px] border-l-blue-600 transition-all cursor-default italic uppercase">
-                            <div class="flex flex-col gap-4">
-                                <img src="${pF}" class="w-24 h-24 rounded-3xl border-4 border-slate-700 shadow-xl cursor-pointer" onclick="window.open('${pF}','_blank')">
-                                <div class="flex flex-col gap-1 font-black underline italic">
-                                     <button onclick="window.open('${pK}','_blank')" class="${pK ? 'bg-blue-600' : 'bg-red-950 opacity-20 cursor-not-allowed'} p-3 rounded-2xl text-[7px] italic font-black"><i class="fas fa-id-card mr-1 px-1 py-0 italic font-black"></i> LIHAT KTP</button>
-                                     <button onclick="window.open('${pD}','_blank')" class="${pD ? 'bg-emerald-600' : 'bg-red-950 opacity-20 cursor-not-allowed'} p-3 rounded-2xl text-[7px] italic mt-2 font-black italic tracking-widest decoration-white leading-loose underline"><i class="fas fa-file-alt mr-1"></i> LIHAT DOC</button>
+                    // --- MAPPING VARIABEL CERDAS : ANTI about:blank DAN ANTI undefined ---
+                    const picFace = i.face_audit || i.face_bio || i.scan_wajah || i.face || i.biometrik || i.validasi_wajah || i.foto_biometrik || "";
+                    const picKtp = i.id_ktp || i.official_ktp || i.id_scan || i.ektp_official || i.ktp_val || i.data_ktp || i.foto_ktp_legal || i.data_ktp_hq || i.foto_ktp || i.ktp_val || i.ktp_val || i.id_ktp || i.ktp_val || i.ktp_identity || i.foto_ktp_legal || "";
+                    const picDoc = i.evidence_doc || i.physical_letter || i.doc_evidence || i.document_proof || i.doc_fisik || i.doc_val || i.doc_scr || i.report_evidence || "";
+                    const pelapor = i.name_verified || i.legal_name || i.identitas_ktp || i.pelapor_official || i.full_name_official || i.name_v || i.name_real || i.identitas_pelapor || "MASYARAKAT MALRA";
+                    const ohoi = i.ohoi || i.desa || i.village || i.desa_ohoi || i.vill || i.district_loc || i.kec || "KABUPATEN";
+                    const chatStart = i.chat || i.init_chat || i.pembuka_chat || i.in_chat || i.init_chat || i.chat_opener || "TIPE AUDIT KEUANGAN";
+                    const detilAudit = i.description || i.long_log || i.narrative || i.report || i.report_detail || i.laporan_detail || i.deskripsi || "DATA SEDANG DIVALIDASI INSPEKTORAT.";
+
+                    listArea.innerHTML += `
+                        <div class="kartu-adu p-10 flex flex-col md:flex-row gap-10 shadow-2xl relative border-l-[18px] border-l-blue-600 transition-all font-black decoration-white uppercase text-justify text-wrap font-black">
+                            <div class="flex flex-col gap-5 text-center px-1">
+                                <img src="${picFace}" class="w-24 h-24 rounded-[1.8rem] object-cover border-4 border-slate-700 shadow-xl cursor-pointer" onclick="window.open('${picFace}','_blank')">
+                                <div class="flex flex-col gap-2 no-line underline-offset-4 decoration-transparent px-1 leading-loose">
+                                     <button onclick="window.open('${picKtp}','_blank')" class="${picKtp ? 'bg-blue-600 shadow-lg' : 'bg-red-950 opacity-20 cursor-not-allowed'} p-3 rounded-2xl text-[8px] italic font-black uppercase"><i class="fas fa-id-card"></i> LIHAT KTP</button>
+                                     <button onclick="window.open('${picDoc}','_blank')" class="${picDoc ? 'bg-emerald-600 shadow-lg' : 'bg-red-950 opacity-20 cursor-not-allowed'} p-3 rounded-2xl text-[8px] italic mt-1 font-black underline uppercase decoration-transparent tracking-widest"><i class="fas fa-file-invoice"></i> LIHAT DOC</button>
                                 </div>
                             </div>
-                            <div class="flex-1 tracking-tighter uppercase px-0 leading-loose text-justify text-wrap font-sans">
-                                <div class="flex gap-4 mb-4 underline-offset-8">
-                                    <span class="status-badge bg-${stat}">TAHAP : ${stat}</span>
-                                    <span class="text-[9px] text-blue-500 italic decoration-white decoration-2 font-black">${i.ticket_id}</span>
+                            <div class="flex-1 italic tracking-tighter uppercase leading-loose text-justify text-wrap font-sans text-white px-0 py-0 decoration-slate-900 font-black no-line">
+                                <div class="flex flex-wrap items-center gap-4 mb-4 decoration-transparent no-line underline-offset-0 leading-relaxed font-sans py-4 font-black">
+                                    <span class="status-badge bg-${stat}">LEVEL : ${stat}</span>
+                                    <span class="text-[9px] text-blue-500 italic decoration-white decoration-1 underline">${i.ticket_id} | ${timeS}</span>
                                 </div>
-                                <h3 class="text-3xl decoration-blue-600 underline font-black leading-tight italic py-2">${hA}</h3>
-                                <p class="text-[10px] text-slate-500 font-bold decoration-slate-950 italic underline leading-loose py-2">PELAPOR : ${pN} | LOKASI: ${i.kecamatan || i.dist} • ${i.desa || i.vill}</p>
+                                <h3 class="text-3xl decoration-blue-600 underline font-black leading-tight italic py-2 underline-offset-8 decoration-4">${chatStart}</h3>
+                                <p class="text-[10px] text-slate-400 font-bold decoration-slate-400 tracking-[0.02em] font-sans underline underline-offset-2 py-2">PELAPOR (SESUAI KTP) : ${pelapor} | LOKASI OHOI : ${ohoi}</p>
                                 
-                                <div class="bg-blue-900/10 p-5 rounded-3xl mt-5 border border-blue-900/30 font-black italic decoration-white px-2.5 py-4">
-                                     <p class="text-[8px] text-emerald-400 mb-2 uppercase underline"><i class="fas fa-reply-all mr-1 font-black"></i> RESPON INTERAKSI AUDITOR :</p>
-                                     <textarea id="rep_${id}" placeholder="INPUT BALASAN..." class="w-full bg-slate-900 p-4 rounded-xl text-blue-300 font-black italic text-[10px]"></textarea>
-                                     <button onclick="push('${id}')" class="bg-emerald-600 px-6 py-2 rounded-lg text-[8px] mt-2 italic font-black underline shadow-xl decoration-white active:scale-95">POST PESAN</button>
+                                <div class="bg-blue-900/10 p-5 rounded-2xl border border-blue-900/40 no-print italic font-black shadow-inner">
+                                     <p class="text-[9px] text-emerald-400 mb-2 italic tracking-tighter uppercase"><i class="fas fa-comment-alt"></i> KOMUNIKASI BALASAN INVESTIGATOR :</p>
+                                     <textarea id="reply_${dID}" placeholder="INPUT RESPON ANDA..." class="w-full bg-slate-900 border border-slate-700 p-5 rounded-2xl text-blue-400 font-black italic uppercase text-xs mb-3 shadow-xl underline"></textarea>
+                                     <button onclick="postReply('${dID}')" class="bg-emerald-600 px-10 py-4 rounded-xl text-[10px] font-black underline italic decoration-white transition-all shadow-xl active:scale-95 shadow-emerald-500/20">POST BALASAN KE PELAPOR</button>
                                 </div>
 
-                                <div class="mt-8 flex gap-3 italic underline-offset-4 decoration-white">
-                                     <button onclick="setStatusU('${id}','Dilihat')" class="text-[8px] bg-slate-800 p-3 rounded-lg underline italic decoration-blue-500 font-black">SET LIHAT</button>
-                                     <button onclick="setStatusU('${id}','Diverifikasi')" class="text-[8px] bg-amber-600 p-3 rounded-lg font-black text-white italic underline">SET VERIFIKASI</button>
-                                     <button onclick="setStatusU('${id}','Diproses')" class="text-[8px] bg-blue-600 p-3 rounded-lg font-black italic decoration-white shadow-2xl animate-pulse">PROSES AUDIT</button>
+                                <div class="mt-8 flex flex-wrap gap-3 no-print font-black">
+                                     <button onclick="upStat('${dID}','Dilihat')" class="text-[9px] bg-slate-800 p-3 rounded-lg underline italic decoration-blue-600">1. DILIHAT</button>
+                                     <button onclick="upStat('${dID}','Diverifikasi')" class="text-[9px] bg-amber-600 p-3 rounded-lg underline italic decoration-white font-black text-white shadow-xl">2. VERIFIED</button>
+                                     <button onclick="upStat('${dID}','Diproses')" class="text-[9px] bg-blue-600 p-3 rounded-lg underline italic text-white decoration-white shadow-2xl animate-pulse">3. PROSES AUDIT</button>
                                 </div>
                             </div>
-                            <button onclick='createBAPDoc(${JSON.stringify(i).replace(/'/g, "&apos;")})' class="bg-slate-100 hover:bg-black hover:text-white text-slate-950 px-10 py-5 rounded-[2rem] text-[10px] font-black underline tracking-[0.2em] shadow-2xl active:scale-95 italic">PRINT BAP (A4)</button>
+                            <button onclick='goPdf(${JSON.stringify(i).replace(/'/g, "&apos;")})' class="bg-slate-50 hover:bg-black hover:text-white text-slate-950 px-10 py-6 rounded-[2.2rem] text-[11px] font-black italic shadow-2xl transition-all uppercase underline underline-offset-4 decoration-blue-600 decoration-2 font-black leading-loose text-justify text-wrap py-2 font-sans active:scale-90 px-4 duration-300">PRINT BAP (A4)</button>
                         </div>
                     `;
                 });
-            } catch(e) { console.error(e); }
+                document.getElementById('statTotal').innerText=t; document.getElementById('statUrgent').innerText=k;
+            } catch(e){ alert("Database Sync Broken"); }
         }
 
-        window.setStatusU = async (did, s) => { if(confirm("Setel Status?")){ await updateDoc(doc(db,"pengaduan",did),{audit_status:s}); ambilSyncMaster(); } };
-        window.push = async (id) => { 
-            const t = document.getElementById('rep_'+id).value;
-            if(!t) return;
-            await updateDoc(doc(db,"pengaduan",id),{jawaban_auditor:t}); alert("Done!"); ambilSyncMaster();
+        window.postReply = async (id) => { 
+            const msg = document.getElementById('reply_'+id).value;
+            if(!msg) return; await updateDoc(doc(db,"pengaduan",id), {jawaban_auditor:msg}); alert("Balasan Terkirim ke Cloud Malra."); ambilSyncResilient();
         };
+        window.upStat = async (id, st) => { if(confirm("UPDATE PROGRESS?")){ await updateDoc(doc(db,"pengaduan",id),{audit_status:st}); ambilSyncResilient(); } };
+        
+        window.goPdf = (d) => {
+            const wrap = document.getElementById('contentAudit');
+            const nNama = d.name_verified || d.legal_name || d.name_v || d.pelapor_ official || d.identitas_ktp || d.full_name_official || d.identitas_pelapor || "SAH";
+            const nOhoi = d.ohoi || d.desa || d.village || d.dist || d.kecamatan || "MALRA";
+            const nCat = (d.category || d.kat || d.tipe_laporan || d.kategori || "AUDIT UMUM").toUpperCase();
+            const nJudul = (d.chat || d.pembuka_chat || d.chat_init || d.init_chat || d.subj || d.hal || "LAPORAN DINAS").toUpperCase();
+            const nBody = d.description || d.long_report || d.laporan || d.report_detail || d.narrative || d.report || d.log_full || "DALAM PROSES";
 
-        window.createBAPDoc = (d) => {
-            const body = document.getElementById('printIsi');
-            const pN = d.name_verified || d.legal_name || d.identitas_ktp || d.pelapor_ktp || d.nama_ktp || d.full_name_official || "PENDUDUK MALRA";
-            const hA = d.init_chat || d.pembuka_chat || d.chat_awal || d.chat || d.subj || d.perihal || d.judul || "ADUAN TIPIKOR";
-            const iL = d.report_detail || d.long_log || d.description || d.laporan || d.laporan_detail || d.deskripsi || d.long_report || d.naras_detil || "DETAIL LAPORAN DALAM PEMERIKSAAN.";
-
-            body.innerHTML = `
-                <table border="1" cellpadding="8" style="border-collapse:collapse;">
-                    <tr><td width="35%">NOMOR TIKET DATA</td><td>${d.ticket_id}</td></tr>
-                    <tr><td>NAMA LENGKAP PELAPOR (KTP)</td><td><b>${pN}</b></td></tr>
-                    <tr><td>NOMOR WHATSAPP</td><td><b>${d.wa || d.whatsapp || d.no_hp || d.phone || "AKTIF"}</b></td></tr>
-                    <tr><td>KECAMATAN / OHOI</td><td>${d.kecamatan || d.dist} - ${d.desa || d.vill}</td></tr>
+            wrap.innerHTML = `
+                <table width="100%">
+                    <tr><td width="35%">NOMOR TIKET DATA</td><td><b>${d.ticket_id}</b></td></tr>
+                    <tr><td>VERIFIED ID NAME</td><td><b>${nNama}</b></td></tr>
+                    <tr><td>NOMOR WA (HP)</td><td><b>${d.whatsapp || d.wa || d.phone || d.no_wa || "08xxxx"}</b></td></tr>
+                    <tr><td>KLASIFIKASI AUDIT</td><td><b>${nCat}</b></td></tr>
+                    <tr><td>KECAMATAN / DESA (OHOI)</td><td><b>${nOhoi}</b></td></tr>
                 </table>
-                <br><b>RINCIAN LAPORAN PENYALAHGUNAAN :</b><br>
-                <div style="border: 2px solid black; padding: 30px; min-height: 400px; margin-top:20px; font-weight:900; line-height: 1.8;">
-                    <b>HAL PERKARA : ${hA}</b><br><br>
-                    NARASI DARI PELAPOR :<br>
-                    ${iL}
+                <div class="box-laporan font-serif uppercase tracking-tight italic underline decoration-transparent no-line font-black">
+                    <b>HAL LAPORAN : ${nJudul}</b><br><br>
+                    <b>ISI DETIL PEMERIKSAAN :</b><br>
+                    ${nBody}
                 </div>
             `;
             window.print();
-        }
+        };
 
-        window.downloadExcelData = () => {
-            const ws = XLSX.utils.json_to_sheet(listGlobal); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "ArchiveAudit"); XLSX.writeFile(wb, "Rekap_Dinas_SiAPP_Mas.xlsx");
-        }
+        window.saveExcelData = () => {
+            const ws = XLSX.utils.json_to_sheet(listReports); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "MasterDataMalra");
+            XLSX.writeFile(wb, "Arsip_Rekap_Digital_Malra_Integritas.xlsx");
+        };
+
+        setInterval(() => { document.getElementById('idClock').innerText = new Date().toLocaleString('id-ID', {dateStyle:'full', timeStyle:'medium'}); }, 1000);
     </script>
 </body>
 </html>
