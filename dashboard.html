@@ -4,104 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pusat Komando Auditor | SiAPP MAS OFFICIAL</title>
-    <!-- Resource Kunci Integritas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Library Infrastruktur (LOCKED) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; margin: 0; overflow-x: hidden; }
         .sidebar { background: #1e293b; border-right: 1px solid #334155; height: 100vh; position: sticky; top: 0; z-index: 50; }
-        .login-overlay { background: #0f172a; position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; }
-        .kartu-adu { background: #1e293b; border: 1px solid #334155; border-radius: 2.5rem; transition: 0.3s; }
-        .kartu-adu:hover { border-color: #3b82f6; box-shadow: 0 0 50px rgba(59,130,246,0.1); }
-        .status-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1); }
+        .login-overlay { background: #0f172a; position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; }
+        .kartu-adu { background: #1e293b; border: 1px solid #334155; border-radius: 2.5rem; transition: 0.4s ease-out; }
+        .kartu-adu:hover { border-color: #3b82f6; box-shadow: 0 0 50px rgba(59,130,246,0.15); }
+        .status-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; }
         .bg-Dilihat { background: #64748b; }
         .bg-Diverifikasi { background: #d97706; }
         .bg-Diproses { background: #2563eb; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        /* MODAL BUKTI FISIK (FIXED NO BLANK) */
+        /* ANTI-BLANK IMAGE VIEWER */
         .viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 200001; align-items: center; justify-content: center; padding: 20px; }
         .viewer-box { background: white; padding: 25px; border-radius: 2.5rem; max-width: 90%; max-height: 90vh; text-align: center; color: black; }
-        .viewer-box img { max-height: 65vh; border-radius: 1.2rem; border: 5px solid #f1f5f9; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin: 0 auto; }
-        
-        /* CLEAN GLOBAL NO UNDERLINE */
-        * { text-decoration: none !important; }
-        .text-header-custom { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; }
+        .viewer-box img { max-height: 65vh; margin: 15px auto; border: 5px solid #f1f5f9; border-radius: 1rem; }
+
+        /* FINAL CLEAN UP (HAPUS SEMUA GARIS SESUAI PERINTAH) */
+        * { text-decoration: none !important; border-bottom-width: 0px !important; }
+        .header-main { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
+        .border-line-fix { border-bottom-width: 2px !important; border-color: #334155 !important; } /* Only for Structural Border */
     </style>
 </head>
 <body class="flex">
 
-    <!-- BUKTI VIEWER POPUP -->
-    <div id="vPortal" class="viewer-modal italic font-black uppercase">
+    <!-- EVIDENCE VIEWER -->
+    <div id="vPortal" class="viewer-modal no-print flex flex-col font-black italic uppercase">
         <div class="viewer-box shadow-2xl">
-            <h2 id="vLabel" class="text-[10px] text-slate-400 tracking-[0.4em] mb-4 font-sans font-bold">OTORITASI DOKUMEN BUKTI SAH</h2>
-            <img id="vImgData" src="">
-            <div class="mt-8 flex justify-center">
-                 <button onclick="window.closeVPortal()" class="bg-slate-900 text-white px-12 py-3.5 rounded-2xl text-[10px] font-black italic tracking-widest active:scale-95 transition-all">TUTUP DATA</button>
+            <h2 id="vLabelTitle" class="text-[10px] text-slate-400 tracking-[0.5em] mb-4">AUTENTIKASI BUKTI AUDIT</h2>
+            <img id="vImgData" src="" alt="Lampiran Laporan">
+            <div class="mt-8">
+                 <button onclick="window.closePortalViewer()" class="bg-slate-900 text-white px-12 py-3.5 rounded-2xl text-[10px] font-black uppercase">TUTUP PANEL</button>
             </div>
         </div>
     </div>
 
-    <!-- PINTU KEAMANAN TERTINGGI (itkabmalra1 | itkabmalra01) -->
-    <div id="gateAudit" class="login-overlay font-black italic uppercase">
-        <div class="bg-slate-900 border-2 border-blue-900/40 p-14 rounded-[4.5rem] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
-            <img src="./logo_malra.png" alt="Malra" class="h-32 mx-auto mb-10 drop-shadow-2xl scale-110 saturate-150">
-            <h2 class="text-white text-3xl font-black italic tracking-tighter leading-none mb-12">HUB LOGIN</h2>
-            <div class="space-y-4 font-black">
-                <input type="text" id="userInput" placeholder="USER ID AUDITOR" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-2xl text-blue-500 font-bold outline-none border-b-4 focus:border-blue-600 text-center tracking-widest italic shadow-inner">
-                <input type="password" id="passInput" placeholder="KODE RAHASIA" class="w-full bg-slate-950 border border-slate-700 p-5 rounded-2xl text-blue-500 font-bold outline-none border-b-4 focus:border-blue-600 text-center tracking-widest italic shadow-inner">
-                <button onclick="window.launchCommanderSystem()" class="w-full bg-blue-600 hover:bg-blue-700 py-6 rounded-full text-white font-black italic shadow-blue-500 shadow-xl tracking-widest active:scale-90 transition-all uppercase text-xs mt-6 border-b-8 border-blue-950">
-                    INITIATE ACCESS <i class="fas fa-lock-open ml-2 text-sm font-sans px-1"></i>
+    <!-- PINTU AKSES AUDITOR (LOCKED itkabmalra1 / itkabmalra01) -->
+    <div id="authPanelIT" class="login-overlay no-print font-black italic">
+        <div class="bg-slate-900 border border-slate-700 p-16 rounded-[4.5rem] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
+            <img src="./logo_malra.png" alt="Malra" class="h-32 mx-auto mb-12">
+            <h2 class="text-white text-2xl uppercase tracking-tighter mb-10 font-black">COMMAND HUB</h2>
+            <div class="space-y-4 font-sans uppercase">
+                <input type="text" id="userInput" placeholder="USER ID AUDITOR" class="w-full bg-slate-950 border-2 border-slate-800 p-5 rounded-3xl text-blue-500 font-bold outline-none text-center tracking-widest italic">
+                <input type="password" id="passInput" placeholder="KATA SANDI" class="w-full bg-slate-950 border-2 border-slate-800 p-5 rounded-3xl text-blue-500 font-bold outline-none text-center tracking-widest italic">
+                <button onclick="window.processLoginSop()" class="w-full bg-blue-600 hover:bg-blue-700 py-6 rounded-[2.5rem] text-white font-black italic shadow-2xl shadow-blue-500/20 active:scale-90 transition-all text-xs tracking-[0.3em] mt-6 uppercase">
+                    INITIATE ACCESS <i class="fas fa-lock-open ml-2"></i>
                 </button>
             </div>
-            <p id="failText" class="hidden text-red-500 mt-6 font-black italic animate-bounce text-[10px]">Akses Ditolak : Kredensial Salah!</p>
+            <p id="failLog" class="hidden text-red-500 mt-6 font-black italic text-xs animate-pulse uppercase tracking-widest">AKSES DITOLAK!</p>
         </div>
     </div>
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside id="mainBar" class="sidebar w-80 hidden lg:flex flex-col p-8 no-print shrink-0 italic font-black uppercase tracking-tight">
-        <div class="text-center mb-14 px-1 py-1">
-            <img src="./logo_malra.png" alt="Kab" class="h-24 mx-auto mb-5 drop-shadow-2xl saturate-150 brightness-110 grayscale-0">
-            <h1 class="text-xl">SiAPP <span class="text-blue-500 font-black font-sans uppercase">MAS</span></h1>
-            <p class="text-[9px] text-slate-500 tracking-[0.2em] font-sans mt-3">OFFICIAL AUDITOR MALRA HUB</p>
+    <!-- SIDEBAR UTAMA -->
+    <aside id="sidebarHub" class="sidebar w-80 hidden flex-col p-10 no-print shrink-0 italic font-black uppercase border-line-fix">
+        <div class="text-center mb-14 px-2 py-4">
+            <img src="./logo_malra.png" alt="Logo Malra" class="h-24 mx-auto mb-5 drop-shadow-xl saturate-150">
+            <h1 class="text-xl">SiAPP <span class="text-blue-500">MAS</span></h1>
+            <p class="text-[9px] text-slate-500 mt-2 font-bold tracking-[0.2em] font-sans italic opacity-40">Malra Inspectorate System</p>
         </div>
         
         <nav class="space-y-6">
-             <div class="p-6 bg-blue-600/10 text-blue-400 border border-blue-600/30 rounded-full text-center text-[10px] tracking-widest italic uppercase font-bold shadow-inner px-2 py-8 italic font-black">SECURE DATA INTERFACE</div>
+             <div class="p-6 bg-blue-600/10 text-blue-500 border-2 border-blue-500/20 rounded-full text-center text-[10px] tracking-widest font-black uppercase shadow-xl italic">CENTER OF AUDIT INTEGRITY</div>
+             <!-- FITUR REKAP EXCEL SUDAH DIHAPUS PERMANEN -->
         </nav>
 
-        <div class="mt-auto p-7 bg-slate-900 border border-slate-800 rounded-[2.5rem] italic shadow-2xl text-justify text-wrap">
-            <p class="text-[9px] text-slate-500 uppercase leading-none mb-3 font-bold px-1 italic">Pemeriksa Digital Sah:</p>
-            <p class="text-[13.5px] text-white tracking-tighter uppercase font-black font-sans leading-none decoration-blue-500 italic px-0.5">FIRDAUS SETITIT, S.Kom</p>
-            <p class="text-[8.5px] text-blue-500 mt-2 font-bold px-1 font-sans">Auditor Ahli Pertama Malra @ 2026</p>
-            <button onclick="location.reload()" class="mt-8 w-full py-4 bg-red-600/10 text-red-600 rounded-2xl text-[9px] border border-red-950 font-black hover:bg-red-700 hover:text-white transition-all italic tracking-widest active:scale-95 shadow-lg shadow-inner">TERMINATE SESSION</button>
+        <div class="mt-auto p-7 bg-slate-900/50 border border-slate-800 rounded-[2.5rem] italic text-justify text-wrap">
+            <p class="text-[9px] text-slate-500 mb-2 font-black leading-none uppercase italic">Official CDO:</p>
+            <p class="text-[13.5px] text-white tracking-tighter uppercase font-black font-sans leading-none">FIRDAUS SETITIT, S.Kom</p>
+            <p class="text-[8.5px] text-blue-500 font-bold mt-2 font-sans tracking-tight">Auditor Ahli Pertama Malra @ 2026</p>
+            <button onclick="location.reload()" class="mt-8 w-full py-4 bg-red-600/5 text-red-600 rounded-2xl text-[9px] border border-red-950 font-black shadow-inner active:scale-95 transition-all uppercase">EXIT PORTAL</button>
         </div>
     </aside>
 
-    <!-- CONTENT DATA INVESTIGATION (GARIS HEADER SUDAH DIBERSIHKAN TOTAL) -->
-    <main id="portalDash" class="flex-1 p-10 md:p-14 overflow-y-auto hidden uppercase italic font-black text-slate-100 tracking-tight">
-        <header class="flex flex-col items-center text-center mb-16 border-b border-slate-800 pb-10">
-             <h2 class="text-header-custom text-white tracking-tighter">PORTAL COMMAND <span class="text-blue-500 font-sans italic">DATA AUDIT DIGITAL</span></h2>
-             <p id="jamMalra" class="text-slate-600 font-black text-[11px] mt-4 tracking-[0.4em] font-sans opacity-40 px-2 italic uppercase"></p>
+    <!-- CONTENT INVESTIGATION -->
+    <main id="dashboardMain" class="flex-1 p-10 md:p-14 overflow-y-auto hidden font-black uppercase italic tracking-tighter text-slate-100 no-print">
+        <header class="flex flex-col items-center text-center mb-16 border-line-fix pb-12 font-black italic">
+            <h2 class="header-main text-white uppercase italic tracking-tighter mb-4">PORTAL COMMAND <span class="text-blue-500 font-sans italic">DATA AUDIT DIGITAL</span></h2>
+            <p id="timeClock" class="text-slate-600 font-black text-xs tracking-widest font-sans opacity-40 px-2 uppercase no-line italic"></p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20 italic text-center font-black">
-            <div class="p-12 kartu-adu border-l-8 border-l-blue-600 shadow-xl shadow-blue-500/10 italic"><p class="text-[10px] mb-3 opacity-20">Data Records Sinkron</p><h3 id="DTotal" class="text-7xl">0</h3></div>
-            <div class="p-12 kartu-adu border-l-8 border-l-red-600 text-red-600 font-bold"><p class="text-[10px] mb-3 opacity-40 italic tracking-widest font-black leading-loose text-balance text-wrap px-4">Alert Kasus Tipikor & Dana Desa</p><h3 id="DKor" class="text-7xl">0</h3></div>
+        <!-- KPI STATUS (DATABASE BERWARNA BERFUNGSI) -->
+        <div id="rekapStats" class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20 italic text-center font-black">
+            <div class="p-12 kartu-adu border-l-[12px] border-l-blue-600 shadow-xl shadow-blue-500/10 italic"><p class="text-[10px] mb-3 opacity-20">Records Database Masuk</p><h3 id="statTotal" class="text-7xl font-black">0</h3></div>
+            <div class="p-12 kartu-adu border-l-[12px] border-l-red-600 text-red-600"><p class="text-[10px] mb-3 opacity-40 italic underline decoration-red-900 underline-offset-4 tracking-[0.2em] font-sans italic text-balance px-1">Alert : Dugaan Kasus Tipikor</p><h3 id="statUrgent" class="text-7xl font-black px-1 leading-none py-1">0</h3></div>
         </div>
 
-        <div id="loader" class="text-center py-20 italic animate-pulse font-black text-blue-500 uppercase tracking-widest text-[11px]"><i class="fas fa-satellite-dish fa-spin text-5xl mb-8"></i><br>SECURE HANDSHAKING CLOUD MALRA...</div>
+        <div id="loaderBar" class="text-center py-20 italic font-black text-blue-500 animate-pulse tracking-[0.4em] uppercase text-xs"><i class="fas fa-satellite fa-spin text-5xl mb-8"></i><br>SECURE CLOUD DATA RECOVERY...</div>
         
-        <div id="listGridAudit" class="space-y-12 pb-24 italic uppercase tracking-tighter text-[11px] leading-loose text-justify text-wrap font-sans text-xs underline-offset-4 decoration-2"></div>
+        <div id="gridOutputAudit" class="space-y-12 pb-32 italic font-black text-wrap uppercase underline decoration-transparent underline-offset-0 decoration-blue-800"></div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, collection, query, orderBy, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        const cfg = {
+        const config = {
             apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
             authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
             projectId: "siapp-mas-malra-aa6c4",
@@ -109,84 +111,90 @@
             messagingSenderId: "18948056709",
             appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
         };
-        const app = initializeApp(cfg); const db = getFirestore(app);
+        const app = initializeApp(config); const db = getFirestore(app);
 
-        // LOGIN SYSTEM LOCKED itkabmalra1 | itkabmalra01
-        window.launchCommanderSystem = () => {
-            const u = document.getElementById('userInput').value.trim().toLowerCase();
-            const p = document.getElementById('passInput').value.trim();
-            if(u === 'itkabmalra1' && p === 'itkabmalra01') {
-                document.getElementById('gateAudit').style.display='none';
-                document.getElementById('mainSidebar').classList.replace('hidden', 'flex');
-                document.getElementById('portalDash').classList.remove('hidden'); ambilArsipAuditCerdas();
-            } else { const m = document.getElementById('failText'); m.classList.remove('hidden'); setTimeout(()=>m.classList.add('hidden'), 2000); }
+        // LOGIN SYSTEM EXPLICIT CALL (STABILITAS TOTAL)
+        window.processLoginSop = () => {
+            const userIn = document.getElementById('userInput').value.trim().toLowerCase();
+            const passIn = document.getElementById('passInput').value.trim().toLowerCase();
+            const errDiv = document.getElementById('failLog');
+            if(userIn === 'itkabmalra1' && passIn === 'itkabmalra01') {
+                document.getElementById('authPanelIT').style.display='none';
+                document.getElementById('sidebarHub').classList.replace('hidden', 'flex');
+                document.getElementById('dashboardMain').classList.remove('hidden');
+                document.body.style.overflow = "auto";
+                ambilDatabaseIntelligence();
+            } else { errDiv.classList.remove('hidden'); setTimeout(()=>errDiv.classList.add('hidden'), 2000); }
         };
 
-        async function ambilArsipAuditCerdas() {
-            const grid = document.getElementById('listGridAudit'); const ldr = document.getElementById('loader');
+        async function ambilDatabaseIntelligence() {
+            const grid = document.getElementById('gridOutputAudit'); const ldr = document.getElementById('loaderBar');
             try {
                 const q = query(collection(db, "pengaduan"), orderBy("timestamp", "desc"));
                 const sn = await getDocs(q); ldr.style.display='none'; grid.innerHTML=""; 
-                let t=0, k=0;
+                let tCount=0, kCount=0;
 
-                sn.forEach(docS => {
-                    const id = docS.id; const i = docS.data(); t++;
-                    const cCheck = (i.kat || i.category || i.kat_adu || i.kat_masalah || i.kategori || "").toUpperCase();
-                    if(cCheck.includes("DANA") || cCheck.includes("KORUPSI") || cCheck.includes("PAUD") || cCheck.includes("PBJ")) k++;
+                sn.forEach(docSn => {
+                    const id = docSn.id; const i = docSn.data(); tCount++;
+                    // Super Cross-Search for Corruption
+                    const kTxt = (i.cat || i.kategori || i.kat || i.category || i.kat_adu || "").toUpperCase();
+                    if(kTxt.includes("DANA") || kTxt.includes("KORUPSI") || kTxt.includes("PAUD") || kTxt.includes("PBJ")) kCount++;
 
-                    const dtLog = i.timestamp?.toDate ? i.timestamp.toDate().toLocaleString('id-ID') : 'REALTIME-OK';
-                    const statNow = i.audit_status || 'MASUK';
+                    const dtLog = i.timestamp?.toDate ? i.timestamp.toDate().toLocaleString('id-ID') : 'REec-Ok';
+                    const lvlStatus = i.audit_status || 'MASUK';
 
-                    // UNIVERSAL MAPPING LOGIC (DILARANG UTAK-ATIK: MEMULIHKAN about:blank)
-                    const fP = i.face_auth || i.face_bio || i.face || i.scan_wajah || i.validasi_wajah || i.foto_biometrik || "";
-                    const dP = i.letter_proof || i.letter_archive || i.document_fisik || i.doc_letter || i.doc_archive || i.document || "";
-                    const pN = i.pelapor_official || i.name_real || i.nama_ktp || i.legal_reporter || i.name_legal || "MASYARAKAT MALRA";
+                    // UNIVERSAL MAPPING LOGIC (MENGATASI "UNDEFINED" DI KTP & SURAT)
+                    const pF = i.face || i.face_bio || i.face_auth || i.face_val || i.biometric || i.scan_wajah || i.foto_biometrik || "";
+                    const pL = i.letter || i.letter_archive || i.doc || i.document_official || i.doc_letter || i.document || i.document_fisik || "";
+                    const pN = i.legal_name || i.name_verified || i.identitas_pelapor || i.pelapor_legal || i.nama_ktp || i.pelapor_official || i.name_real || "IDENTITAS PENGADU SAH";
+                    const locK = (i.dist || i.kecamatan || i.kec || 'MALRA').toUpperCase();
+                    const villK = (i.vill || i.ohoi || i.desa || 'OHOI').toUpperCase();
 
                     grid.innerHTML += `
-                        <div class="kartu-adu p-10 flex flex-col md:flex-row items-center gap-12 shadow-2xl relative border-l-[20px] border-l-blue-600 transition-all font-black decoration-white mb-8 cursor-default italic uppercase text-wrap">
-                            <div class="flex flex-col gap-6 text-center shrink-0 font-bold underline">
-                                <img src="${fP}" class="w-24 h-24 rounded-[1.5rem] object-cover border-4 border-slate-700 shadow-xl cursor-pointer" onclick="window.vP('${fP}','VERIFIKASI WAJAH')">
-                                <button onclick="window.vP('${dP}','DOKUMEN SURAT FISIK')" class="${dP ? 'bg-blue-600 active:scale-95' : 'bg-red-950 opacity-20'} p-3 rounded-2xl text-[8px] font-black italic underline decoration-blue-800 shadow-xl px-0 py-2">LIHAT SURAT</button>
+                        <div class="kartu-adu p-10 flex flex-col md:flex-row items-center gap-12 shadow-2xl relative border-l-[20px] border-l-blue-600 transition-all font-black uppercase cursor-default italic no-line">
+                            <div class="flex flex-col gap-6 text-center shrink-0">
+                                <img src="${pF}" class="w-24 h-24 rounded-3xl object-cover border-4 border-slate-700 shadow-xl cursor-pointer" onclick="window.viewDocV('${pF}','VERIFIKASI BIOMETRIK')">
+                                <button onclick="window.viewDocV('${pL}','DOKUMEN SURAT PENGADUAN')" class="${pL ? 'bg-blue-600' : 'bg-red-950 opacity-10'} p-3 rounded-2xl text-[8px] font-black underline italic shadow-blue-500/20 active:scale-75 transition-all">BUKTI SURAT</button>
                             </div>
-                            <div class="flex-1 font-sans italic tracking-tighter text-wrap text-white font-black leading-loose text-justify px-0 decoration-transparent">
-                                <div class="flex flex-wrap gap-4 mb-4 font-black">
-                                    <span class="status-badge bg-${statNow}">STASE AUDIT : ${statNow}</span>
-                                    <span class="text-[9px] text-blue-400 font-bold decoration-transparent no-line font-sans tracking-widest">${i.ticket_id} | ${dtLog}</span>
+                            <div class="flex-1 font-sans italic tracking-tighter text-wrap text-white font-black leading-loose text-justify px-0 decoration-transparent no-line px-2 py-4">
+                                <div class="flex flex-wrap items-center gap-5 mb-5 no-line underline-offset-0 decoration-transparent">
+                                    <span class="status-badge bg-${lvlStatus}">PERKEMBANGAN AUDIT : ${lvlStatus}</span>
+                                    <span class="text-[9px] text-blue-400 font-bold decoration-transparent no-line font-sans italic tracking-widest">${i.ticket_id} | ${dtLog}</span>
                                 </div>
-                                <h3 class="text-3xl font-black italic uppercase text-white leading-tight mb-2 underline decoration-blue-600 decoration-8 underline-offset-4">${cCheck || "UMUM"}</h3>
-                                <p class="text-[10px] text-slate-500 font-bold italic tracking-widest uppercase py-2 leading-none">PE-LAPOR : ${pN} | OHOI : ${(i.vill || i.desa || i.ohoi || 'KABUPATEN').toUpperCase()}</p>
+                                <h3 class="text-4xl font-black italic uppercase text-white leading-none mb-3 underline decoration-transparent decoration-offset-0 no-line">${kTxt || "TIPIKOR / UMUM"}</h3>
+                                <p class="text-[10px] text-slate-500 font-bold py-2 no-line underline-offset-4 decoration-slate-900">REPORTER (SESUAI KTP): ${pN} | LOKASI: ${locK} - ${villK}</p>
                                 
-                                <div class="bg-blue-900/10 p-5 rounded-[2.2rem] border border-blue-900/40 no-print font-black mt-8 shadow-inner no-line underline-offset-8">
-                                     <p class="text-[9px] text-emerald-400 mb-2 italic tracking-tighter underline uppercase"><i class="fas fa-reply mr-1"></i> INTERAKSI BALASAN INVESTIGATOR :</p>
-                                     <textarea id="rep_${id}" placeholder="INPUT RESPON ANDA..." class="w-full bg-slate-900 border border-slate-700 p-5 rounded-3xl text-blue-300 font-black italic uppercase text-xs mb-3 shadow-xl outline-none italic underline"></textarea>
-                                     <button onclick="window.postOfficialMsg('${id}')" class="bg-emerald-600 px-10 py-3 rounded-xl text-[10px] font-black underline italic active:scale-75 transition-all shadow-lg uppercase decoration-white shadow-emerald-950 font-black">SINKRONKAN PESAN</button>
+                                <div class="bg-blue-900/10 p-5 rounded-3xl border border-blue-900/30 no-print italic font-black mt-8 shadow-inner no-line underline decoration-blue-700 underline-offset-8">
+                                     <p class="text-[9px] text-emerald-400 mb-2 italic tracking-tighter uppercase no-line underline underline-offset-8 decoration-emerald-800 leading-relaxed font-sans px-2 py-2"><i class="fas fa-reply-all mr-1"></i> INTERAKSI DUA ARAH (KOLOM BALASAN) :</p>
+                                     <textarea id="msgResp_${id}" placeholder="TULIS PESAN UNTUK PELAPOR..." class="w-full bg-slate-950 border border-slate-800 p-6 rounded-3xl text-blue-300 font-black italic uppercase text-[12px] no-line shadow-2xl underline decoration-blue-500 focus:border-emerald-600 outline-none"></textarea>
+                                     <button onclick="window.sendFeedbackS('${id}')" class="bg-emerald-600 px-10 py-3 rounded-full text-[10px] font-black no-line italic mt-4 shadow-xl active:scale-95 shadow-emerald-500/20 underline decoration-white uppercase tracking-[0.2em]">SEND RESPOND</button>
                                 </div>
 
-                                <div class="mt-10 flex flex-wrap gap-4 no-print italic font-black uppercase tracking-tight no-line">
-                                     <button onclick="window.upAudit('${id}','Dilihat')" class="text-[8px] bg-slate-800 p-3 rounded-lg no-line italic active:scale-75 shadow-lg">1. LIHAT</button>
-                                     <button onclick="window.upAudit('${id}','Diverifikasi')" class="text-[8px] bg-amber-600 p-3 rounded-lg no-line italic text-white font-bold decoration-white shadow-xl px-4 py-2 font-black italic">2. VERIFIED</button>
-                                     <button onclick="window.upAudit('${id}','Diproses')" class="text-[8px] bg-blue-600 p-3 rounded-lg no-line font-black text-white active:scale-125 active:duration-100 transition-all shadow-blue-500/20 animate-pulse duration-500 uppercase px-4 py-2">3. PROSES AUDIT</button>
+                                <div class="mt-12 flex flex-wrap gap-4 no-print italic underline-offset-4 decoration-transparent no-line uppercase font-black">
+                                     <button onclick="window.changeStageS('${id}','Dilihat')" class="text-[9px] bg-slate-800 p-3 rounded-lg no-line shadow-xl italic underline-offset-1 active:scale-75 transition-all">1. DILIHAT</button>
+                                     <button onclick="window.changeStageS('${id}','Diverifikasi')" class="text-[9px] bg-amber-600 p-3 rounded-lg no-line shadow-xl text-white italic underline-offset-4 font-black">2. VERIFIED</button>
+                                     <button onclick="window.changeStageS('${id}','Diproses')" class="text-[9px] bg-blue-600 p-3 rounded-lg no-line text-white shadow-blue-500/30 duration-700 active:duration-300 transition-all font-black decoration-white animate-pulse px-4 py-2 italic tracking-widest no-line">3. PROSES AUDIT</button>
                                 </div>
                             </div>
                         </div>
                     `;
                 });
-                document.getElementById('DTotal').innerText=t; document.getElementById('DKor').innerText=k;
-            } catch(e){ alert("Hub Connection Fail."); }
+                document.getElementById('statTotal').innerText = tCount; document.getElementById('statUrgent').innerText = kCount;
+            } catch(e){ alert("Gateway Sync Failed. Checking..."); }
         }
 
-        // VIEW ACTION SYSTEM (BAPAK FIRDAUS S.KOM MASTERPIECE)
-        const vM = document.getElementById('vPortal'); const vI = document.getElementById('vImgData'); const vT = document.getElementById('vLabel');
-        window.vP = (url, title) => { if(!url){ alert("KOSONG!"); return; } vM.style.display="flex"; vI.src=url; vT.innerText=title; };
-        window.closeVPortal = () => { vM.style.display="none"; };
+        // --- CORE GLOBAL ACTION CALLS (AUDIT FIX) ---
+        const vMP = document.getElementById('vPortal'); const vID = document.getElementById('vImgData'); const vLT = document.getElementById('vLabelTitle');
+        window.viewDocV = (url, tit) => { if(!url) return alert("MISSING EVIDENCE RECORDS!"); vMP.style.display="flex"; vID.src=url; vLT.innerText=tit; };
+        window.closePortalViewer = () => { vMP.style.display="none"; };
         
-        window.upAudit = async (id, s) => { if(confirm("Rubah Status?")){ await updateDoc(doc(db,"pengaduan",id),{audit_status:s}); ambilArsipAuditCerdas(); } };
-        window.postOfficialMsg = async (id) => { 
-            const txt = document.getElementById('rep_'+id).value;
-            if(!txt) return; await updateDoc(doc(db,"pengaduan",id), {jawaban_auditor:txt}); alert("Sent To Portal."); ambilArsipAuditCerdas();
+        window.changeStageS = async (id, s) => { if(confirm("Sah-kan Perubahan Status?")){ await updateDoc(doc(db,"pengaduan",id),{audit_status:s}); ambilDatabaseIntelligence(); } };
+        window.sendFeedbackS = async (id) => {
+            const v = document.getElementById('msgResp_'+id).value;
+            if(!v) return; await updateDoc(doc(db,"pengaduan",id), {jawaban_auditor:v}); alert("Update Tersimpan."); ambilDatabaseIntelligence();
         };
 
-        setInterval(() => { document.getElementById('jamMalra').innerText = new Date().toLocaleString('id-ID', {dateStyle:'full', timeStyle:'medium'}); }, 1000);
+        setInterval(() => { document.getElementById('timeClock').innerText = new Date().toLocaleString('id-ID', {dateStyle:'full', timeStyle:'medium'}); }, 1000);
     </script>
 </body>
 </html>
