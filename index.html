@@ -244,7 +244,7 @@
             const nX = document.getElementById('nama_ktp').value; const t="MLRA-V38-OFFICIAL-"+Math.floor(1000 + Math.random() * 8999).toString();
             try {
                 await addDoc(collection(db,"pengaduan"),{ticket_id:t,pelapor_legal:nX,wa_phone:wX,face:fBas,doc_archive:dBas,kec:document.getElementById('kecamatan').value,vill:document.getElementById('desa').value,kategori:document.getElementById('kategori').value,audit_status:"DILIHAT",timestamp:serverTimestamp()});
-                const waBody=`NOTIFIKASI RESMI SiAPP MAS MALRA\nNo TICKET ID : ${t}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.\n\nSimpan ID ini di dashboard utama Inspektorat @Firdaus Setitit S.Kom`;
+                const waBody=`NOTIFIKASI RESMI SiAPP MAS MALRA\nNo TICKET ID : ${t}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.\n\nSimpan ID ini di dashboard utama Inspektorat @AuziFirdaus`;
                 alert("DOKUMEN INVESTIGASI MALRA SAH TERCONFIRM!"); 
                 window.location.href=`https://api.whatsapp.com/send?phone=${wX}&text=${encodeURIComponent(waBody)}`;
             } catch(e){ fireLaunch.disabled=false; alert("Try Again."); }
