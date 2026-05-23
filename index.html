@@ -3,132 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiAPP Mas | Official Malra Integrity Hub</title>
-    <!-- Resource Kritis Kedinasan -->
+    <title>SiAPP Mas | Malra Government High-Security Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfd; color: #1e293b; margin: 0; }
         .form-focus:focus { border-color: #ef4444; ring: 3px; ring-color: rgba(239, 68, 68, 0.1); outline: none; }
-        
-        /* BINGKAI HIJAU KABUPATEN (FIXED PRECISION) */
-        .border-hijau-kab { border: 2.5px solid #10b981 !important; border-radius: 1rem; background: #ffffff !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
-        
-        /* BINGKAI MERAH LUAR (OFFICIAL FRAME) */
-        .red-frame-outer { border: 4px solid #ef4444; border-radius: 3.5rem; background: white; padding: 12px; box-shadow: 0 40px 100px rgba(0,0,0,0.06); }
+        .border-hijau-kab { border: 2.5px solid #10b981 !important; border-radius: 1rem; background: #ffffff !important; }
         
         #video-preview, #doc-preview-cam { border-radius: 20px; width: 100%; max-width: 250px; margin: 0 auto; display: none; background: #000; border: 5px solid #ffffff; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         #video-preview { transform: scaleX(-1); }
-        
         .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; }
         .status-fail { background: #ef4444; color: white; }
         .status-pass { background: #10b981; color: white; }
         .ribbon-merah { height: 8px; background: repeating-linear-gradient(45deg, #ef4444, #ef4444 20px, #ffffff 20px, #ffffff 40px); }
         
-        /* WARNA TOMBOL PROTOKOL */
-        .btn-biru-langit { background: #0ea5e9 !important; color: white !important; font-weight: 900; border-radius: 12px; transition: 0.3s; }
-        .btn-kuning { background: #fbbf24 !important; color: #422006 !important; font-weight: 900; border-radius: 14px; transition: 0.3s; }
-        .input-file-hijau::-webkit-file-upload-button { background: #10b981 !important; color: white !important; border: none; padding: 12px 22px; border-radius: 14px; font-weight: 900; cursor: pointer; }
+        /* BINGKAI MERAH LUAR (OUTER FRAME) */
+        .red-frame-outer { border: 4px solid #ef4444; border-radius: 3.5rem; background: white; padding: 10px; box-shadow: 0 40px 100px rgba(0,0,0,0.06); }
         
-        /* CSS POPUP OVERLAY FIX (PERBAIKAN ERROR SCREENSHOT 68) */
-        .modal-legal-overlay { 
-            position: fixed !important; 
-            top: 0 !important; 
-            left: 0 !important; 
-            width: 100% !important; 
-            height: 100% !important; 
-            background: rgba(15, 23, 42, 0.98) !important; /* Biru Gelap Transparan Mewah */
-            backdrop-filter: blur(15px) !important;
-            z-index: 999999 !important; /* Layer paling atas sedunia */
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-        }
-
-        .no-line { text-decoration: none !important; border-bottom: none !important; }
-        * { text-decoration: none !important; }
+        /* TOMBOL IDENTITAS PREMIUM */
+        .btn-biru-langit { background: #0ea5e9 !important; color: white !important; font-weight: 900; border-radius: 12px; }
+        .btn-kuning { background: #fbbf24 !important; color: #422006 !important; font-weight: 900; border-radius: 14px; }
+        .input-file-hijau::-webkit-file-upload-button { background: #10b981 !important; color: white !important; border: none; padding: 10px 22px; border-radius: 14px; font-weight: 900; cursor: pointer; }
+        
+        .modal-bg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(15px); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .no-line { text-decoration: none !important; border-bottom: 0px !important; }
     </style>
 </head>
 <body class="min-h-screen italic font-black uppercase tracking-tight overflow-x-hidden text-balance px-0">
 
     <div class="ribbon-merah no-print"></div>
 
-    <!-- NAVBAR IDENTITAS KABUPATEN -->
-    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 py-5 px-4 backdrop-blur-xl shadow-sm">
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 py-5 px-4 backdrop-blur-xl no-line shadow-sm">
         <div class="max-w-xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-4 text-left">
+            <div class="flex items-center gap-4 no-line">
                 <img src="./logo_malra.png" alt="Malra" class="h-14 w-auto">
                 <div class="flex flex-col border-l-2 border-red-500 pl-4 leading-tight">
-                    <h1 class="text-xl font-black text-slate-800 uppercase no-line tracking-tighter">SiAPP MAS</h1>
+                    <h1 class="text-xl font-black text-slate-800 uppercase no-line tracking-tighter leading-none">SiAPP MAS</h1>
                     <h2 class="text-[9px] font-black text-slate-400 no-line font-sans italic tracking-widest uppercase">INSPEKTORAT KABUPATEN MALUKU TENGGARA</h2>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- UKURAN MAX-W-LG : DESIGN COMPACT/IMUT -->
     <main class="max-w-lg mx-auto px-4 py-8 no-print font-black">
         
-        <!-- HEADER MODULE: TEXT ALIGN CENTER -->
-        <div class="bg-white p-8 rounded-[3rem] mb-10 shadow-sm border border-slate-50 relative overflow-hidden text-center no-line">
-             <div class="text-[15.5px] font-black text-red-700 font-sans mb-1 no-line tracking-tight">SISTEM APLIKASI PENGADUAN MASYARAKAT</div>
-             <div class="text-[10.5px] text-slate-400 font-sans no-line tracking-widest mb-5">PRIVACY SYSTEM ENCRYPTED</div>
-             <div class="text-[11px] text-slate-800 italic leading-relaxed font-sans mx-auto px-4 border-t border-red-100 pt-4 uppercase">
+        <!-- HEADER TEXT CENTERED -->
+        <div class="bg-white p-8 rounded-[3rem] mb-10 shadow-sm border border-slate-50 relative overflow-hidden italic no-line text-center shadow-inner">
+             <div class="text-[15.5px] font-black text-red-700 font-sans mb-1 no-line uppercase tracking-tight leading-none">SISTEM APLIKASI PENGADUAN MASYARAKAT</div>
+             <div class="text-[10.5px] text-slate-400 font-sans no-line tracking-widest italic mb-5 leading-none">PRIVACY SYSTEM ENCRYPTED</div>
+             <div class="text-[11px] text-slate-800 italic leading-relaxed no-line font-sans mx-auto px-4 border-t border-red-50 pt-4 font-black">
                 "IDENTITAS PELAPOR DIJAMIN KERAHASIAANNYA 100% SESUAI ATURAN NEGARA."
              </div>
         </div>
 
         <div class="red-frame-outer">
-            <div class="bg-white p-6 md:p-8 rounded-[3.5rem] font-black uppercase text-justify shadow-inner">
+            <div class="bg-white p-7 md:p-9 rounded-[3.5rem] font-black italic uppercase text-justify shadow-inner">
                 <form id="complaintForm" class="space-y-12">
                     
-                    <!-- I. BINGKAI HIJAU: VALIDASI BIOMETRIK -->
+                    <!-- I. BIOMETRIK (BINGKAI HIJAU) -->
                     <div class="border-hijau-kab p-6 text-center relative no-line">
-                        <span class="text-[9px] text-emerald-600 mb-6 block font-black no-line tracking-widest font-sans underline-offset-4 decoration-emerald-100 italic">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
+                        <span class="text-[9px] text-emerald-600 mb-6 block font-black no-line tracking-widest italic font-sans uppercase">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
                         <video id="video-preview" autoplay playsinline></video>
                         <canvas id="face-canvas" class="hidden"></canvas>
                         <img id="face-result" class="mx-auto rounded-[1.5rem] shadow-xl mb-4 hidden border-4 border-emerald-500" style="max-width: 180px;">
-                        <div id="qualityInfoW" class="mb-4 flex justify-center hidden font-black">
-                             <span id="badgeW-B" class="quality-badge status-fail italic">IDENTIFIKASI CAHAYA</span>
+                        <div id="qualityInfoW" class="mb-4 flex justify-center hidden">
+                             <span id="badgeW-B" class="quality-badge status-fail">CEK PIXSEL WAJAH</span>
                         </div>
-                        <button type="button" id="start-camera" class="w-full btn-biru-langit py-5 rounded-2xl text-[10px] shadow-lg active:scale-95 italic">AKTIFKAN KAMERA BIOMETRIK</button>
-                        <button type="button" id="take-photo" class="w-full bg-red-600 text-white py-5 rounded-2xl text-[10px] hidden animate-pulse font-black shadow-2xl no-line tracking-widest uppercase">OK : SENSOR WAJAH VALID</button>
+                        <button type="button" id="start-camera" class="w-full btn-biru-langit py-5 rounded-2xl text-[10px] shadow-lg active:scale-95 italic underline">AKTIFKAN KAMERA BIOMETRIK</button>
+                        <button type="button" id="take-photo" class="w-full bg-red-600 text-white py-5 rounded-2xl text-[10px] hidden animate-pulse font-black shadow-2xl no-line underline underline-offset-2">SENSING WAJAH VALID</button>
                     </div>
 
+                    <!-- DATA DIRI: RATA KIRI (BINGKAI HIJAU) -->
                     <div class="space-y-6">
-                        <!-- II. BINGKAI HIJAU: NAMA PELAPOR (RATA KIRI) -->
-                        <div class="space-y-1 text-left italic">
-                            <label class="text-[9px] text-slate-500 uppercase px-2 mb-2 block font-black no-line tracking-widest">NAMA PELAPOR SESUAI E-KTP</label>
-                            <input type="text" id="nama_ktp" required placeholder="INPUT NAMA LENGKAP..." class="w-full border-hijau-kab p-5 text-red-700 text-xs shadow-inner outline-none">
+                        <div class="space-y-1 text-left">
+                            <label class="text-[9px] text-slate-500 uppercase px-2 mb-2 block font-black no-line tracking-widest italic">NAMA PELAPOR SESUAI E-KTP</label>
+                            <input type="text" id="nama_ktp" required placeholder="NAMA LENGKAP..." class="w-full border-hijau-kab p-5 text-red-700 text-xs form-focus shadow-inner">
                         </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 no-line font-black">
-                            <!-- III. BINGKAI HIJAU: WA PELAPOR (RATA KIRI) -->
-                            <div class="space-y-1 text-left italic">
-                                <label class="text-[9.5px] text-slate-400 no-line px-2 font-black uppercase mb-1 block italic">WA PELAPOR</label>
-                                <input type="number" id="no_hp" required placeholder="08..." class="w-full border-hijau-kab p-4 shadow-sm outline-none text-[11px] font-black italic text-red-700">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1 text-left">
+                                <label class="text-[9px] text-slate-500 px-2 font-black italic block no-line uppercase">WA Pelapor</label>
+                                <input type="number" id="no_hp" required placeholder="08..." class="w-full border-hijau-kab p-4 text-[10px] outline-none shadow-sm">
                             </div>
-                            <!-- IV. BINGKAI HIJAU: KATEGORI PENGADUAN (RATA KIRI) -->
-                            <div class="space-y-1 text-left font-black">
-                                <label class="text-[9.5px] text-slate-400 no-line px-2 font-black block mb-1 italic">KATEGORI PENGADUAN</label>
-                                <select id="kategori" class="w-full border-hijau-kab p-4 text-[9.5px] outline-none font-black italic text-slate-800 shadow-inner">
+                            <div class="space-y-1 text-left">
+                                <label class="text-[9px] text-slate-500 px-2 font-black italic block no-line">Kategori</label>
+                                <select id="kategori" class="w-full border-hijau-kab p-4 text-[9px] outline-none text-slate-800">
                                     <option value="Dana Desa">PENGAWASAN DANA DESA</option>
-                                    <option value="Dana BOS">DANA BOS / PAUD / BOP</option>
-                                    <option value="BOK Puskesmas">PENGAWASAN DANA BOK PUSKESMAS</option>
+                                    <option value="Dana BOS">DANA BOS/PAUD</option>
+                                    <option value="BOK Puskesmas">PANA BOK PUSKESMAS</option>
                                     <option value="PBJ">PENGADAAN BARANG/JASA</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <!-- V. BINGKAI HIJAU: LOKASI (RATA KIRI) -->
-                    <div class="grid grid-cols-2 gap-4 no-line font-black italic text-left uppercase">
-                        <div class="space-y-1">
-                             <label class="text-[9px] text-slate-400 px-2 block mb-1">Kecamatan</label>
-                             <select id="kecamatan" required class="w-full border-hijau-kab p-4 text-[9px] shadow-inner text-slate-950 italic outline-none">
-                                <option value="">- PILIH LOKASI KEC. -</option>
+                    <!-- KECAMATAN: RATA KIRI (BINGKAI HIJAU) -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-left">
+                             <label class="text-[9px] text-slate-400 px-2 no-line">Kecamatan</label>
+                             <select id="kecamatan" required class="w-full border-hijau-kab p-4 text-[9px] shadow-inner text-slate-900 outline-none uppercase font-bold italic">
+                                <option value="">- KECAMATAN -</option>
                                 <option value="Kei Kecil">Kei Kecil</option><option value="Manyeuw">Manyeuw</option><option value="Kei Kecil Timur">Kei Kecil Timur</option>
                                 <option value="Kei Kecil Timur Selatan">Kei Kecil Timur Selatan</option><option value="Kei Kecil Barat">Kei Kecil Barat</option>
                                 <option value="Hoat Sorbay">Hoat Sorbay</option><option value="Kei Besar">Kei Besar</option>
@@ -138,60 +113,58 @@
                                 <option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
                              </select>
                         </div>
-                        <div class="space-y-1">
-                             <label class="text-[9px] text-slate-400 px-2 block mb-1">Desa / Ohoi</label>
-                             <input type="text" id="desa" required placeholder="INPUT OHOI" class="w-full border-hijau-kab p-4 text-[10px] shadow-inner italic font-black text-red-700 outline-none">
+                        <div class="text-left">
+                             <label class="text-[9px] text-slate-400 px-2 no-line">Desa/Ohoi</label>
+                             <input type="text" id="desa" required placeholder="INPUT OHOI" class="w-full border-hijau-kab p-4 text-[9.5px] outline-none shadow-inner uppercase font-bold">
                         </div>
                     </div>
 
-                    <!-- VI. BINGKAI HIJAU: LAPORAN TERTULIS (CENTER TITLE, NO UNDERLINE, TOMBOL KUNING/HIJAU) -->
-                    <div class="border-hijau-kab p-7 text-center no-line shadow-inner">
-                        <div class="mb-7 block">
-                            <span class="text-[12px] text-black font-black uppercase tracking-[0.2em] italic no-line">KIRIM LAPORAN PENGADUAN TERTULIS (WAJIB)</span>
-                        </div>
-                        
+                    <!-- III. LAPORAN TERTULIS: CENTER (SUNTIKAN LOGIKA DETEKSI PDF DI SINI) -->
+                    <div class="border-hijau-kab p-8 text-center no-line shadow-inner">
+                        <span class="text-[11.5px] text-black font-black uppercase tracking-[0.25em] no-line mb-8 block font-sans underline decoration-black decoration-[2px] underline-offset-8 italic">KIRIM LAPORAN PENGADUAN TERTULIS (WAJIB)</span>
                         <div class="flex flex-col md:flex-row items-center justify-center gap-4 italic no-line">
-                            <input type="file" id="bukti" accept="image/*" class="w-full text-[9px] text-slate-400 file:input-file-hijau file:border-0 italic font-black uppercase">
+                            <input type="file" id="bukti" accept="image/*, application/pdf" class="w-full text-[9px] text-slate-400 file:input-file-hijau file:border-0 font-black italic">
                             <button type="button" id="start-doc-camera" class="btn-kuning py-4 px-8 rounded-xl text-[10px] flex items-center justify-center gap-2 active:scale-95 italic">
-                                 <i class="fas fa-camera px-1 italic"></i> KAMERA
+                                 <i class="fas fa-camera"></i> KAMERA
                             </button>
                         </div>
-                        <div id="camDocBox" class="mt-8 hidden border-t pt-8">
-                            <video id="doc-preview-cam" autoplay playsinline class="mx-auto rounded-[2rem] border-4 border-white shadow-xl"></video>
-                            <button type="button" id="take-doc-photo" class="bg-red-600 text-white w-full py-4 mt-4 rounded-[1.5rem] text-[10px] animate-pulse italic">CAPTURE BUKTI SURAT FISIK</button>
+                        <div id="camDocBox" class="mt-8 hidden">
+                            <video id="doc-preview-cam" autoplay playsinline class="mx-auto rounded-[1.5rem] border-4 border-white shadow-xl"></video>
+                            <button type="button" id="take-doc-photo" class="bg-red-600 text-white w-full py-4 mt-4 rounded-2xl text-[10px] animate-pulse">OK : CAPTURE BUKTI FISIK</button>
                         </div>
-                        <img id="doc-result" class="mt-6 rounded-3xl w-full hidden border-4 border-white shadow-xl italic font-black">
+                        <img id="doc-result" class="mt-6 rounded-3xl w-full hidden border-4 border-white shadow-xl font-black">
                         <div id="qualityInfoD" class="mt-4 flex justify-center hidden italic">
-                             <span id="badgeD-B" class="quality-badge status-fail px-12 italic uppercase font-bold tracking-widest no-line">DATA SURAT KURANG TERANG!</span>
+                             <span id="badgeD-B" class="quality-badge status-pass px-12">DATA TERCATAT</span>
                         </div>
                     </div>
 
-                    <button type="button" id="btnShowModal" class="w-full bg-red-600 text-white p-9 rounded-[3.5rem] font-black italic shadow-2xl opacity-40 cursor-not-allowed transition-all text-xs border-b-8 border-red-950 uppercase no-line px-1" disabled>
-                        SOP KETAT : WAJIB SCAN WAJAH & SURAT JELAS!
+                    <!-- TOMBOL VALIDATOR LOCKED (FIXED ERROR SENSING PDF) -->
+                    <button type="button" id="btnGatewayLaunch" class="w-full bg-red-600 text-white p-9 rounded-[3rem] font-black italic shadow-[0_20px_60px_rgba(239,68,68,0.2)] opacity-40 cursor-not-allowed transition-all text-xs border-b-8 border-red-950 uppercase no-line tracking-widest italic" disabled>
+                        SOP KETAT : WAJIB SCAN WAJAH & DOKUMEN...
                     </button>
                 </form>
             </div>
         </div>
         
-        <p class="text-center text-[8.5px] mt-24 font-black italic opacity-20 tracking-[0.4em] uppercase no-line italic font-sans decoration-transparent underline-offset-4">ARCHITECTURE DESIGNED BY: FIRDAUS SETITIT, S.KOM @ 2026 • OFFICIAL MALRA HUB</p>
+        <p class="text-center text-[8.5px] mt-24 font-black italic opacity-20 tracking-[0.4em] no-line uppercase text-wrap font-sans underline underline-offset-4 decoration-transparent px-2">ARCHITECTURE DESIGNED BY: FIRDAUS SETITIT, S.KOM @ 2026</p>
     </main>
 
-    <!-- PENTING: MODAL/POPUP LEGALITAS (PINDAH KE LUAR & LAYER TERATAS/FIXED) -->
-    <div id="declarationOverlay" class="modal-legal-overlay uppercase">
-        <div class="bg-white rounded-[4rem] p-10 md:p-14 w-full max-w-lg shadow-2xl border-[8px] border-red-600 border-double text-black font-black no-line">
-            <h2 class="text-2xl font-black italic text-red-600 mb-14 text-center no-line leading-tight tracking-widest underline underline-offset-8 decoration-red-100 italic font-black">PERNYATAAN INTEGRITAS HUKUM</h2>
-            <div class="space-y-7 text-[11pt] italic text-justify leading-relaxed no-line uppercase px-1 py-1 font-sans">
-                <div class="flex gap-4 items-start no-line"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg italic no-line">1</span> <p>Laporan yang disampaikan dapat dipertanggungjawabkan kebenarannya.</p></div>
-                <div class="flex gap-4 items-start font-black underline underline-offset-1 decoration-transparent leading-none italic font-sans uppercase font-black italic underline px-1 py-1 text-justify text-wrap italic"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg no-line font-black font-sans px-1">2</span> <p>Siap diproses secara hukum apabila laporan saya palsu / bohong.</p></div>
-                <div class="flex gap-4 items-start leading-tight italic underline-none font-sans px-1 underline underline-offset-2 font-black italic underline-offset-4 decoration-transparent px-1 py-2 font-black no-line"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg no-line font-black font-sans">3</span> <p>Bersedia dipanggil memberikan keterangan tambahan ke Inspektorat.</p></div>
+    <!-- LEGAL POPUP LOCK (3 POIN SAKRAL) -->
+    <div id="declarationPopup" class="modal-bg font-black uppercase">
+        <div class="bg-white rounded-[4rem] p-10 md:p-14 w-full max-w-lg shadow-[0_50px_200px_rgba(239,68,68,0.5)] border-[8px] border-red-600 border-double text-black font-black no-line italic tracking-widest text-justify text-balance">
+            <h2 class="text-2xl font-black italic text-red-600 mb-12 text-center no-line uppercase">POIN PERNYATAAN HUKUM</h2>
+            <div class="space-y-6 text-[10.5pt] font-black italic text-justify leading-relaxed no-line uppercase px-1">
+                <div class="flex gap-4 items-start font-black no-line"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg no-line italic px-1 underline underline-offset-4 decoration-white">1</span> <p>Laporan saya sampaikan dapat dipertanggungjawabkan kebenarannya dan bukan merupakan fitnah.</p></div>
+                <div class="flex gap-4 items-start"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg italic font-sans font-black underline-offset-1 px-1">2</span> <p>Bersedia diproses hukum jika terbukti laporan palsu / informasi palsu.</p></div>
+                <div class="flex gap-4 items-start font-black underline-offset-2 italic leading-relaxed"><span class="bg-red-600 text-white w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-lg px-0.5 no-line underline">3</span> <p>Bersedia dipanggil untuk memberikan keterangan lanjutan demi transparansi Malra.</p></div>
                 
-                <label class="flex items-center gap-5 bg-slate-100 p-8 rounded-3xl mt-12 cursor-pointer transition-all active:scale-95 duration-200">
-                    <input type="checkbox" id="legalCheckbox" class="w-7 h-7 accent-emerald-600 shadow-lg">
-                    <span class="text-[13px] font-black tracking-tight no-line decoration-emerald-950 underline px-1 text-wrap leading-relaxed text-justify italic">SAYA SETUJU DAN MENERIMA KONSEKUENSI.</span>
+                <label class="flex items-center gap-5 bg-slate-50 p-8 rounded-3xl mt-12 cursor-pointer no-line shadow-inner">
+                    <input type="checkbox" id="legalFinalCheck" class="w-7 h-7 accent-emerald-600 font-black italic shadow-lg outline-none">
+                    <span class="text-[12px] font-black uppercase italic tracking-tighter decoration-emerald-800 leading-none">SAYA SETUJU DAN MENERIMA KONSEKUENSI HUKUM.</span>
                 </label>
-                <div class="grid grid-cols-2 gap-6 mt-10">
-                    <button id="executeFinalSubmit" class="bg-emerald-600 text-white p-6 rounded-[2.2rem] font-black opacity-30 cursor-not-allowed transition-all active:scale-75 shadow-xl decoration-emerald-800 no-line">KIRIM SEKARANG</button>
-                    <button onclick="window.tutupPanelModal()" class="bg-slate-950 text-white p-6 rounded-[2.2rem] no-line italic font-black uppercase decoration-white transition-all shadow-inner">BATAL</button>
+                <div class="grid grid-cols-2 gap-5 mt-10">
+                    <button id="finalAuditRun" class="bg-emerald-600 text-white p-6 rounded-[2.2rem] opacity-30 cursor-not-allowed">EKSEKUSI ADUAN</button>
+                    <button onclick="document.getElementById('declarationPopup').style.display='none'" class="bg-slate-950 text-white p-6 rounded-[2.2rem]">BATAL</button>
                 </div>
             </div>
         </div>
@@ -211,53 +184,73 @@
         };
         const app = initializeApp(config); const db = getFirestore(app);
 
-        // System Control Core
-        const sopBtn = document.getElementById('btnShowModal') || document.getElementById('btnShowPopup') || document.getElementById('btnSOPTrigger') || document.querySelectorAll('main button')[4];
-        const modalPortal = document.getElementById('declarationOverlay');
-        const finGo = document.getElementById('executeFinalSubmit');
-        let aStr = null, fBs=null, dBas=null;
-        let sCheck = { f: false, d: false };
+        // Core Gate vars
+        const mainB = document.getElementById('btnGatewayLaunch'); const dP = document.getElementById('declarationPopup');
+        const finP = document.getElementById('finalAuditRun'); const cL = document.getElementById('legalFinalCheck');
+        let aS=null, fB=null, dB=null;
+        let sStat = { w: false, d: false };
 
-        async function camCloseAll(){ if(aStr){ aStr.getTracks().forEach(t=>t.stop()); aStr=null; } }
-        async function iComp(b){ return new Promise(r=>{const img=new Image();img.src=b;img.onload=()=>{const c=document.createElement('canvas');const MAX=1200;let w=img.width,h=img.height;if(w>h){if(w>MAX){h*=MAX/w;w=MAX}}else{if(h>MAX){w*=MAX/h;h=MAX}}c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);r(c.toDataURL('image/jpeg',0.5))}}); }
+        async function closeCams(){ if(aS){ aS.getTracks().forEach(t=>t.stop()); aS=null; } }
+        async function smartComp(b){ return new Promise(r=>{const img=new Image();img.src=b;img.onload=()=>{const c=document.createElement('canvas');const MAX=1200;let w=img.width,h=img.height;if(w>h){if(w>MAX){h*=MAX/w;w=MAX}}else{if(h>MAX){w*=MAX/h;h=MAX}}c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);r(c.toDataURL('image/jpeg',0.55))}}); }
 
-        function checkAuthority(){
-            const trigger = document.getElementById('btnShowModal') || document.getElementById('btnShowPopup') || document.getElementById('btnPopupTrigger') || document.getElementById('btnSOPTrigger');
-            if(sCheck.f && sCheck.d){ trigger.disabled=false; trigger.classList.remove('opacity-40','cursor-not-allowed'); trigger.innerText="VERIFIKASI SAH : LANJUT"; trigger.classList.add('bg-slate-900','animate-pulse'); }
-            else { trigger.disabled=true; trigger.classList.add('opacity-40'); trigger.innerText="DITOLAK : HASIL SCAN TIDAK TERBACA!"; }
+        function checkGate(){
+            if(sStat.w && sStat.d){ mainB.disabled=false; mainB.classList.remove('opacity-40','cursor-not-allowed'); mainB.innerText="STATUS : VALID - LANJUTKAN"; mainB.classList.add('bg-slate-900','animate-pulse'); }
+            else { mainB.disabled=true; mainB.classList.add('opacity-40'); mainB.innerText="TEBALKAN DOKUMEN ANDA (TOLAK PIXEL)!"; }
         }
 
-        async function aiSenseStrict(cvs, mod){
-            const d = cvs.getContext('2d').getImageData(0,0,cvs.width,cvs.height).data;
+        // --- SUNTIKAN LOGIKA DETEKSI PDF (MULTIPLE HANDLER) ---
+        async function runAIVerification(canv, mod, isPDF = false){
+            if(isPDF){ // BILA FILE PDF (AUTO VALID PER PERINTAH S.KOM)
+                if(mod==='D'){ 
+                    const inf=document.getElementById('qualityInfoD'); inf.classList.remove('hidden');
+                    const bad=document.getElementById('badgeD-B'); bad.className="quality-badge status-pass font-bold italic";
+                    bad.innerText="DOKUMEN PDF DITERIMA SAH"; sStat.d=true;
+                }
+                checkGate(); return;
+            }
+            // LOGIKA PIXEL JIKA GAMBAR
+            const d = canv.getContext('2d').getImageData(0,0,canv.width,canv.height).data;
             let L=0; for(let i=0; i<d.length; i+=4) L+=(d[i]+d[i+1]+d[i+2])/3; L=L/(d.length/4);
-            const PASS = L > 64; 
-            if(mod==='F'){ document.getElementById('qualityInfoW').classList.remove('hidden'); document.getElementById('badgeW-B').className=PASS?"quality-badge status-pass":"quality-badge status-fail"; document.getElementById('badgeW-B').innerText=PASS?"Identitas Sah":"Kurang Cahaya!"; sCheck.f=PASS; }
-            else { document.getElementById('qualityInfoD').classList.remove('hidden'); document.getElementById('badgeD-B').className=PASS?"quality-badge status-pass":"quality-badge status-fail"; document.getElementById('badgeD-B').innerText=PASS?"Bukti Surat Terang":"Laporan Gelap!"; sCheck.d=PASS; }
-            checkAuthority();
+            const PASS = L > 62; 
+            if(mod==='F'){
+                const infoW=document.getElementById('qualityInfoW'); infoW.classList.remove('hidden');
+                document.getElementById('badgeW-B').className=PASS?"quality-badge status-pass":"quality-badge status-fail";
+                document.getElementById('badgeW-B').innerText=PASS?"Identitas Sah":"Pencahayaan Buruk!"; sStat.w=PASS;
+            } else {
+                const infoD=document.getElementById('qualityInfoD'); infoD.classList.remove('hidden');
+                document.getElementById('badgeD-B').className=PASS?"quality-badge status-pass italic font-black underline":"quality-badge status-fail italic font-black";
+                document.getElementById('badgeD-B').innerText=PASS?"Laporan Terverifikasi":"Ulangi : Terlalu Gelap!"; sStat.d=PASS;
+            } checkGate();
         }
 
-        document.getElementById('start-camera').onclick=async()=>{ await camCloseAll(); aStr=await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720}}); const v=document.getElementById('video-preview');v.srcObject=aStr;v.style.display="block";document.getElementById('start-camera').style.display='none';document.getElementById('take-photo').style.display='block'; };
-        document.getElementById('take-photo').onclick=async()=>{ const v=document.getElementById('video-preview'), c=document.getElementById('face-canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); const rawB=c.toDataURL('image/jpeg'); await aiSenseStrict(c,'F'); if(sCheck.f){ fBs=await iComp(rawB); document.getElementById('face-result').src=fBs; document.getElementById('face-result').classList.remove('hidden'); v.style.display="none"; document.getElementById('take-photo').style.display='none'; } };
+        // Camera Triggers
+        document.getElementById('start-camera').onclick=async()=>{ await closeCams(); aS=await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720}}); const v=document.getElementById('video-preview');v.srcObject=aS;v.style.display="block";document.getElementById('start-camera').style.display='none';document.getElementById('take-photo').style.display='block'; };
+        document.getElementById('take-photo').onclick=async()=>{ const v=document.getElementById('video-preview'); const c=document.getElementById('face-canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); const rawB=c.toDataURL('image/jpeg'); await runAIVerification(c,'F'); if(sStat.w){ fB=await smartComp(rawB); document.getElementById('face-result').src=fB; document.getElementById('face-result').classList.remove('hidden'); v.style.display="none"; } };
 
-        document.getElementById('start-doc-camera').onclick=async()=>{ await camCloseAll(); aStr=await navigator.mediaDevices.getUserMedia({video:{facingMode: "environment"}}); const v=document.getElementById('doc-preview-cam');v.srcObject=aStr;v.style.display="block";document.getElementById('camDocBox').classList.remove('hidden'); };
-        document.getElementById('take-doc-photo').onclick=async()=>{ const v=document.getElementById('doc-preview-cam'), c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); const rDoc=c.toDataURL('image/jpeg'); await aiSenseStrict(c,'D'); if(sCheck.d){ dBas=await iComp(rDoc); document.getElementById('doc-result').src=dBas; document.getElementById('doc-result').classList.remove('hidden'); document.getElementById('camDocBox').classList.add('hidden'); } };
-        document.getElementById('bukti').onchange=(e)=>{ const r=new FileReader(); r.onload=(ev)=>{ const it=new Image(); it.onload=()=>{ const ck=document.createElement('canvas');ck.width=it.width;ck.height=it.height;ck.getContext('2d').drawImage(it,0,0);aiSenseStrict(ck,'D');if(sCheck.d){dBas=ev.target.result;document.getElementById('doc-result').src=dBas;document.getElementById('doc-result').classList.remove('hidden');}}; it.src=ev.target.result;}; r.readAsDataURL(e.target.files[0])};
+        document.getElementById('start-doc-camera').onclick=async()=>{ await closeCams(); aS=await navigator.mediaDevices.getUserMedia({video:{facingMode: "environment"}}); const v=document.getElementById('doc-preview-cam');v.srcObject=aS;v.style.display="block";document.getElementById('camDocBox').classList.remove('hidden'); };
+        document.getElementById('take-doc-photo').onclick=async()=>{ const v=document.getElementById('doc-preview-cam'); const cd=document.createElement('canvas'); cd.width=v.videoWidth; cd.height=v.videoHeight; cd.getContext('2d').drawImage(v,0,0); const rawD=c.toDataURL('image/jpeg'); await runAIVerification(cd,'D'); if(sStat.d){ dB=await smartComp(rawD); document.getElementById('doc-result').src=dB; document.getElementById('doc-result').classList.remove('hidden'); document.getElementById('camDocBox').classList.add('hidden'); } };
 
-        // NEW FIX ACTIONS FOR SCREENSHOT 68
-        const sopClickTrigger = document.querySelectorAll('main button')[4];
-        sopClickTrigger.onclick = () => { modalPortal.style.display = 'flex'; document.body.style.overflow = "hidden"; };
-        window.tutupPanelModal = () => { modalPortal.style.display = 'none'; document.body.style.overflow = "auto"; };
-        document.getElementById('legalCheckbox').onchange = (e) => { finGo.disabled = !e.target.checked; finGo.classList.toggle('opacity-30', !e.target.checked); finGo.classList.toggle('cursor-not-allowed', !e.target.checked); };
+        document.getElementById('bukti').onchange=(e)=>{
+            const file = e.target.files[0]; if(!file) return;
+            if(file.type === "application/pdf"){ // JALUR LOGIKA PDF SUNTIKAN AI
+                dB = file; // Data biner pdf disimpan untuk nanti
+                runAIVerification(null, 'D', true); // Bypass piksel untuk PDF
+            } else { // JALUR GAMBAR TETAP STRICT SENSOR
+                const r=new FileReader(); r.onload=(ev)=>{ const it=new Image(); it.onload=()=>{ const ck=document.createElement('canvas');ck.width=it.width;ck.height=it.height;ck.getContext('2d').drawImage(it,0,0);runAIVerification(ck,'D');if(sStat.d){dB=ev.target.result;document.getElementById('doc-result').src=dB;document.getElementById('doc-result').classList.remove('hidden');} }; it.src=ev.target.result; }; r.readAsDataURL(file);
+            }
+        };
 
-        finGo.onclick=async()=>{
-            finGo.disabled=true; finGo.innerText="SAVING DATABASE...";
-            const wN=document.getElementById('no_hp').value, nL=document.getElementById('nama_ktp').value, tId="MLRA-SOP-V38-"+Math.floor(1000 + Math.random() * 8999);
+        mainB.onclick=()=> dP.style.display='flex';
+        cL.onchange=(e)=>{ finP.disabled=!e.target.checked; finP.classList.toggle('opacity-30',!e.target.checked); };
+
+        finP.onclick=async()=>{
+            finP.disabled=true; finP.innerText="AUTHENTICATING TO SERVER...";
+            const waN=document.getElementById('no_hp').value, tId="MLRA-V33-INTEL-"+Date.now().toString(36).toUpperCase();
             try {
-                await addDoc(collection(db,"pengaduan"),{ticket_id:tId,name_official:nL,whatsapp:wN,bio_face:fBs,document:dBas,kec:document.getElementById('kecamatan').value,ohoi:document.getElementById('desa').value,kat_final:document.getElementById('kategori').value,audit_status:"DILIHAT",timestamp:serverTimestamp()});
-                alert("ADUAN SAH TERKONFIRMASI!");
-                const waBody=`NOTIFIKASI RESMI SiAPP MAS MALRA\n\nNo TICKET ID : ${tId}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.`;
-                window.location.href=`https://api.whatsapp.com/send?phone=${wN}&text=${encodeURIComponent(waBody)}`;
-            } catch(e){ alert("DB Sync Error"); finGo.disabled=false; }
+                await addDoc(collection(db,"pengaduan"),{ticket_id:tId,pelapor_legal:document.getElementById('nama_ktp').value,wa:waN,face:fB,doc_official:dB,dist:document.getElementById('kecamatan').value,vill:document.getElementById('desa').value,kat:document.getElementById('kategori').value,status_adm:"DILIHAT",timestamp:serverTimestamp()});
+                const waBody=`NOTIFIKASI RESMI SiAPP MAS\n\nNo TICKET ID : ${tId}\n\nPENGADUAN ANDA ADALAH SUARA RAKYAT UNTUK MALUKU TENGGARA YANG LEBIH BAIK DAN SEJAHTERA.`;
+                alert("ADUAN SAH DISIMPAN!"); window.location.href=`https://api.whatsapp.com/send?phone=${waN}&text=${encodeURIComponent(waBody)}`;
+            } catch(e){ finP.disabled=false; alert("Retry."); }
         };
     </script>
 </body>
