@@ -6,203 +6,162 @@
     <title>SiAPP Mas Admin | Command Hub Malra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #334155; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #334155; margin: 0; }
         .sidebar { background: #0f172a; transition: all 0.3s; }
-        .glass-card { background: white; border-radius: 1.5rem; border: 1px solid #e2e8f0; transition: transform 0.2s; }
-        .glass-card:hover { transform: translateY(-5px); border-color: #3b82f6; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .glass-card { background: white; border-radius: 1.5rem; border: 1px solid #e2e8f0; transition: 0.2s; position: relative; }
         .status-pill { padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-        .mini-stat { background: #e2e8f0; padding: 4px 15px; border-radius: 12px; font-weight: 800; font-size: 12px; display: flex; align-items: center; gap: 8px; }
-        .img-preview { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; border: 2px solid #3b82f6; cursor: pointer; }
-        /* VIEWER MODAL */
-        #viewerModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { max-width: 90%; max-height: 90%; position: relative; }
-        .btn-status { transition: 0.2s; filter: grayscale(1); opacity: 0.6; }
-        .btn-status.active { filter: grayscale(0); opacity: 1; transform: scale(1.1); }
-        * { text-decoration: none !important; } /* REMOVE ALL UNDERLINES */
+        .mini-stat { background: white; padding: 6px 15px; border-radius: 12px; font-weight: 800; font-size: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .img-preview { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; border: 2px solid #3b82f6; cursor: pointer; transition: 0.3s; }
+        .img-preview:hover { transform: scale(1.1); box-shadow: 0 0 15px #3b82f6; }
+        #viewerModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        * { text-decoration: none !important; }
+        textarea.input-note { font-size: 10px; font-weight: 700; border-radius: 12px; resize: none; background: #f8fafc; border: 1.5px dashed #cbd5e1; }
+        textarea.input-note:focus { background: white; border-color: #10b981; border-style: solid; outline: none; }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <!-- VIEWER MODAL (SOLUSI BLANK) -->
+    <!-- INTERNAL IMAGE VIEWER -->
     <div id="viewerModal" onclick="this.style.display='none'">
-        <div class="modal-content text-center">
-            <img id="imgFull" src="" class="rounded-2xl border-4 border-white shadow-2xl mx-auto mb-4" style="max-height: 80vh;">
-            <button class="bg-white text-slate-900 px-8 py-3 rounded-full font-black text-sm">TUTUP DOKUMEN</button>
+        <div class="text-center p-4">
+            <img id="imgFull" src="" class="rounded-3xl border-4 border-white shadow-2xl mx-auto mb-6" style="max-height: 80vh; max-width: 95vw;">
+            <button class="bg-red-600 text-white px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest">KEMBALI KE PANEL</button>
         </div>
     </div>
 
-    <!-- SIDEBAR ARSITEKTUR S.KOM -->
-    <aside class="sidebar w-64 fixed h-full flex flex-col p-6 text-white hidden md:flex">
+    <!-- SIDEBAR ARSITEKTUR -->
+    <aside class="sidebar w-64 fixed h-full flex flex-col p-6 text-white hidden md:flex shadow-2xl">
         <div class="flex items-center gap-3 mb-10 border-b border-slate-800 pb-6">
             <img src="./logo_malra.png" alt="Malra" class="h-10 w-auto">
-            <div>
-                <p class="font-black text-sm leading-none">SiAPP <span class="text-blue-500">MAS</span></p>
-                <p class="text-[8px] opacity-50 tracking-widest mt-1">OFFICIAL HUB</p>
-            </div>
+            <div><p class="font-black text-sm leading-none uppercase">SiAPP <span class="text-blue-500 font-black italic">MAS</span></p>
+            <p class="text-[7px] opacity-40 tracking-widest mt-1 uppercase font-bold italic">Integrity Shield Malra</p></div>
         </div>
 
-        <nav class="space-y-4 flex-1">
-            <div class="p-4 bg-blue-600/10 rounded-2xl flex items-center gap-3 text-blue-400">
-                <i class="fas fa-th-large"></i> <span class="text-xs font-black italic">DATABASE COMMAND</span>
+        <nav class="space-y-4">
+            <div class="p-4 bg-blue-500/10 rounded-2xl flex items-center gap-3 text-blue-400 border border-blue-500/20">
+                <i class="fas fa-microchip"></i> <span class="text-[9px] font-black uppercase tracking-widest italic">Live Investigation</span>
             </div>
         </nav>
 
-        <!-- Nama Anda di Pojok Kiri Bawah (Fixed Cerah) -->
-        <div class="mt-auto border-t border-slate-800 pt-6">
-            <p class="text-[8px] text-blue-400 font-bold mb-1">CHIEF AUDITOR :</p>
-            <p class="font-black text-xs tracking-tight italic">FIRDAUS SETITIT, S.KOM</p>
-            <p class="text-[7px] opacity-40 uppercase tracking-tighter">Auditor Ahli Pertama Malra @ 2026</p>
-            <button id="btnLogout" class="w-full mt-6 bg-red-950/50 hover:bg-red-600 text-red-500 hover:text-white py-3 rounded-xl text-[9px] font-black transition-all border border-red-900/50 uppercase">Terminate Session</button>
+        <div class="mt-auto border-t border-slate-800 pt-8">
+            <p class="text-[8px] text-blue-400 font-black mb-2 uppercase">Chief digital Officer :</p>
+            <p class="font-black text-sm tracking-tighter uppercase italic leading-none">FIRDAUS SETITIT, S.KOM</p>
+            <p class="text-[7px] opacity-30 mt-2 font-black">AUDITOR AHLI PRATAMA MALRA @ 2026</p>
+            <button onclick="location.href='index.html'" class="w-full mt-10 bg-slate-900 border border-red-500/30 text-red-500 py-4 rounded-2xl text-[8px] font-black uppercase hover:bg-red-600 hover:text-white transition-all shadow-xl">Secure Logout</button>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 md:ml-64 p-4 md:p-10">
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
-                <p class="text-[10px] font-bold text-slate-400 mb-1" id="currentDateDisplay">SABTU, 24 MEI 2026</p>
+                <p class="text-[10px] font-black text-blue-500 tracking-[0.2em] mb-2 italic" id="currentDateDisplay"></p>
                 <div class="flex items-center gap-4">
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter italic uppercase">Portal Kendali Audit</h2>
-                    
-                    <!-- PENGECUTAN KOLOM STATISTIK (SLIM MODE) -->
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tighter uppercase italic leading-none">Command Gateway</h2>
                     <div class="flex gap-2">
-                        <div class="mini-stat border border-blue-200 bg-blue-50 text-blue-600"><i class="fas fa-database text-[10px]"></i> <span id="stat_total">0</span></div>
-                        <div class="mini-stat border border-orange-200 bg-orange-50 text-orange-600"><i class="fas fa-bolt text-[10px]"></i> <span id="stat_pending">0</span></div>
+                        <div class="mini-stat border border-blue-100 text-blue-600 uppercase font-black italic"><i class="fas fa-database text-[8px]"></i> <span id="stat_total">0</span></div>
+                        <div class="mini-stat border border-red-100 text-red-600 uppercase font-black italic"><i class="fas fa-shield-virus text-[8px]"></i> <span id="stat_pending">0</span></div>
                     </div>
                 </div>
             </div>
+            <div class="flex items-center gap-4 relative w-full md:w-1/3">
+                <i class="fas fa-search absolute left-5 text-slate-400 text-xs"></i>
+                <input type="text" id="searchAduan" placeholder="CARIKAN DATA TICKET..." class="w-full bg-white border border-slate-200 py-5 pl-12 rounded-2xl text-[10px] font-black outline-none focus:border-blue-500 shadow-inner uppercase italic">
+            </div>
         </header>
 
-        <!-- SEARCH ENGINE -->
-        <div class="mb-8 flex gap-4">
-            <div class="relative flex-1">
-                <i class="fas fa-search absolute left-5 top-4 text-slate-400"></i>
-                <input type="text" id="searchAduan" placeholder="MASUKKAN TICKET ID UNTUK INVESTIGASI DATA..." class="w-full bg-white border border-slate-200 py-4 pl-12 pr-6 rounded-2xl text-xs font-bold outline-none focus:border-blue-500 shadow-sm uppercase italic">
-            </div>
-        </div>
-
-        <!-- ADUAN FEED LIST -->
+        <!-- FEED LIST INVESTIGASI -->
         <div id="mainFeed" class="space-y-6">
-            <div class="flex flex-col items-center py-20 text-slate-300">
-                <i class="fas fa-satellite-dish text-5xl mb-4 animate-pulse"></i>
-                <p class="text-[10px] font-black tracking-widest italic uppercase">Syncing to Central Government Server...</p>
-            </div>
+            <!-- Loading Indicator -->
+            <div class="py-40 text-center"><i class="fas fa-circle-notch fa-spin text-4xl text-slate-200"></i></div>
         </div>
 
-        <p class="text-center text-[7px] text-slate-400 mt-20 font-bold opacity-30 italic">ARCHITECTURE SECURED BY : INSPEKTORAT MALUKU TENGGARA S-DKC.26</p>
+        <p class="text-center text-[7px] text-slate-400 mt-24 font-black opacity-30 italic uppercase">Architecture Final Version V.55 • Sec-Control ID: FR-M01</p>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        const config = {
-            apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc",
-            authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com",
-            projectId: "siapp-mas-malra-aa6c4",
-            storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app",
-            messagingSenderId: "18948056709",
-            appId: "1:18948056709:web:6c5877826c206ac2e6ebec"
-        };
+        const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
         const app = initializeApp(config); const db = getFirestore(app);
 
-        // DATA HANDLER
-        const feedEl = document.getElementById('mainFeed');
-        const stTotal = document.getElementById('stat_total');
-        const stPending = document.getElementById('stat_pending');
-
         onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (snap) => {
-            feedEl.innerHTML = "";
-            let total = snap.size;
-            let pending = 0;
-            
-            snap.forEach(laporan => {
-                const data = lapor.data();
-                const id = lapor.id;
-                if(data.status !== "SELESAI") pending++;
+            const feed = document.getElementById('mainFeed'); feed.innerHTML = "";
+            let total = snap.size; let pending = 0;
 
-                const tgl = data.timestamp ? new Date(data.timestamp.seconds*1000).toLocaleDateString('id-ID',{day:'numeric',month:'short'}) : "...";
+            snap.forEach(it => {
+                const d = it.data(); const cid = it.id;
+                if(d.status !== "SELESAI") pending++;
+                const tgl = d.timestamp ? new Date(d.timestamp.seconds*1000).toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'}) : "OFFLINE";
 
-                const card = `
-                    <div class="glass-card p-6 flex flex-col md:flex-row gap-6 items-start relative overflow-hidden shadow-sm">
-                        <!-- Tgl & Status Float -->
-                        <div class="absolute right-6 top-6 flex flex-col items-end">
-                            <span class="text-[9px] font-black text-slate-300 italic mb-2 uppercase">${tgl}</span>
-                            <span class="status-pill ${getStatusColor(data.status)}">${data.status}</span>
-                        </div>
+                feed.innerHTML += `
+                <div class="glass-card p-6 flex flex-col lg:flex-row gap-8 items-start shadow-inner overflow-hidden border-l-8 border-l-blue-600">
+                    <div class="absolute right-4 top-4 text-right">
+                        <p class="text-[8px] font-black text-slate-300 italic mb-2">${tgl}</p>
+                        <span class="status-pill ${getStatusStyle(d.status)} shadow-sm">${d.status}</span>
+                    </div>
 
-                        <!-- Evidences -->
-                        <div class="flex flex-row md:flex-col gap-2 mt-2">
-                            <img src="${data.face}" class="img-preview shadow-sm" onclick="showBig('${data.face}')" title="Scan Wajah Biometrik">
-                            <div class="img-preview flex items-center justify-center bg-slate-900 text-white" onclick="showBig('${data.doc_archive}')" title="Berkas Pengaduan">
-                                <i class="fas fa-file-invoice text-xs"></i>
-                            </div>
-                        </div>
+                    <div class="flex flex-row lg:flex-col gap-3">
+                        <img src="${d.face}" class="img-preview shadow-lg" onclick="showBig('${d.face}')" title="VALIDASI BIOMETRIK">
+                        <div class="img-preview bg-slate-900 flex items-center justify-center text-white" onclick="showBig('${d.doc_archive}')"><i class="fas fa-file-pdf"></i></div>
+                    </div>
 
-                        <!-- Content Detail -->
-                        <div class="flex-1 space-y-3 pr-20">
-                            <h4 class="text-[9px] text-blue-600 font-black italic tracking-widest uppercase">INVESTIGASI TICKET : ${data.ticket_id}</h4>
-                            <h3 class="text-lg font-black text-slate-800 leading-tight uppercase italic font-sans">${data.kat}</h3>
-                            <p class="text-[11px] font-black text-slate-500 uppercase flex gap-3 italic">
-                                <span class="border-r pr-3"><i class="fas fa-user-circle mr-1"></i> ${data.pelapor_nama}</span>
-                                <span><i class="fas fa-map-marker-alt mr-1 text-red-500"></i> ${data.kec} • OHOI ${data.vill}</span>
+                    <div class="flex-1 space-y-4 pr-10">
+                        <div>
+                            <p class="text-[8.5px] font-black text-blue-500 italic tracking-widest uppercase mb-1">AUDIT RECORD ID : ${d.ticket_id}</p>
+                            <h3 class="text-xl font-black text-slate-800 leading-tight uppercase font-sans">${d.kat}</h3>
+                            <p class="text-[10px] font-bold text-slate-500 mt-2 uppercase flex items-center gap-3">
+                                <span><i class="fas fa-id-badge text-blue-500"></i> ${d.pelapor_nama}</span>
+                                <span><i class="fas fa-map-marked-alt text-emerald-500"></i> ${d.kec} | OHOI ${d.vill}</span>
                             </p>
                         </div>
-
-                        <!-- Actions Controls (Update Status Tuntas) -->
-                        <div class="w-full md:w-48 pt-4 md:pt-0 flex flex-col gap-2 border-t md:border-t-0 md:border-l border-slate-100 pl-0 md:pl-6">
-                             <p class="text-[8px] font-black text-slate-400 italic mb-2">UPDATE AUDIT PROCESS :</p>
-                             <div class="grid grid-cols-2 gap-2">
-                                <button onclick="setStatus('${id}','DIVERIFIKASI')" class="text-[8px] bg-indigo-100 text-indigo-700 py-2 rounded-lg font-bold">VERIFIKASI</button>
-                                <button onclick="setStatus('${id}','DIPROSES')" class="text-[8px] bg-amber-100 text-orange-700 py-2 rounded-lg font-bold">DIPROSES</button>
-                                <button onclick="setStatus('${id}','SELESAI')" class="text-[8px] bg-emerald-100 text-emerald-700 py-2 rounded-lg font-bold col-span-2">SELESAIKAN KASUS</button>
+                        
+                        <!-- KOLOM CATATAN AUDITOR (LEVEL S.KOM) -->
+                        <div class="mt-4 pt-4 border-t border-slate-50">
+                             <label class="text-[8px] font-black text-emerald-600 mb-2 block italic tracking-widest uppercase underline">RESULATAN TINDAK LANJUT AUDITOR :</label>
+                             <div class="flex flex-col gap-2">
+                                <textarea id="note_${cid}" class="w-full input-note p-3 h-20" placeholder="KETIK PESAN/INTRUKSI KEPADA PELAPOR...">${d.note || ""}</textarea>
+                                <button onclick="saveNote('${cid}')" class="bg-slate-900 text-white py-2 px-6 rounded-lg text-[8px] font-black uppercase shadow-xl self-end">SINKRONKAN PESAN</button>
                              </div>
-                             <a href="https://wa.me/${data.wa}" target="_blank" class="w-full mt-2 border border-slate-200 text-slate-800 text-[8px] font-black py-2 rounded-lg text-center bg-slate-50"><i class="fab fa-whatsapp mr-1 text-green-500"></i> RESPON WA PELAPOR</a>
                         </div>
                     </div>
-                `;
-                feedEl.innerHTML += card;
+
+                    <div class="w-full lg:w-48 space-y-2 lg:border-l lg:pl-6 border-slate-100 italic">
+                        <p class="text-[7.5px] font-black text-slate-400 mb-2 italic">AKSI COMMANDER :</p>
+                        <button onclick="st('${cid}','DIVERIFIKASI')" class="w-full bg-slate-50 border border-blue-200 text-blue-600 py-3 rounded-xl text-[9px] font-black shadow-sm">SET VERIFIED</button>
+                        <button onclick="st('${cid}','DIPROSES')" class="w-full bg-amber-50 border border-orange-200 text-orange-600 py-3 rounded-xl text-[9px] font-black shadow-sm">SET AUDITING</button>
+                        <button onclick="st('${cid}','SELESAI')" class="w-full bg-emerald-600 text-white py-3 rounded-xl text-[9px] font-black shadow-xl animate-pulse uppercase italic">DONE : SELESAIKAN</button>
+                    </div>
+                </div>`;
             });
-            stTotal.innerText = total;
-            stPending.innerText = pending;
+            document.getElementById('stat_total').innerText = total;
+            document.getElementById('stat_pending').innerText = pending;
         });
 
-        window.setStatus = async (id, stat) => {
-            if(confirm("TETAPKAN STATUS MENJADI "+stat+"?")){
-                await updateDoc(doc(db, "pengaduan", id), { status: stat });
-            }
+        window.saveNote = async(id) => {
+            const nt = document.getElementById('note_'+id).value;
+            if(!nt){ alert("MASUKKAN PESAN DULU!"); return; }
+            await updateDoc(doc(db,"pengaduan",id), {note: nt});
+            alert("PESAN AUDITOR TELAH DISINKRONKAN KE MASYARAKAT!");
         };
 
-        window.showBig = (src) => {
-            if(!src) { alert("ERROR : DOKUMEN FISIK TIDAK ADA DALAM DATABASE!"); return; }
-            document.getElementById('imgFull').src = src;
-            document.getElementById('viewerModal').style.display = 'flex';
+        window.st = async(id,s) => { if(confirm("RUBAH STATUS?")) await updateDoc(doc(db,"pengaduan",id),{status:s}); };
+        window.showBig = (src) => { if(!src){alert("DATA KOSONG!");return;} document.getElementById('imgFull').src=src; document.getElementById('viewerModal').style.display='flex'; };
+
+        function getStatusStyle(s){
+            if(s==='SELESAI') return 'bg-emerald-100 text-emerald-700 border-2 border-emerald-500';
+            if(s==='DIPROSES') return 'bg-amber-100 text-amber-700';
+            if(s==='DIVERIFIKASI') return 'bg-blue-100 text-blue-700';
+            return 'bg-red-50 text-red-700 border border-red-200';
         }
 
-        function getStatusColor(s){
-            switch(s){
-                case 'SELESAI': return 'bg-emerald-100 text-emerald-600';
-                case 'DIPROSES': return 'bg-amber-100 text-orange-600';
-                case 'DIVERIFIKASI': return 'bg-blue-100 text-blue-600';
-                default: return 'bg-rose-100 text-red-600';
-            }
-        }
+        const n = new Date(); document.getElementById('currentDateDisplay').innerText = n.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
 
-        // AUTO DATE
-        const n = new Date();
-        document.getElementById('currentDateDisplay').innerText = n.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}).toUpperCase();
-
-        document.getElementById('btnLogout').onclick = () => location.href = "index.html";
-
-        // SEARCH ENGINE S.KOM LOGIC
         document.getElementById('searchAduan').oninput = (e) => {
             const v = e.target.value.toUpperCase();
-            document.querySelectorAll('.glass-card').forEach(c => {
-                const t = c.innerText.toUpperCase();
-                c.style.display = t.includes(v) ? 'flex' : 'none';
-            });
+            document.querySelectorAll('.glass-card').forEach(c => c.style.display = c.innerText.toUpperCase().includes(v) ? 'flex' : 'none');
         };
     </script>
 </body>
