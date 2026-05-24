@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiAPP Mas Dashboard | Integrity Control Malra</title>
+    <title>SiAPP Mas Dashboard | Audit Intelligence Malra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; margin: 0; }
-        .sidebar { background: #0f172a; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        .sidebar { background: #0f172a; box-shadow: 10px 0 30px rgba(0,0,0,0.1); z-index: 50; }
         .glass-card { background: white; border-radius: 2rem; border: 1.5px solid #f1f5f9; transition: 0.3s; position: relative; }
-        .glass-card:hover { border-color: #3b82f6; box-shadow: 0 30px 60px -15px rgba(15,23,42,0.1); }
-        .status-pill { padding: 6px 14px; border-radius: 99px; font-size: 10px; font-weight: 800; text-transform: uppercase; border: 1px solid transparent; }
-        .img-thumb { width: 55px; height: 55px; border-radius: 16px; object-fit: cover; border: 2px solid #e2e8f0; cursor: pointer; transition: 0.2s; }
-        .img-thumb:hover { transform: scale(1.1); border-color: #3b82f6; }
+        /* NARRATIVE 2: CRITICAL ALERT GLOW */
+        .priority-glow { border: 2.5px solid #ef4444 !important; box-shadow: 0 0 25px rgba(239, 68, 68, 0.15) !important; animation: glow-border 2s infinite alternate; }
+        @keyframes glow-border { from { border-color: #ef4444; } to { border-color: #fee2e2; } }
+
+        .status-pill { padding: 6px 14px; border-radius: 99px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .img-thumb { width: 55px; height: 55px; border-radius: 16px; object-fit: cover; border: 2px solid #3b82f6; cursor: pointer; transition: 0.2s; }
         .stat-capsule { background: white; padding: 6px 16px; border-radius: 1rem; border: 1px solid #e2e8f0; font-weight: 800; font-size: 11px; display: flex; align-items: center; gap: 8px; }
         textarea.note-area { background: #fdfdfd; border: 2px dashed #e2e8f0; border-radius: 1rem; font-size: 10px; font-weight: 700; resize: none; transition: 0.2s; }
-        textarea.note-area:focus { background: #f0f7ff; border-color: #3b82f6; outline: none; border-style: solid; }
         #imageModal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.96); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        * { text-decoration: none !important; } /* Sesuai Perintah: Tidak ada Garis Bawah */
+        
+        /* NARRATIVE 3: TIMELINE UI */
+        .step-node { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; position: relative; }
+        .step-active { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+        .step-line { flex-grow: 1; height: 2px; background: #e2e8f0; margin-top: 4px; }
+        .line-active { background: #3b82f6; }
+
+        * { text-decoration: none !important; }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -27,30 +35,29 @@
     <div id="imageModal" onclick="this.style.display='none'">
         <div class="p-4 text-center">
             <img id="imgBig" src="" class="rounded-[2rem] border-4 border-white shadow-2xl mx-auto mb-6 max-h-[85vh] max-w-[95vw]">
-            <span class="text-white text-[10px] font-black tracking-widest bg-slate-800 px-6 py-2 rounded-full uppercase">Klik area luar untuk menutup</span>
+            <span class="text-white text-[10px] font-black tracking-widest bg-slate-800 px-6 py-2 rounded-full uppercase italic">AUDIT EVIDENCE SCAN - VERIFIED BY FIREBASE</span>
         </div>
     </div>
 
-    <!-- SIDEBAR DARK MEWAH -->
+    <!-- SIDEBAR STAY -->
     <aside class="sidebar w-64 fixed h-full flex flex-col p-8 text-white hidden lg:flex">
-        <div class="flex items-center gap-4 mb-12 border-b border-slate-800 pb-8">
+        <div class="flex items-center gap-4 mb-10 border-b border-slate-800 pb-8">
             <img src="./logo_malra.png" alt="Malra" class="h-10 w-auto">
-            <div>
-                <p class="font-black text-sm uppercase leading-none tracking-tight">SiAPP <span class="text-blue-500">MAS</span></p>
-                <p class="text-[7px] text-slate-500 font-bold uppercase mt-1">Inspektorat Malra</p>
-            </div>
+            <div><p class="font-black text-sm leading-none uppercase">SiAPP <span class="text-blue-500">MAS</span></p>
+            <p class="text-[7px] text-slate-500 font-bold uppercase mt-1">Investigasi Malra</p></div>
         </div>
 
-        <div class="p-5 bg-blue-600 rounded-[1.2rem] flex items-center gap-4 shadow-xl shadow-blue-900/20">
-            <i class="fas fa-microchip text-xs"></i>
-            <span class="text-[10px] font-black uppercase tracking-wider italic">Investigator</span>
+        <div id="districtStats" class="space-y-2 mb-10 overflow-y-auto max-h-[40vh] pr-2">
+            <p class="text-[7.5px] font-black text-blue-400 mb-3 tracking-widest uppercase italic">NARRATIVE 1 : ANALISA REGIONAL</p>
+            <!-- Data per-kecamatan akan muncul disini otomatis -->
+             <div id="region-list" class="space-y-1"></div>
         </div>
 
         <div class="mt-auto border-t border-slate-800 pt-8 italic">
-            <p class="text-[7px] text-blue-400 font-black mb-2 uppercase">Command Authenticated :</p>
+            <p class="text-[7px] text-blue-400 font-black mb-2 uppercase">Verified Master Node :</p>
             <p class="font-black text-[12px] leading-tight">FIRDAUS SETITIT, S.KOM</p>
             <p class="text-[7px] text-slate-500 font-bold mt-1 uppercase">Auditor Ahli Pertama @ 2026</p>
-            <button onclick="location.href='index.html'" class="w-full mt-10 bg-red-950/20 text-red-500 py-3 rounded-xl text-[8px] font-black border border-red-500/20 hover:bg-red-500 hover:text-white transition-all uppercase">Logout Secure</button>
+            <button onclick="location.href='index.html'" class="w-full mt-10 bg-red-950/20 text-red-500 py-3 rounded-xl text-[8px] font-black border border-red-500/20 hover:bg-red-500 transition-all">TERMINATE SESSION</button>
         </div>
     </aside>
 
@@ -60,29 +67,21 @@
                 <div>
                     <p class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-[0.2em]" id="realTimeDate"></p>
                     <div class="flex items-center gap-5">
-                        <h2 class="text-2xl lg:text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">Gateway Kendali Data</h2>
+                        <h2 class="text-2xl lg:text-3xl font-black text-slate-900 uppercase tracking-tighter leading-none italic">Pusat Data Terpadu</h2>
                         <div class="flex gap-2">
-                            <div class="stat-capsule text-blue-600 border-blue-50">D-DATA : <span id="stat_tot" class="ml-1">0</span></div>
-                            <div class="stat-capsule text-rose-600 border-rose-50">D-ALERT : <span id="stat_pend" class="ml-1">0</span></div>
+                            <div class="stat-capsule text-blue-600 border-blue-50 uppercase italic font-black"><i class="fas fa-file-import text-[8px]"></i> DATA : <span id="stat_tot" class="ml-1">0</span></div>
+                            <div class="stat-capsule text-rose-600 border-rose-50 uppercase italic font-black"><i class="fas fa-radiation text-[8px]"></i> CRITICAL : <span id="stat_pend" class="ml-1">0</span></div>
                         </div>
                     </div>
                 </div>
-                <div class="relative w-full lg:w-96">
-                    <i class="fas fa-search absolute left-5 top-5 text-slate-300 text-xs"></i>
-                    <input type="text" id="searchTkt" placeholder="FILTER DATA ADUAN..." class="w-full bg-white border-2 border-slate-100 p-5 pl-12 rounded-[1.2rem] text-[10px] font-black italic outline-none focus:border-blue-500 uppercase">
-                </div>
+                <input type="text" id="searchTkt" placeholder="CARI TICKET ID..." class="w-full lg:w-80 bg-white border-2 border-slate-100 p-5 rounded-[1.2rem] text-[10px] font-black italic outline-none focus:border-blue-500">
             </div>
         </header>
 
-        <!-- FEED LIST -->
         <div id="dataList" class="space-y-6">
-            <div class="text-center py-24 text-slate-200">
-                <i class="fas fa-sync fa-spin text-4xl mb-4"></i>
-                <p class="text-[10px] font-black uppercase italic tracking-widest">Sinking Archives from Malra Core Server...</p>
-            </div>
+            <!-- Sync Data -->
         </div>
-
-        <p class="text-center text-[7px] font-bold opacity-20 uppercase mt-24">Structure Designed & Locked by Firdaus Setitit • FR-ADMIN-26</p>
+        <p class="text-center text-[7px] font-black opacity-20 uppercase mt-24 italic tracking-[0.3em]">Locked Final Arsitektur • FIRDAUS SETITIT S.KOM • Ver 6.0</p>
     </main>
 
     <script type="module">
@@ -93,79 +92,107 @@
         const app = initializeApp(cf); const db = getFirestore(app);
 
         onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (s) => {
-            const list = document.getElementById('dataList'); list.innerHTML = "";
-            let t = s.size; let p = 0;
+            const list = document.getElementById('dataList'); const rList = document.getElementById('region-list');
+            list.innerHTML = ""; rList.innerHTML = "";
+            let t = s.size, p = 0, distMap = {};
 
-            s.forEach(docSnap => {
-                const d = docSnap.data(); const cid = docSnap.id;
+            s.forEach(it => {
+                const d = it.data(); const cid = it.id;
+                // NARRATIVE 1 LOGIC
+                distMap[d.kec] = (distMap[d.kec] || 0) + 1;
+
+                // NARRATIVE 2: SENSITIVE ALERT
+                const isUrgent = (d.kat === "Dana Desa" || d.kat === "PBJ");
                 if(d.status !== "SELESAI") p++;
                 const tgl = d.timestamp ? new Date(d.timestamp.seconds*1000).toLocaleDateString('id-ID',{day:'numeric',month:'long'}) : "...";
 
                 list.innerHTML += `
-                <div class="glass-card p-7 flex flex-col lg:flex-row gap-8 shadow-sm">
-                    <div class="absolute right-6 top-6 text-right">
-                        <p class="text-[8px] font-bold text-slate-300 italic mb-2 uppercase">${tgl}</p>
+                <div class="glass-card p-8 flex flex-col lg:flex-row gap-10 ${isUrgent ? 'priority-glow' : ''}">
+                    ${isUrgent ? '<div class="absolute left-1/2 -top-3 -translate-x-1/2 bg-red-600 text-white px-6 py-1 rounded-full text-[7px] font-black italic shadow-lg z-10 animate-bounce">URGENT PRIORITY</div>' : ''}
+                    
+                    <div class="absolute right-8 top-8 text-right italic uppercase">
+                        <p class="text-[7.5px] font-bold text-slate-300 mb-2 tracking-widest">${tgl}</p>
                         <div class="status-pill ${getBadge(d.status)}">${d.status}</div>
                     </div>
 
-                    <div class="flex flex-row lg:flex-col gap-3 shrink-0">
-                        <img src="${d.face}" class="img-thumb" onclick="vB('${d.face}')" title="BIO-VALIDATION">
+                    <div class="flex flex-row lg:flex-col gap-4 shrink-0 mt-2">
+                        <img src="${d.face}" class="img-thumb shadow-lg" onclick="vB('${d.face}')" title="BIO-VALIDATION">
                         <div class="img-thumb bg-slate-900 flex items-center justify-center text-white" onclick="vB('${d.doc_archive}')"><i class="fas fa-file-invoice text-xs"></i></div>
                     </div>
 
-                    <div class="flex-1 italic">
-                        <p class="text-[9px] font-black text-blue-600 mb-1 tracking-widest uppercase">CASE ID : ${d.ticket_id}</p>
-                        <h3 class="text-lg font-black text-slate-800 leading-tight mb-2 uppercase font-sans">${d.kat}</h3>
-                        <p class="text-[10px] font-bold text-slate-500 mb-6 flex gap-4 uppercase font-sans">
-                            <span class="flex items-center gap-1"><i class="fas fa-user-circle text-blue-400"></i> ${d.pelapor_nama}</span>
-                            <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt text-rose-400"></i> ${d.kec} - ${d.vill}</span>
+                    <div class="flex-1 italic uppercase">
+                        <p class="text-[9px] font-black text-blue-500 mb-1">D-DATA : ${d.ticket_id}</p>
+                        <h3 class="text-xl font-black text-slate-900 leading-tight mb-2">${d.kat}</h3>
+                        <p class="text-[9.5px] font-bold text-slate-400 mb-6 flex gap-3 italic items-center">
+                            <span><i class="fas fa-fingerprint text-blue-400"></i> ${d.pelapor_nama}</span>
+                            <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
+                            <span><i class="fas fa-location-dot text-rose-500"></i> ${d.kec} / ${d.vill}</span>
                         </p>
 
-                        <!-- POINT 1 : CATATAN BALASAN KE WARGA (LEVEL S.KOM) -->
-                        <div class="pt-5 border-t border-slate-100 space-y-3">
-                             <span class="text-[7.5px] font-black text-slate-400 block tracking-[0.2em] uppercase underline-offset-4">Respon Investigator :</span>
-                             <div class="flex flex-col gap-2">
-                                <textarea id="msg_${cid}" class="w-full note-area p-4 h-20 shadow-inner" placeholder="Tulis catatan penanganan audit untuk pelapor...">${d.note || ""}</textarea>
-                                <button onclick="svMsg('${cid}')" class="self-end bg-slate-900 text-white py-2.5 px-8 rounded-[1rem] text-[8.5px] font-black uppercase transition-all shadow-lg active:scale-95">Push to Sync</button>
+                        <!-- NARRATIVE 3: TIMELINE (LEVEL S.KOM) -->
+                        <div class="flex items-center gap-0 w-full max-w-sm mb-10 mt-6 h-10 px-2 bg-slate-50 rounded-xl">
+                            <div class="step-node step-active"></div><div class="step-line ${isStep(d.status,1) ? 'line-active' : ''}"></div>
+                            <div class="step-node ${isStep(d.status,1) ? 'step-active' : ''}"></div><div class="step-line ${isStep(d.status,2) ? 'line-active' : ''}"></div>
+                            <div class="step-node ${isStep(d.status,2) ? 'step-active' : ''}"></div><div class="step-line ${isStep(d.status,3) ? 'line-active' : ''}"></div>
+                            <div class="step-node ${isStep(d.status,3) ? 'step-active' : ''}"></div>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-100 space-y-4">
+                             <label class="text-[7.5px] font-black text-blue-400 italic block underline tracking-[0.2em]">SINKRONISASI INSTRUKSI AUDIT :</label>
+                             <div class="flex flex-col gap-3">
+                                <textarea id="msg_${cid}" class="w-full note-area p-4 h-24 shadow-inner" placeholder="Tulis instruksi tindak lanjut bagi pelapor...">${d.note || ""}</textarea>
+                                <button onclick="svMsg('${cid}')" class="self-start bg-slate-900 text-white py-3 px-10 rounded-xl text-[8px] font-black shadow-2xl transition-all active:scale-95">SYNC RESPONSE</button>
                              </div>
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-48 lg:border-l border-slate-100 lg:pl-6 flex flex-col gap-2 italic uppercase">
-                        <p class="text-[7.5px] font-black text-slate-400 mb-2 font-sans">Aksi Audit :</p>
-                        <button onclick="uSt('${cid}','DIVERIFIKASI')" class="w-full bg-slate-100 text-blue-600 py-3 rounded-[1rem] text-[8.5px] font-black">Verified</button>
-                        <button onclick="uSt('${cid}','DIPROSES')" class="w-full bg-amber-50 text-amber-600 py-3 rounded-[1rem] text-[8.5px] font-black">Auditing</button>
-                        <button onclick="uSt('${cid}','SELESAI')" class="w-full bg-emerald-600 text-white py-3 rounded-[1rem] text-[8.5px] font-black animate-pulse shadow-emerald-200">Selesai</button>
-                        <a href="https://wa.me/${d.wa}" target="_blank" class="w-full bg-slate-50 border border-slate-200 text-slate-700 py-3 rounded-[1rem] text-[8.5px] font-black text-center mt-4">Hubungi Via WA</a>
+                    <div class="w-full lg:w-56 lg:border-l border-slate-50 lg:pl-10 flex flex-col gap-3 italic">
+                        <p class="text-[7px] font-black text-slate-300 mb-2 uppercase tracking-widest font-sans">Master Action :</p>
+                        <button onclick="uSt('${cid}','DIVERIFIKASI')" class="w-full bg-slate-100 text-blue-700 py-3.5 rounded-[1rem] text-[8px] font-black">VERIFY IDENTITY</button>
+                        <button onclick="uSt('${cid}','DIPROSES')" class="w-full bg-amber-50 text-amber-700 py-3.5 rounded-[1rem] text-[8px] font-black">START AUDITING</button>
+                        <button onclick="uSt('${cid}','SELESAI')" class="w-full bg-emerald-600 text-white py-3.5 rounded-[1rem] text-[8px] font-black animate-pulse">SET COMPLETE</button>
+                        <a href="https://wa.me/${d.wa}" target="_blank" class="w-full bg-white border border-slate-200 text-slate-900 py-3.5 rounded-[1rem] text-[8px] font-black text-center mt-6 shadow-sm flex items-center justify-center gap-2"><i class="fab fa-whatsapp text-green-500 text-[10px]"></i> WHATSAPP RESPOND</a>
                     </div>
                 </div>`;
             });
+            
+            // RENDERING ANALISA KECAMATAN
+            Object.keys(distMap).sort().forEach(kec => {
+                rList.innerHTML += `<div class="flex justify-between items-center text-[7.5px] p-2 hover:bg-slate-800 rounded-lg group transition-all">
+                    <span class="opacity-70">${kec.substring(0,20)}</span>
+                    <span class="bg-blue-600/30 px-2 py-0.5 rounded text-blue-400 font-black">${distMap[kec]} CASE</span>
+                </div>`;
+            });
+
             document.getElementById('stat_tot').innerText = t;
             document.getElementById('stat_pend').innerText = p;
         });
 
-        window.svMsg = async(id) => {
-            const m = document.getElementById('msg_'+id).value;
-            await updateDoc(doc(db, "pengaduan", id), { note: m });
-            alert("SINYAL TERKIRIM : Masyarakat kini dapat melihat balasan Anda.");
-        };
-
-        window.uSt = async(id,st) => { if(confirm("RUBAH TAHAPAN STATUS ADUAN?")) await updateDoc(doc(db,"pengaduan",id),{status:st}); };
+        window.svMsg = async(id) => { const m = document.getElementById('msg_'+id).value; await updateDoc(doc(db, "pengaduan", id), { note: m }); alert("PROSES KOMUNIKASI BERHASIL!"); };
+        window.uSt = async(id,st) => { if(confirm("RUBAH FASE INVESTIGASI?")) await updateDoc(doc(db,"pengaduan",id),{status:st}); };
         window.vB = (u) => { document.getElementById('imgBig').src=u; document.getElementById('imageModal').style.display='flex'; };
 
-        function getBadge(s){
-            if(s==='SELESAI') return 'bg-emerald-50 text-emerald-600 border-emerald-100';
-            if(s==='DIPROSES') return 'bg-amber-50 text-amber-600 border-amber-100';
-            if(s==='DIVERIFIKASI') return 'bg-blue-50 text-blue-600 border-blue-100';
-            return 'bg-red-50 text-red-600 border-red-100';
+        function isStep(cur, s){
+            if(cur==="DILIHAT") return s===0;
+            if(cur==="DIVERIFIKASI") return s<=1;
+            if(cur==="DIPROSES") return s<=2;
+            if(cur==="SELESAI") return s<=3;
+            return false;
         }
 
-        const today = new Date(); document.getElementById('realTimeDate').innerText = today.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+        function getBadge(s){
+            if(s==='SELESAI') return 'bg-emerald-50 text-emerald-700 border-2 border-emerald-500';
+            if(s==='DIPROSES') return 'bg-amber-100 text-amber-800 border border-amber-200';
+            if(s==='DIVERIFIKASI') return 'bg-blue-50 text-blue-700 border border-blue-200';
+            return 'bg-red-50 text-red-700 border border-red-200 animate-pulse';
+        }
 
         document.getElementById('searchTkt').oninput = (e) => {
-            const val = e.target.value.toUpperCase();
-            document.querySelectorAll('.glass-card').forEach(c => c.style.display = c.innerText.toUpperCase().includes(val) ? 'flex' : 'none');
+            const v = e.target.value.toUpperCase();
+            document.querySelectorAll('.glass-card').forEach(c => c.style.display = c.innerText.toUpperCase().includes(v) ? 'flex' : 'none');
         };
+
+        const today = new Date(); document.getElementById('realTimeDate').innerText = today.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
     </script>
 </body>
 </html>
