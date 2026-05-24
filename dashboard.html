@@ -3,105 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | SiAPP Mas Malra</title>
+    <title>Sistem Dashboard Auditor Malra | SiAPP MAS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
-        .login-box { width: 100%; max-width: 400px; }
-        .modal-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
-        * { text-decoration: none !important; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #1e293b; overflow-x: hidden; }
+        .executive-sidebar { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+        .cerah-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .modal-viewer { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        * { text-decoration: none !important; transition: all 0.2s ease; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex">
 
-    <!-- GERBANG MASUK (LOGIN) -->
-    <div id="loginScreen" class="fixed inset-0 bg-[#0f172a] z-[5000] flex items-center justify-center p-6">
-        <div class="login-box glass-card p-10 rounded-[3rem] text-center border-2 border-blue-500/30">
-            <img src="./logo_malra.png" class="h-16 mx-auto mb-6">
-            <h1 class="text-xl font-extrabold tracking-tighter mb-1 uppercase">Command Gateway</h1>
-            <p class="text-[10px] text-blue-400 font-bold mb-10 tracking-[0.3em] uppercase">Integritas Inspektorat Malra</p>
-            
+    <!-- GERBANG LOGIN (COMMAND GATEWAY) -->
+    <div id="loginScreen" class="fixed inset-0 bg-slate-50 z-[99999] flex items-center justify-center p-6">
+        <div class="w-full max-w-md bg-white border border-slate-200 shadow-[0_50px_100px_rgba(0,0,0,0.1)] rounded-[3.5rem] p-12 text-center">
+            <img src="./logo_malra.png" class="h-20 mx-auto mb-8 drop-shadow-sm">
+            <h1 class="text-2xl font-black tracking-tighter mb-1 uppercase text-slate-800">COMMAND HUB</h1>
+            <p class="text-[10px] text-red-600 font-bold mb-10 tracking-[0.4em] uppercase">VERIFIKASI INTEGRITAS INSPEKTORAT</p>
             <div class="space-y-4">
-                <input type="text" id="userInput" placeholder="USERNAME" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-black italic text-center outline-none">
-                <input type="password" id="passInput" placeholder="PASSWORD" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-black italic text-center outline-none">
-                <button id="btnInit" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black text-sm transition-all shadow-xl shadow-blue-500/20 uppercase italic">Initiate Access <i class="fas fa-unlock ml-2"></i></button>
+                <div class="relative"><i class="fas fa-user absolute left-6 top-1/2 -translate-y-1/2 text-slate-300"></i><input type="text" id="userInput" placeholder="ADMIN USERNAME" class="w-full bg-slate-50 border border-slate-100 p-5 pl-14 rounded-2xl font-black italic text-sm outline-none focus:border-blue-500"></div>
+                <div class="relative"><i class="fas fa-key absolute left-6 top-1/2 -translate-y-1/2 text-slate-300"></i><input type="password" id="passInput" placeholder="PASSKEY" class="w-full bg-slate-50 border border-slate-100 p-5 pl-14 rounded-2xl font-black italic text-sm outline-none focus:border-blue-500"></div>
+                <button id="btnInit" class="w-full bg-blue-600 hover:bg-blue-700 py-6 text-white rounded-2xl font-black text-xs transition-all shadow-xl shadow-blue-500/20 uppercase tracking-widest italic">BUKA AKSES SISTEM <i class="fas fa-lock-open ml-3"></i></button>
             </div>
-            <p id="errorMsg" class="text-red-500 text-[10px] mt-6 font-bold hidden uppercase">Kredensial Tidak Sah!</p>
+            <p id="errorMsg" class="text-red-500 text-[10px] mt-6 font-black hidden uppercase">Akses Ditolak! Kredensial Tidak Sah</p>
         </div>
     </div>
 
-    <!-- MAIN INTERFACE -->
-    <div id="mainUI" class="hidden flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-72 border-r border-slate-800 flex flex-col p-8 fixed h-full bg-[#0f172a]">
-            <div class="flex items-center gap-3 mb-16">
-                <img src="./logo_malra.png" class="h-10">
-                <h1 class="text-lg font-black tracking-tighter italic">SiAPP <span class="text-blue-500 font-extrabold">MAS</span></h1>
+    <!-- SIDEBAR (CLEAN NAVY) -->
+    <aside id="sidebarUI" class="hidden w-72 flex-shrink-0 executive-sidebar h-screen sticky top-0 flex flex-col p-8">
+        <div class="flex items-center gap-4 mb-16 px-2">
+            <img src="./logo_malra.png" class="h-10">
+            <div class="leading-none">
+                <h1 class="text-white text-lg font-black tracking-tighter">SiAPP <span class="text-blue-400">MAS</span></h1>
+                <span class="text-[7px] text-slate-400 font-bold uppercase tracking-[0.2em]">Malra Gov Audit</span>
             </div>
+        </div>
+        <nav class="flex-1 space-y-4">
+            <button class="w-full text-left p-5 rounded-2xl bg-blue-600/20 border border-blue-500/30 text-blue-400 font-black text-[11px] italic uppercase tracking-wider shadow-lg"><i class="fas fa-chart-pie mr-4"></i> Auditor Workspace</button>
+        </nav>
+        <div class="bg-white/5 border border-white/5 p-6 rounded-[2rem]">
+            <p class="text-[9px] text-blue-400 font-black mb-1 uppercase italic tracking-widest leading-none">Pemeriksa Terdaftar :</p>
+            <h2 class="text-[12px] font-black uppercase text-white mb-1 leading-none">Firdaus Setitit, S.Kom</h2>
+            <p class="text-[8px] text-slate-500 font-bold italic tracking-tighter leading-none mb-4">Auditor Ahli Pertama Malra @ 2026</p>
+            <button onclick="location.reload()" class="w-full bg-red-600/10 text-red-500 py-3 rounded-xl text-[9px] font-black italic uppercase hover:bg-red-600 hover:text-white border border-red-500/20">LOG OUT SYSTEM</button>
+        </div>
+    </aside>
 
-            <nav class="flex-1 space-y-2">
-                <button class="w-full text-left p-4 rounded-2xl bg-blue-600 font-black text-[11px] italic uppercase tracking-wider"><i class="fas fa-database mr-3"></i> SECURE DATA INTERFACE</button>
-            </nav>
-
-            <div class="bg-slate-900/50 p-6 rounded-3xl mt-auto">
-                <p class="text-[8px] text-blue-500 font-bold mb-1 tracking-widest uppercase italic">Pemeriksa Digital Sah:</p>
-                <h2 class="text-[11px] font-extrabold uppercase italic tracking-tighter mb-1">Firdaus Setitit, S.Kom</h2>
-                <p class="text-[8px] text-slate-500 italic">Auditor Ahli Pertama Malra @ 2026</p>
-                <button onclick="location.reload()" class="w-full border border-red-500/30 text-red-500 py-3 mt-4 rounded-xl text-[9px] font-black italic uppercase hover:bg-red-500 hover:text-white transition-all">Terminate Session</button>
+    <!-- CONTENT AREA (BRIGHT THEME) -->
+    <main id="mainUI" class="hidden flex-1 p-14 h-screen overflow-y-auto bg-[#f8fafc]">
+        <header class="flex justify-between items-center mb-16 border-b border-slate-200 pb-10">
+            <div>
+                <p id="clock" class="text-[10px] text-slate-400 font-black mb-1 tracking-[0.3em] uppercase italic">MEMULAI AUDIT : SUNDAY</p>
+                <h1 class="text-4xl font-black text-slate-800 tracking-tighter uppercase leading-none">PUSAT KOMANDO <span class="text-blue-600">ADUAN DIGITAL</span></h1>
+                <p class="text-[10px] text-slate-500 font-bold mt-2 font-sans tracking-wide">Lembaga Pengawas Pemerintah Daerah Kabupaten Maluku Tenggara</p>
             </div>
-        </aside>
+            <div class="bg-white border p-4 px-8 rounded-3xl text-right">
+                <span class="block text-[8px] text-slate-400 font-bold uppercase tracking-widest">SINKRONISASI</span>
+                <span class="text-emerald-500 font-black text-xs uppercase italic animate-pulse flex items-center justify-end gap-2"><i class="fas fa-circle text-[6px]"></i> Realtime Active</span>
+            </div>
+        </header>
 
-        <!-- Main Content -->
-        <main class="ml-72 flex-1 p-12">
-            <header class="flex justify-between items-center mb-12">
-                <div>
-                    <h2 id="dateTime" class="text-[10px] text-slate-500 font-black mb-1 italic">TANGGAL DINAS</h2>
-                    <h1 class="text-4xl font-black italic tracking-tighter uppercase leading-none">PORTAL COMMAND <span class="text-blue-500 italic">DATA AUDIT DIGITAL</span></h1>
+        <!-- STATS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 mb-16">
+            <div class="cerah-card p-10 rounded-[3rem] relative overflow-hidden flex items-center justify-between border-b-[8px] border-blue-600">
+                <div class="z-10">
+                    <h3 id="statTotal" class="text-7xl font-black text-slate-800 mb-2 italic">0</h3>
+                    <p class="text-[10px] text-slate-500 font-black tracking-widest uppercase">Laporan Tersimpan Aman</p>
                 </div>
-            </header>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-2 gap-8 mb-16">
-                <div class="glass-card p-10 rounded-[3rem] flex items-center justify-between border-l-8 border-blue-500 shadow-xl">
-                    <div>
-                        <p class="text-[9px] text-slate-500 font-black mb-1 italic uppercase tracking-widest">DATA RECORDS SINKRON</p>
-                        <h3 id="statTotal" class="text-6xl font-black italic">0</h3>
-                    </div>
-                    <i class="fas fa-cloud-upload-alt text-4xl text-slate-700 opacity-20"></i>
-                </div>
-                <div class="glass-card p-10 rounded-[3rem] flex items-center justify-between border-l-8 border-red-500 shadow-xl">
-                    <div>
-                        <p class="text-[9px] text-slate-500 font-black mb-1 italic uppercase tracking-widest">ALERT KASUS MASUK</p>
-                        <h3 id="statToday" class="text-6xl font-black italic text-red-500">0</h3>
-                    </div>
-                    <i class="fas fa-bolt text-4xl text-red-500 animate-pulse"></i>
-                </div>
+                <i class="fas fa-archive text-7xl text-blue-100 absolute -right-5 bottom-0 opacity-40"></i>
             </div>
-
-            <!-- List Laporan -->
-            <h4 class="text-[10px] font-black text-slate-500 mb-6 italic tracking-[0.2em] uppercase px-4 border-b border-slate-800 pb-4">Feed Investigasi Malra - Antrean Realtime</h4>
-            <div id="listLaporan" class="space-y-6">
-                <!-- Data Laporan Akan Diinjek Di Sini -->
-            </div>
-        </main>
-    </div>
-
-    <!-- INTERNAL IMAGE VAULT (FIX UNTUK BLANK PAGE) -->
-    <div id="imageVault" class="modal-viewer" onclick="this.style.display='none'">
-        <div class="max-w-2xl w-full p-4 relative" onclick="event.stopPropagation()">
-            <div class="bg-white rounded-[3rem] p-6 overflow-hidden border-[10px] border-slate-800">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <h3 id="vaultTitle" class="text-slate-900 font-black italic text-xs uppercase italic tracking-widest">Digital Evidence Scan</h3>
-                    <button onclick="document.getElementById('imageVault').style.display='none'" class="bg-red-500 text-white w-10 h-10 rounded-full shadow-lg"><i class="fas fa-times"></i></button>
+            <div class="cerah-card p-10 rounded-[3rem] relative overflow-hidden flex items-center justify-between border-b-[8px] border-red-600">
+                <div class="z-10">
+                    <h3 id="statAlert" class="text-7xl font-black text-red-600 mb-2 italic">0</h3>
+                    <p class="text-[10px] text-slate-500 font-black tracking-widest uppercase">Laporan Butuh Tindak Lanjut</p>
                 </div>
-                <img id="vaultImg" src="" class="w-full h-auto rounded-2xl shadow-inner border border-slate-100 max-h-[70vh] object-contain">
-                <div class="flex gap-4 mt-6 italic uppercase font-black text-center text-slate-500 text-[8px] justify-center tracking-widest border-t pt-4 border-slate-100 italic">Verified Document Malra Inspectorate</div>
+                <i class="fas fa-exclamation-triangle text-7xl text-red-100 absolute -right-5 bottom-0 opacity-40 animate-pulse"></i>
             </div>
+        </div>
+
+        <h4 class="text-[11px] font-black text-slate-400 mb-8 tracking-[0.3em] uppercase italic flex items-center gap-4">Antrean Pemeriksaan<span class="flex-1 h-[1px] bg-slate-200"></span></h4>
+        <div id="listLaporan" class="space-y-8 pb-32">
+             <div class="text-center py-20 italic text-slate-400 font-bold uppercase tracking-widest animate-pulse">Menghubungkan Ke Arsip Database Malra...</div>
+        </div>
+    </main>
+
+    <!-- EVIDENCE MODAL (LIGHT INSIDE) -->
+    <div id="vaultViewer" class="modal-viewer" onclick="this.style.display='none'">
+        <div class="w-[90%] max-w-2xl bg-white p-8 rounded-[4rem] border-[10px] border-slate-900 shadow-2xl relative" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <span id="vtTtl" class="bg-blue-100 text-blue-600 px-6 py-2 rounded-full font-black text-[10px] uppercase italic tracking-widest">Evidence Scanner</span>
+                <button onclick="document.getElementById('vaultViewer').style.display='none'" class="w-12 h-12 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-600 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <img id="vImg" src="" class="w-full h-auto rounded-[2.5rem] border border-slate-100 max-h-[65vh] object-contain shadow-inner">
+            <p class="text-center mt-6 text-[8px] font-black text-slate-400 tracking-[0.5em] uppercase italic">Pemeriksaan Digital SAH Maluku Tenggara</p>
         </div>
     </div>
 
@@ -109,88 +108,93 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        const cf = { 
-            apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", 
-            authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", 
-            projectId: "siapp-mas-malra-aa6c4", 
-            storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app"
-        };
-        const app = initializeApp(cf); const db = getFirestore(app);
+        const fConfig = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app" };
+        const app = initializeApp(fConfig); const db = getFirestore(app);
 
-        // LOGIN SYSTEM
+        // LOGIN ENGINE
         document.getElementById('btnInit').onclick = () => {
             const u = document.getElementById('userInput').value;
             const p = document.getElementById('passInput').value;
             if(u === "itkabmalra1" && p === "itkabmalra01") {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('mainUI').style.display = 'flex';
-                initRealtime();
+                document.getElementById('loginScreen').style.opacity = '0';
+                setTimeout(() => { 
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    document.getElementById('sidebarUI').classList.remove('hidden');
+                    document.getElementById('mainUI').classList.remove('hidden');
+                    loadData();
+                }, 300);
             } else {
-                document.getElementById('errorMsg').style.display = 'block';
+                const em = document.getElementById('errorMsg'); em.classList.remove('hidden');
+                setTimeout(() => em.classList.add('hidden'), 2000);
             }
         };
 
-        // IMAGE VIEW LOGIC (INTERNAL FIX)
-        window.viewEvid = (title, b64) => {
-            if(!b64) return alert("BUKTI TIDAK TERSEDIA");
-            document.getElementById('vaultTitle').innerText = title;
-            document.getElementById('vaultImg').src = b64;
-            document.getElementById('imageVault').style.display = 'flex';
-        }
-
-        // UPDATE STATUS HANDLER
-        window.setStatus = async (id, nextStatus) => {
-            const auditDoc = doc(db, "pengaduan", id);
-            await updateDoc(auditDoc, { status: nextStatus });
+        // VIEW EVIDENCE 100% INTERNAL
+        window.intip = (title, img) => {
+            if(!img || img === "undefined") return alert("KOSONG : BELUM ADA SCAN");
+            document.getElementById('vtTtl').innerText = title;
+            document.getElementById('vImg').src = img;
+            document.getElementById('vaultViewer').style.display = 'flex';
         };
 
-        function initRealtime() {
-            const qD = query(collection(db, "pengaduan"), orderBy("timestamp", "desc"));
-            onSnapshot(qD, (sn) => {
-                document.getElementById('statTotal').innerText = sn.size;
-                document.getElementById('statToday').innerText = sn.size; // Today counts simplified to all latest records
+        // UPDATE LOGIC
+        window.goSetStatus = async (id, stat) => {
+            await updateDoc(doc(db, "pengaduan", id), { status: stat });
+        };
 
-                let html = '';
-                sn.forEach(docSnap => {
-                    const d = docSnap.data();
-                    const stColor = d.status === "SELESAI" ? "bg-emerald-500" : d.status === "DIPROSES" ? "bg-orange-500" : "bg-red-500";
+        function loadData() {
+            onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (qs) => {
+                document.getElementById('statTotal').innerText = qs.size;
+                document.getElementById('statAlert').innerText = qs.docs.filter(d => d.data().status === "DILIHAT").length;
+
+                let cards = "";
+                qs.forEach(docS => {
+                    const l = docS.data();
+                    const statusClass = l.status === "SELESAI" ? "bg-emerald-500 text-white" : l.status === "DIPROSES" ? "bg-amber-500 text-white" : "bg-red-100 text-red-600";
                     
-                    html += `
-                    <div class="glass-card rounded-[3.5rem] p-8 transition-all hover:bg-slate-800/40 relative overflow-hidden flex flex-col md:flex-row gap-8 items-start border-r-4 ${d.status==='SELESAI'?'border-emerald-500':'border-transparent'}">
-                        <div class="relative group" onclick="viewEvid('PROFIL WAJAH SAH', '${d.face}')">
-                            <img src="${d.face || 'https://placehold.co/400?text=NO+IMAGE'}" class="h-32 w-32 object-cover rounded-[2rem] border-4 border-slate-700 shadow-xl group-hover:border-blue-500 transition-all cursor-pointer">
-                            <div class="absolute -top-2 -left-2 ${stColor} p-2 rounded-lg text-[7px] font-black uppercase italic shadow-lg">${d.status}</div>
+                    cards += `
+                    <div class="cerah-card rounded-[3.5rem] p-10 flex flex-col md:flex-row gap-10 items-center border-l-[12px] ${l.status === 'SELESAI' ? 'border-emerald-500' : l.status === 'DIPROSES' ? 'border-amber-500' : 'border-red-500'} hover:translate-y-[-5px]">
+                        
+                        <div class="relative group cursor-pointer" onclick="intip('BIOMETRIK WAJAH PELAPOR','${l.face}')">
+                            <img src="${l.face || 'https://placehold.co/400?text=MALRA+EMPTY'}" class="w-32 h-32 rounded-[2.5rem] object-cover border-4 border-white shadow-xl group-hover:ring-4 group-hover:ring-blue-400">
+                            <span class="absolute -top-3 -right-3 ${statusClass} p-2 rounded-xl text-[8px] font-black uppercase italic shadow-lg">${l.status}</span>
                         </div>
 
-                        <div class="flex-1 italic font-black uppercase text-justify pr-20">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="text-[9px] bg-slate-700 px-3 py-1 rounded-full text-slate-300 font-bold font-sans">${d.ticket_id}</span>
-                                <span class="text-[9px] text-slate-500 font-bold">${d.timestamp ? new Date(d.timestamp.seconds*1000).toLocaleString() : 'HARI INI'}</span>
+                        <div class="flex-1 italic font-black uppercase">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-[9px] bg-slate-100 px-3 py-1 rounded-lg text-slate-400 font-bold">${l.ticket_id}</span>
+                                <span class="text-[9px] text-blue-400">${l.timestamp ? new Date(l.timestamp.seconds*1000).toLocaleString('id-ID') : 'MENUNGGU ANTRIAN'}</span>
                             </div>
                             
-                            <h3 class="text-xl font-extrabold italic tracking-tighter text-blue-100 mb-1 leading-tight">${d.kat || 'INISIASI PEMERIKSAAN'}</h3>
-                            <p class="text-[9px] text-slate-500 mb-4 tracking-tighter">PELAPOR: <span class="text-white italic">${d.pelapor_nama}</span> | KECAMATAN: <span class="text-white italic">${d.kec}</span> | OHOI: <span class="text-white italic">${d.vill}</span></p>
-                            
-                            <div class="flex flex-wrap gap-4 items-center">
-                                <button onclick="viewEvid('SURAT FISIK DIGITAL', '${d.doc_archive}')" class="bg-blue-600 text-[9px] py-4 px-10 rounded-2xl hover:bg-blue-700 transition-all font-black tracking-widest"><i class="fas fa-file-invoice mr-2"></i> LIAT SCAN SURAT</button>
-                                <a href="https://wa.me/${d.wa}" target="_blank" class="border border-emerald-500 text-emerald-500 text-[9px] py-4 px-10 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all font-black tracking-widest"><i class="fab fa-whatsapp mr-2"></i> KONTAK PELAPOR</a>
+                            <h4 class="text-xl tracking-tighter text-slate-800 leading-tight mb-2">${l.kat}</h4>
+                            <div class="space-y-1 mb-6 opacity-70">
+                                <p class="text-[10px] text-slate-500">PELAPOR: <span class="text-blue-600">${l.pelapor_nama}</span></p>
+                                <p class="text-[10px] text-slate-500">TITIK: <span class="text-slate-800">${l.kec} | ${l.vill}</span></p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-4">
+                                <button onclick="intip('HASIL SCAN SURAT FISIK','${l.doc_archive}')" class="bg-blue-600 hover:bg-slate-800 text-white text-[9px] py-4 px-10 rounded-2xl shadow-xl font-black uppercase italic tracking-widest"><i class="fas fa-file-signature mr-2"></i> Liat Scan Surat</button>
+                                <a href="https://wa.me/${l.wa}" target="_blank" class="border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white text-[9px] py-3.5 px-8 rounded-2xl shadow-sm font-black italic">KONTAK WHATSAPP</a>
                             </div>
                         </div>
 
-                        <!-- Panel Status Samping -->
-                        <div class="absolute right-10 top-1/2 -translate-y-1/2 space-y-2 hidden md:block">
-                            <button onclick="setStatus('${docSnap.id}', 'DIVERIFIKASI')" class="block w-28 bg-slate-900 border border-slate-700 text-slate-500 text-[7px] py-2 px-4 rounded-lg font-black hover:border-blue-500 hover:text-blue-500 uppercase tracking-tighter">1. Set VERIFIED</button>
-                            <button onclick="setStatus('${docSnap.id}', 'DIPROSES')" class="block w-28 bg-slate-900 border border-slate-700 text-slate-500 text-[7px] py-2 px-4 rounded-lg font-black hover:border-orange-500 hover:text-orange-500 uppercase tracking-tighter">2. Set PROSES</button>
-                            <button onclick="setStatus('${docSnap.id}', 'SELESAI')" class="block w-28 bg-emerald-500 text-white text-[7px] py-2 px-4 rounded-lg font-black uppercase tracking-tighter italic">3. Set SELESAI</button>
+                        <!-- PANEL ACTIONS AUDIT -->
+                        <div class="grid grid-cols-1 gap-2 w-32 border-l border-slate-100 pl-8 h-full hidden lg:grid">
+                             <button onclick="goSetStatus('${docS.id}','DIVERIFIKASI')" class="text-[8px] p-2 bg-slate-50 border rounded-lg font-bold text-slate-400 hover:bg-blue-500 hover:text-white uppercase tracking-tighter">Set Verified</button>
+                             <button onclick="goSetStatus('${docS.id}','DIPROSES')" class="text-[8px] p-2 bg-slate-50 border rounded-lg font-bold text-slate-400 hover:bg-orange-500 hover:text-white uppercase tracking-tighter">Set Proses</button>
+                             <button onclick="goSetStatus('${docS.id}','SELESAI')" class="text-[8px] p-2 bg-emerald-600 text-white rounded-lg font-bold hover:bg-slate-900 uppercase tracking-tighter italic">Set Selesai</button>
                         </div>
                     </div>`;
                 });
-                document.getElementById('listLaporan').innerHTML = html || '<div class="text-center py-20 italic text-slate-500 text-sm">Menunggu Signal Audit Maluku Tenggara...</div>';
+                document.getElementById('listLaporan').innerHTML = cards || '<p class="text-center italic opacity-30 text-xs">Arsip Inspektorat Kosong.</p>';
             });
         }
 
-        // Jam Realtime S.Kom
-        setInterval(()=>{ document.getElementById('dateTime').innerText = new Date().toLocaleString('id-ID', {weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit'}); }, 1000);
+        setInterval(() => {
+            const now = new Date();
+            const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+            document.getElementById('clock').innerText = `CURRENT SYSTEM AUDIT : ${days[now.getDay()]} | ${now.toLocaleString('id-ID')}`;
+        }, 1000);
     </script>
 </body>
 </html>
