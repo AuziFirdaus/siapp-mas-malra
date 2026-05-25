@@ -3,108 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiAPP MAS | Digital Auditor Command Center Malra</title>
+    <title>DASHBOARD | SiAPP MAS Malra Executive</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #1e293b; overflow-x: hidden; }
-        .sidebar { background: #0f172a; border-right: 2px solid #334155; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7fa; color: #0f172a; margin: 0; overflow-x: hidden; }
+        .side { background: #0f172a; border-right: 2px solid #1e293b; z-index: 50; }
         
-        /* CARD MODERNI (NO UNDERLINE, NO ABU-ABU) */
+        /* CARD DESIGN FINAL S.KOM */
         .case-card { 
+            background: #ffffff; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 1.5rem; 
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 6px solid transparent;
+        }
+        .case-card:hover { transform: translateY(-3px); border-color: #3b82f6; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); }
+        .urgent-line { border-left-color: #ef4444 !important; background: #fffafa !important; }
+        
+        .expand-view { display: none; background: #fafcfe; border-bottom: 2px solid #cbd5e1; border-radius: 0 0 1.5rem 1.5rem; }
+
+        /* HEADER SLIM (THE SOLUTION) */
+        .header-slim { 
             background: white; 
             border-radius: 2rem; 
-            border: 1px solid #e2e8f0; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            overflow: hidden;
+            padding: 1.25rem 2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #3b82f6;
         }
-        .case-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08); border-color: #3b82f6; }
-        .priority-alert { background: #fff5f5; border-color: #fecaca; border-left: 10px solid #ef4444; }
-        
-        /* STATUS SYSTEM */
-        .status-capsule { padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-        .bg-complete { background: #dcfce7; color: #065f46; border: 1px solid #059669; }
-        .bg-process { background: #fef9c3; color: #854d0e; border: 1px solid #ca8a04; }
-        .bg-verified { background: #dbeafe; color: #1e40af; border: 1px solid #2563eb; }
+
+        .stat-badge { background: #0f172a; color: #fff; padding: 4px 14px; border-radius: 10px; font-weight: 800; font-size: 11px; display: flex; align-items: center; gap: 8px; }
+        .stat-blue { background: #2563eb !important; }
 
         /* VIEWERS */
-        #viewerOverlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 10px; }
-        iframe.doc-frame { width: 85vw; height: 85vh; border-radius: 1.5rem; background: white; border: 10px solid #1e293b; }
-        img.img-frame { max-height: 85vh; max-width: 90vw; border-radius: 1.5rem; border: 5px solid white; box-shadow: 0 0 100px rgba(0,0,0,0.5); }
-
-        textarea.note-editor { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 1.5rem; padding: 20px; font-weight: 600; font-size: 13px; color: #0f172a; resize: none; width: 100%; transition: 0.3s; }
-        textarea.note-editor:focus { border-color: #3b82f6; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-
-        * { text-decoration: none !important; }
+        #ovModal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
+        iframe.doc-p { width: 90vw; height: 85vh; border-radius: 1rem; border: none; background: #fff; }
+        img.img-p { max-height: 80vh; max-width: 90vw; border-radius: 1rem; border: 4px solid white; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        
+        * { text-decoration: none !important; transition: 0.2s ease-in-out; }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <!-- MASTER EVIDENCE VIEWER (SOLUSI BLANK) -->
-    <div id="viewerOverlay" onclick="this.style.display='none'">
-        <div id="viewerBox" class="flex flex-col items-center gap-6"></div>
+    <div id="ovModal" onclick="this.style.display='none'">
+        <div id="ovBox" class="flex flex-col items-center"></div>
     </div>
 
-    <!-- SIDEBAR AUDITORS MALRA -->
-    <aside class="sidebar w-72 fixed h-full flex flex-col p-8 text-white hidden lg:flex font-black uppercase italic shadow-2xl">
-        <div class="flex items-center gap-4 mb-12 pb-10 border-b border-slate-800">
-            <img src="./logo_malra.png" alt="LogMalra" class="h-14 w-auto brightness-125">
-            <div><h1 class="text-xl leading-none">SiAPP <span class="text-blue-500">MAS</span></h1><p class="text-[7px] tracking-[0.3em] opacity-40 mt-1.5 font-sans not-italic">Integrity Portal System</p></div>
+    <!-- SIDEBAR STAY FIXED -->
+    <aside class="side w-64 fixed h-full p-6 text-white hidden lg:flex flex-col font-black italic uppercase">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-8 mb-8">
+            <img src="./logo_malra.png" alt="Kab" class="h-10 w-auto">
+            <div><h1 class="text-sm">SiAPP <span class="text-blue-500 font-bold">MAS</span></h1><p class="text-[6.5px] opacity-40 mt-1 not-italic">investigation matrix</p></div>
         </div>
-
-        <div class="flex-1 space-y-6 overflow-y-auto pr-2 custom-scrollbar">
-            <div>
-                <p class="text-[9px] text-blue-400 font-bold mb-5 tracking-widest px-2"><i class="fas fa-map-marked-alt mr-2"></i> PETA PEMETAAN KASUS :</p>
-                <div id="sideMapping" class="space-y-2 bg-slate-900/60 p-3 rounded-3xl border border-slate-800 shadow-inner">
-                    <p class="text-[8px] p-5 opacity-20 text-center uppercase tracking-widest">Collecting Maps...</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-auto pt-10 border-t border-slate-800 not-italic">
-            <p class="text-[9px] text-blue-500 font-black mb-3 uppercase tracking-widest italic underline decoration-transparent">Primary Auditor Sah :</p>
-            <p class="text-md font-black uppercase tracking-tight text-white italic leading-tight">FIRDAUS SETITIT, S.KOM</p>
-            <p class="text-[8px] opacity-40 mt-1 uppercase font-bold tracking-[0.1em]">Auditor Ahli Pratama MALRA @ 2026</p>
-            <button onclick="location.href='index.html'" class="w-full mt-10 bg-slate-800 border border-slate-700 text-red-400 py-4 rounded-2xl text-[9px] uppercase font-black hover:bg-red-800 hover:text-white transition-all">Selesaikan Sesi Portal</button>
+        <div class="flex-1 overflow-y-auto" id="sideMapBox"></div>
+        <div class="mt-auto border-t border-slate-800 pt-8 lowercase not-italic">
+            <p class="text-[9px] text-blue-400 font-bold uppercase mb-2">authorized by :</p>
+            <p class="text-sm font-black uppercase text-white italic">FIRDAUS SETITIT, S.KOM</p>
+            <p class="text-[8px] opacity-40 uppercase font-bold tracking-widest mt-1">Audit Pratama MALRA @ 2026</p>
+            <button onclick="location.href='index.html'" class="w-full mt-8 bg-slate-800 hover:bg-red-800 text-[8px] py-3 rounded-xl transition-all uppercase font-black">LOGOUT PORTAL</button>
         </div>
     </aside>
 
-    <main class="flex-1 lg:ml-72 p-6 lg:p-12 font-black italic">
-        <!-- HEADER DIGITAL CENTER -->
-        <header class="flex flex-col md:flex-row justify-between md:items-end gap-10 mb-20 border-b-4 border-white pb-12 shadow-sm bg-white rounded-[3rem] p-10">
-            <div class="text-left">
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="w-10 h-[2px] bg-red-600"></span>
-                    <p class="text-[11px] text-slate-400 font-sans tracking-[0.2em] uppercase font-bold" id="txtTgl"></p>
+    <main class="flex-1 lg:ml-64 p-5 lg:p-8 font-black">
+        <!-- HEADER COMPACT SYSTEM (FIXED SCREENSHOT ERROR) -->
+        <header class="header-slim">
+            <div class="flex items-center gap-6">
+                <div class="leading-none border-l-4 border-red-600 pl-4">
+                    <h2 class="text-xl font-black text-slate-800 uppercase italic">Meja Kerja <span class="text-blue-600">Komando</span></h2>
+                    <p class="text-[9px] text-slate-400 font-sans tracking-widest uppercase mt-1" id="calT"></p>
                 </div>
-                <h2 class="text-5xl text-slate-900 leading-none uppercase tracking-tighter">MEJA KERJA <span class="text-blue-600">KOMANDO</span></h2>
-                <div class="flex gap-3 mt-6">
-                    <div class="bg-blue-600 text-white px-6 py-2.5 rounded-2xl text-[12px] font-black uppercase shadow-lg"><i class="fas fa-file-invoice mr-2 opacity-50"></i> RECORD : <span id="val_t">0</span></div>
-                    <div class="bg-slate-900 text-white px-6 py-2.5 rounded-2xl text-[12px] font-black uppercase shadow-lg"><i class="fas fa-satellite mr-2 text-emerald-400 animate-pulse"></i> AKTIF : <span id="val_a">0</span></div>
+                <div class="hidden md:flex gap-3 ml-4">
+                    <div class="stat-badge stat-blue">REC: <span id="st-t">0</span></div>
+                    <div class="stat-badge bg-rose-600 animate-pulse">ACT: <span id="st-a">0</span></div>
                 </div>
             </div>
-            <div class="relative lg:w-[420px] group">
-                <i class="fas fa-id-card-clip absolute left-5 top-5.5 text-blue-600 text-lg group-hover:scale-125 transition-transform duration-500"></i>
-                <input type="text" id="engineS" placeholder="CARI DATA BY TICKET ATAU NAMA..." class="w-full bg-slate-100 border-none p-5.5 pl-14 rounded-3xl text-[12px] font-black uppercase shadow-inner outline-none transition-all focus:bg-white focus:ring-4 focus:ring-blue-100">
+            
+            <div class="relative w-72">
+                <i class="fas fa-fingerprint absolute left-4 top-3.5 text-blue-500"></i>
+                <input type="text" id="masterSrc" placeholder="SEARCH CASE ID..." class="w-full bg-slate-50 border border-slate-100 p-3 pl-10 rounded-xl text-[10px] italic font-black shadow-inner outline-none focus:ring-4 focus:ring-blue-100">
             </div>
         </header>
 
-        <!-- DATABASE TABLE (THE ULTIMATE CARDS) -->
-        <div id="masterFeedAudit" class="space-y-8">
-             <!-- Placeholder Connection -->
-             <div class="p-32 text-center opacity-10 flex flex-col items-center">
-                 <i class="fas fa-microchip text-7xl mb-5 animate-spin duration-[3000ms]"></i>
-                 <p class="text-2xl uppercase font-black">Syncing Integrated Malra Hub...</p>
+        <!-- DATA FEED -->
+        <div id="masterFeed" class="space-y-4">
+             <div class="py-40 text-center opacity-10 uppercase italic text-2xl font-black flex flex-col items-center">
+                 <i class="fas fa-shield-alt text-5xl mb-4 animate-bounce"></i>
+                 SYINCING INTELLIGENCE LINK...
              </div>
         </div>
 
-        <footer class="mt-28 mb-12 flex flex-col items-center opacity-10 font-black text-[10px] tracking-[0.6em] text-slate-600 uppercase">
-             <span>ARCHIVE MANAGEMENT SYSTEMS v.FINAL-F8</span>
-             <span class="mt-4 border-t-2 border-slate-900 w-64 block"></span>
-        </footer>
+        <p class="text-center text-[7.5px] text-slate-400 mt-20 opacity-20 tracking-[0.5em] font-black uppercase">Infrastructure Matrix Hub Malra • Final V.70 Edition</p>
     </main>
 
     <script type="module">
@@ -114,88 +108,72 @@
         const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
         const app = initializeApp(config); const db = getFirestore(app);
 
-        // DATA CONTROLLER MASTER
-        onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (sn) => {
-            const feed = document.getElementById('masterFeedAudit'); const maps = document.getElementById('sideMapping');
-            feed.innerHTML = ""; maps.innerHTML = "";
-            let t = sn.size, a = 0, dictMap = {};
+        // DATA REALTIME
+        onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (s) => {
+            const f = document.getElementById('masterFeed'); const m = document.getElementById('sideMapBox');
+            f.innerHTML=""; m.innerHTML=""; let total = s.size, act = 0, dm = {};
 
-            sn.forEach(docSnap => {
-                const d = docSnap.data(); const cid = docSnap.id;
-                dictMap[d.kec] = (dictMap[d.kec] || 0) + 1; if(d.status !== "SELESAI") a++;
-                const isCrit = (d.kat === "Dana Desa" || d.kat === "PBJ");
+            s.forEach(snap => {
+                const d = snap.data(); const cid = snap.id;
+                dm[d.kec] = (dm[d.kec] || 0) + 1;
+                if(d.status !== "SELESAI") act++;
+                const prio = (d.kat === "Dana Desa" || d.kat === "PBJ");
                 
-                feed.innerHTML += `
-                <div id="row_${cid}">
-                    <div class="case-card p-10 py-7 grid lg:grid-cols-12 items-center gap-10 ${isCrit?'priority-alert':''}" onclick="masterExp('${cid}')">
-                        <div class="col-span-1"><img src="${d.face}" class="w-16 h-16 rounded-[1.3rem] shadow-xl border-4 border-white object-cover ring-2 ring-blue-50"></div>
-                        <div class="col-span-3 border-l-2 border-slate-100 pl-8 leading-tight">
-                            <p class="text-[9px] text-blue-600 font-bold mb-1 uppercase font-sans tracking-widest">IDENTITI: ${d.ticket_id}</p>
-                            <h4 class="text-[13px] font-extrabold uppercase text-slate-900 italic font-sans">${d.kat}</h4>
-                        </div>
-                        <div class="col-span-3 text-[14px] font-extrabold text-slate-800 tracking-tight">${d.pelapor_nama.toUpperCase()}</div>
-                        <div class="col-span-3 text-[11px] font-black text-blue-900 px-3 py-1 bg-slate-50 rounded-xl w-fit uppercase">KEC. ${d.kec}</div>
-                        <div class="col-span-2 text-right">
-                             <span class="status-capsule ${stStyle(d.status)}">${d.status}</span>
-                             <i class="fas fa-angles-down ml-6 text-slate-200 text-xs"></i>
-                        </div>
+                f.innerHTML += `
+                <div id="w_${cid}">
+                    <div class="case-card grid lg:grid-cols-12 items-center gap-6 px-8 py-3 ${prio?'urgent-line':''}" onclick="ex('${cid}')">
+                        <div class="col-span-1"><img src="${d.face}" class="w-11 h-11 rounded-xl shadow-lg border-2 border-white object-cover"></div>
+                        <div class="col-span-3 leading-tight"><p class="text-[8px] text-blue-600 font-bold mb-0.5 tracking-tighter">ID: ${d.ticket_id}</p><h4 class="text-[11px] font-black italic uppercase">${d.kat}</h4></div>
+                        <div class="col-span-3 text-[13px] font-black italic text-slate-800 truncate">${d.pelapor_nama.toUpperCase()}</div>
+                        <div class="col-span-3 text-[10px] text-slate-400 font-black italic opacity-60 uppercase">${d.kec}</div>
+                        <div class="col-span-2 text-right"><span class="px-3 py-1.5 rounded-lg text-[8px] font-black bg-slate-900 text-white shadow-inner uppercase tracking-wider">${d.status}</span></div>
                     </div>
 
-                    <!-- REKAYASA DETAIL EXPANSION (STRICT S.KOM LOCK) -->
-                    <div id="panel_${cid}" class="hidden py-14 px-10 bg-white mt-1 border-2 border-slate-50 rounded-[3rem] shadow-2xl italic font-black uppercase">
-                        <div class="grid lg:grid-cols-12 gap-12 items-start">
-                            <div class="col-span-3 space-y-6">
-                                <p class="text-[10px] text-slate-400 italic mb-5 tracking-[0.2em] px-1 text-center">BIOMETRIC EVIDENCE</p>
-                                <img src="${d.face}" class="rounded-[2.8rem] border-8 border-slate-50 shadow-2xl cursor-zoom-in" onclick="event.stopPropagation(); zoomRes('${d.face}')">
-                                <button onclick="event.stopPropagation(); zoomRes('${d.doc_archive}')" class="w-full bg-slate-950 border-b-8 border-black text-white p-6 rounded-[2rem] text-[10px] font-bold shadow-2xl flex items-center justify-center gap-4 transition-all hover:scale-105 active:translate-y-2"><i class="fas fa-file-magnifying-glass text-blue-400"></i> BUKA DOKUMEN TERTULIS</button>
+                    <div id="p_${cid}" class="expand-view p-8 font-black italic uppercase">
+                         <div class="grid lg:grid-cols-12 gap-10">
+                            <div class="col-span-3 space-y-4">
+                                 <p class="text-[10px] text-center text-slate-400 tracking-[0.2em] italic underline">Biometrik</p>
+                                 <img src="${d.face}" class="rounded-2xl border-4 border-white shadow-2xl">
+                                 <button onclick="event.stopPropagation(); opE('${d.doc_archive}')" class="w-full bg-slate-950 border-b-4 border-black text-white p-5 rounded-2xl text-[9px] shadow-lg flex items-center justify-center gap-3"><i class="fas fa-file-shield text-blue-500"></i> BUKA ARSIP FISIK</button>
                             </div>
-                            <div class="col-span-6 space-y-6">
-                                <div class="bg-blue-50/50 p-10 rounded-[3.2rem] border border-blue-100 shadow-inner">
-                                    <label class="text-[10px] text-blue-600 block mb-4 italic tracking-widest"><i class="fas fa-reply mr-2"></i> KOLOM INSTRUKSI & CATATAN AUDITOR :</label>
-                                    <textarea id="nt_${cid}" onclick="event.stopPropagation()" class="note-editor h-48 mb-8" placeholder="Berikan arahan untuk Pelapor di sini...">${d.note || ""}</textarea>
-                                    <button onclick="event.stopPropagation(); svLog('${cid}')" class="w-full bg-blue-600 border-b-4 border-blue-900 text-white py-5 rounded-[2.2rem] text-[11px] font-black uppercase shadow-xl shadow-blue-200">SINKRONISASI PESAN KEPADA PELAPOR ✅</button>
-                                </div>
+                            <div class="col-span-6 bg-white p-8 rounded-3xl border border-blue-50 shadow-2xl">
+                                 <p class="text-[9px] text-blue-600 mb-4 underline decoration-transparent font-black tracking-widest italic uppercase">TINDAK LANJUT INSTRUKSI :</p>
+                                 <textarea id="nt_${cid}" onclick="event.stopPropagation()" class="w-full h-32 border-2 border-dashed border-slate-100 p-4 font-black italic text-xs outline-none bg-slate-50 rounded-2xl focus:bg-white text-slate-800" placeholder="Amanat Auditor Untuk Masyarakat...">${d.note || ""}</textarea>
+                                 <button onclick="event.stopPropagation(); sv('${cid}')" class="w-full mt-4 bg-emerald-600 border-b-4 border-emerald-950 text-white p-4.5 rounded-2xl font-black text-[9.5px] italic shadow-2xl active:translate-y-2 uppercase">UPDATE RECORD INVESTIGASI ✅</button>
                             </div>
-                            <div class="col-span-3 space-y-5">
-                                <p class="text-[10px] opacity-20 italic font-black text-center mb-6">ADMINISTRASI TAHAP AUDIT</p>
-                                <button onclick="event.stopPropagation(); stUP('${cid}','DIVERIFIKASI')" class="w-full bg-white border-2 border-blue-100 text-blue-600 py-4 rounded-3xl font-black text-[10px]">TANDAI: DIVERIFIKASI</button>
-                                <button onclick="event.stopPropagation(); stUP('${cid}','DIPROSES')" class="w-full bg-white border-2 border-amber-100 text-orange-700 py-4 rounded-3xl font-black text-[10px]">TANDAI: DALAM PROSES</button>
-                                <div class="pt-8">
-                                     <button onclick="event.stopPropagation(); stUP('${cid}','SELESAI')" class="w-full bg-emerald-600 border-b-4 border-emerald-950 text-white py-6 rounded-[3rem] font-black text-[12px] shadow-2xl active:translate-y-3">ARSIP KASUS : SELESAI ✅</button>
-                                     <a href="https://wa.me/${d.wa}" target="_blank" onclick="event.stopPropagation()" class="block text-center mt-8 text-[11px] text-emerald-500 font-sans font-bold underline underline-offset-4 decoration-transparent hover:decoration-emerald-500"><i class="fab fa-whatsapp"></i> Hubungi Langsung WhatsApp</a>
-                                </div>
+                            <div class="col-span-3 flex flex-col gap-3 font-sans">
+                                 <button onclick="event.stopPropagation(); stS('${cid}','DIVERIFIKASI')" class="w-full bg-white border-2 border-slate-50 py-3 rounded-2xl text-[9px] text-blue-600 font-bold uppercase italic">Set Verifikasi</button>
+                                 <button onclick="event.stopPropagation(); stS('${cid}','DIPROSES')" class="w-full bg-white border-2 border-slate-50 py-3 rounded-2xl text-[9px] text-amber-700 font-bold uppercase italic">Set Dalam Audit</button>
+                                 <div class="pt-8">
+                                      <button onclick="event.stopPropagation(); stS('${cid}','SELESAI')" class="w-full bg-emerald-600 border-b-4 border-emerald-900 text-white py-5 rounded-[2rem] text-[10px] font-black shadow-xl animate-pulse italic uppercase">COMPLETED MISSION ✅</button>
+                                      <a href="https://wa.me/${d.wa}" target="_blank" onclick="event.stopPropagation()" class="block text-center mt-6 text-[9.5px] opacity-20 underline uppercase font-bold italic tracking-tighter">hubungi langsung : WhatsApp</a>
+                                 </div>
                             </div>
-                        </div>
+                         </div>
                     </div>
                 </div>`;
             });
-            Object.keys(dictMap).sort().forEach(k=> maps.innerHTML += `<div class="group flex items-center justify-between p-3.5 bg-slate-900 border border-slate-800/50 hover:bg-blue-700 rounded-2xl transition-all cursor-default mb-1"><span class="text-[8.5px] opacity-50 font-sans font-black uppercase text-blue-50 italic">${k}</span><span class="bg-blue-600 text-[8.5px] font-black text-white px-2 py-0.5 rounded-lg shadow-lg">${dictMap[k]} RECORD</span></div>`);
-            document.getElementById('val_t').innerText = t; document.getElementById('val_a').innerText = a;
+            Object.keys(dm).sort().forEach(k=> m.innerHTML += `<div class="group flex items-center justify-between p-3.5 bg-slate-900/50 hover:bg-blue-600/90 rounded-2xl mb-1.5 transition-all cursor-default px-4 italic border border-slate-800"><span class="text-[8px] opacity-50 uppercase text-blue-100">${k}</span><span class="text-[8.5px] font-black text-blue-400 group-hover:text-white">${dm[k]} LAPS</span></div>`);
+            document.getElementById('st-t').innerText=total; document.getElementById('st-a').innerText=act;
         });
 
-        window.masterExp = (id) => { const el = document.getElementById('panel_'+id); el.style.display = el.style.display==='grid'?'none':'grid'; };
-        window.svLog = async(id) => { const note = document.getElementById('nt_'+id).value; if(!note){alert("LOG PESAN KOSONG!");return;} await updateDoc(doc(db,"pengaduan",id),{note:note}); alert("LOG BERHASIL DI-TRANSFERS SECARA REAL-TIME!"); };
-        window.stUP = async(id,s) => { if(confirm("PERBARUI STATUS KE "+s+"?")) await updateDoc(doc(db,"pengaduan",id),{status:s}); };
+        window.ex = (i) => { const e=document.getElementById('p_'+i); e.style.display=(e.style.display==='grid'?'none':'grid'); };
+        window.sv = async(i) => { const n=document.getElementById('nt_'+i).value; await updateDoc(doc(db,"pengaduan",i),{note:n}); alert("DATA BERHASIL SINKRON!"); };
+        window.stS = async(i,s) => { if(confirm("GANTI TAHAP PROGRESS?")) await updateDoc(doc(db,"pengaduan",i),{status:s}); };
         
-        window.zoomRes = (uri) => {
-            if(!uri){alert("NO ARCHIVE DETECTED.");return;}
-            const vB = document.getElementById('viewerBox'); vB.innerHTML = "";
-            if(uri.includes("application/pdf") || uri.includes(";base64,JVBERi")){ 
-                vB.innerHTML=`<iframe src="${uri}" class="doc-frame"></iframe><button class="bg-white px-10 py-4 rounded-full font-black text-xs text-red-600">TUTUP DOKUMEN INSPEKSI</button>`; 
-            } else { 
-                vB.innerHTML=`<img src="${uri}" class="img-frame shadow-2xl animate-in zoom-in-75 duration-300"><button class="bg-white px-10 py-4 rounded-full font-black text-xs text-blue-900 mt-6 shadow-2xl">KEMBALI KE MEJA KASUS</button>`; 
-            }
-            document.getElementById('viewerOverlay').style.display='flex';
+        window.opE = (url) => {
+            const vB = document.getElementById('ovBox'); vB.innerHTML=""; 
+            if(url.includes("pdf") || url.includes(";base64,JVBERi")){ vB.innerHTML=`<iframe src="${url}" class="doc-p"></iframe><button class="bg-red-600 text-white px-10 py-3 rounded-full mt-6 text-[10px] font-black uppercase">Tutup Arsip Pemerintah</button>`; }
+            else { vB.innerHTML=`<img src="${url}" class="img-p shadow-2xl"><button class="bg-blue-600 text-white px-10 py-3 rounded-full mt-8 text-[10px] font-black uppercase shadow-2xl">Kembali Ke Panel</button>`; }
+            document.getElementById('ovModal').style.display='flex';
         };
 
-        function stStyle(s){ if(s==='SELESAI') return 'bg-complete shadow-md'; if(s==='DIPROSES') return 'bg-process'; return 'bg-verified'; }
-        
-        document.getElementById('engineS').oninput=(e)=>{
+        document.getElementById('masterSrc').oninput=(e)=>{
             const v = e.target.value.trim().toUpperCase();
-            document.querySelectorAll('[id^="row_"]').forEach(el => el.style.display = el.innerText.toUpperCase().includes(v)?'block':'none');
+            document.querySelectorAll('[id^="w_"]').forEach(el => el.style.display=el.innerText.toUpperCase().includes(v)?'block':'none');
         };
 
-        const dy = new Date(); document.getElementById('txtTgl').innerText = dy.toLocaleDateString('id-ID', {weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+        const ct=new Date(); document.getElementById('calT').innerText = ct.toLocaleDateString('id-ID', {weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase() + " • SECURE CONTROL MALRA";
     </script>
 </body>
 </html>
