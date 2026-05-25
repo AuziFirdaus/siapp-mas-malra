@@ -65,19 +65,15 @@
         <form id="siAppForm" class="border-[3px] border-red-600 rounded-[3.5rem] p-1 bg-white mb-10 shadow-2xl">
             <div class="bg-white rounded-[3.3rem] p-6 space-y-10 shadow-inner">
                 
-                <div class="red-frame-outer">
-            <div class="bg-white p-5 rounded-[3.5rem] italic shadow-inner font-black uppercase text-justify">
-                <form id="complaintForm" class="space-y-8">
-                    <!-- I. BIO SCAN -->
-                    <div class="border-hijau-kab text-center shadow-sm">
-                        <span class="text-[9px] text-emerald-600 mb-5 block font-black tracking-widest uppercase">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
-                        <video id="video-preview" autoplay playsinline></video>
-                        <canvas id="face-canvas" class="hidden"></canvas>
-                        <img id="face-result" class="mx-auto rounded-[1.5rem] mb-4 hidden border-4 border-emerald-500 shadow-xl" style="max-width: 150px;">
-                        <div id="qualityInfoW" class="mb-4 flex justify-center hidden font-black italic"><span id="badgeW-B" class="quality-badge status-fail italic">...</span></div>
-                        <button type="button" id="start-camera" class="w-full btn-biru-langit py-4 text-[9.5px] shadow-md uppercase">AKTIFKAN KAMERA BIOMETRIK</button>
-                        <button type="button" id="take-photo" class="w-full bg-red-600 text-white py-4 rounded-xl text-[9.5px] hidden font-black tracking-widest animate-pulse">OK : SENSOR WAJAH VALID</button>
-                    </div>
+                <!-- STEP 1 -->
+                <div class="border-hijau-kab p-6 text-center shadow-inner">
+                    <span class="text-[8.5px] text-emerald-600 mb-5 block font-black italic">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
+                    <video id="v-preview" autoplay playsinline class="mx-auto border-4 border-slate-50"></video>
+                    <img id="f-res" class="mx-auto rounded-3xl hidden border-4 border-emerald-500 w-32 h-32 object-cover">
+                    <div id="q-w" class="hidden my-4"><span id="b-w" class="quality-badge status-fail">SIAGA SENSOR...</span></div>
+                    <button type="button" id="start-c" class="w-full bg-sky-500 text-white font-black py-4 rounded-xl text-[9px]">BUKA LENSA KAMERA</button>
+                    <button type="button" id="snap-c" class="w-full bg-red-600 text-white font-black py-4 rounded-xl hidden animate-pulse text-[9px]">OK: KONFIRMASI WAJAH SAH</button>
+                </div>
 
                 <!-- STEP 2 INPUTS -->
                 <div class="space-y-6">
