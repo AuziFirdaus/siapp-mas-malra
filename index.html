@@ -142,7 +142,7 @@
         const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
         async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
-        // THE ENGINE S-DKC HD S.KOM VERSION
+        // THE ENGINE S-DKC HD VERSION
         async function runHdSampler(blob){ return new Promise(r=>{const img=new Image();img.src=blob;img.onload=()=>{const c=document.createElement('canvas');const m=1100;let w=img.width,h=img.height;if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,h);r(c.toDataURL('image/jpeg',0.62))};}); }
         
         function vChk(){ if(ready.w && ready.d){ sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); sSubmit.innerText="IDENTITAS SAH : KIRIM ADUAN SEKARANG"; sSubmit.classList.add('bg-slate-900','animate-pulse'); } }
@@ -150,7 +150,7 @@
         async function analyzeSense(cv,mod,by=false){
             if(by){ ready.d=true; vChk(); document.getElementById('q-status-d').classList.remove('hidden'); return; }
             const p=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data; let lu=0; for(let i=0;i<p.length;i+=4) lu+=(p[i]+p[i+1]+p[i+2])/3; lu/=(p.length/4);
-            const pass = lu > 40; // Lighter AI Sensor for S.Kom stability
+            const pass = lu > 40; // Lighter AI Sensor for stability
             if(mod==='W'){ ready.w=pass; document.getElementById('q-status-w').classList.remove('hidden'); document.getElementById('badge-w').innerText=pass?"PIKSEL WAJAH VALID":"AREA KURANG TERANG!"; document.getElementById('badge-w').className=pass?"quality-badge status-pass":"quality-badge status-fail"; }
             else { ready.d=pass; } vChk();
         }
