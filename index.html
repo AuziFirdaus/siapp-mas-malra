@@ -79,25 +79,26 @@
                     <div class="px-2"><label class="text-[8px] text-slate-500 block mb-2 font-black italic">NAMA LENGKAP (E-KTP)</label><input type="text" id="n_ktp" required placeholder="INPUT NAMA..." class="w-full border-hijau-kab h-14 p-5 text-red-700 outline-none text-xs font-black shadow-inner"></div>
                     <div class="px-2"><label class="text-[8px] text-slate-500 block mb-2 font-black italic">WHATSAPP AKTIF</label><input type="number" id="wa" required placeholder="08..." class="w-full border-hijau-kab h-14 p-5 text-red-700 outline-none text-xs font-black shadow-inner"></div>
                     
-                    <!-- REVISI KATEGORI: FORCE COLOR BLACK -->
-                    <div class="px-2"><label class="text-[8px] text-slate-500 block mb-2 font-black italic">KATEGORI PENGADUAN</label>
-                        <select id="kat" required class="w-full border-hijau-kab h-14 outline-none font-black text-xs">
-                            <option value="">- PILIH KATEGORI -</option>
-                            <option value="Dana Desa">Pengawasan Dana Desa</option>
-                            <option value="Dana BOS">Dana BOS / PAUD / BOP</option>
-                            <option value="BOK Puskesmas">Dana BOK Puskesmas</option>
-                            <option value="PBJ">Pengadaan barang/jasa</option>
-                        </select>
+               <div class="space-y-5">
+                        <div class="text-left px-2"><label class="text-[8.5px] text-slate-500 block mb-2 font-black italic">NAMA PELAPOR SESUAI E-KTP</label><input type="text" id="nama_ktp" required placeholder="INPUT NAMA LENGKAP..." class="w-full border-hijau-kab text-red-700 text-xs p-5 outline-none font-black italic shadow-inner"></div>
+                        <div class="text-left px-2"><label class="text-[8.5px] text-slate-500 block mb-2 font-black italic">WhatsApp Pelapor</label><input type="number" id="no_hp" required placeholder="08..." class="w-full border-hijau-kab text-red-700 text-xs p-5 outline-none font-black italic"></div>
+                        <div class="text-left px-2"><label class="text-[8.5px] text-slate-500 block mb-2 font-black italic">KATEGORI PENGADUAN</label>
+                            <select id="kategori" class="w-full border-hijau-kab h-[58px] font-black">
+                                <option value="Dana Desa">PENGAWASAN DANA DESA</option><option value="Dana BOS">DANA BOS / PAUD / BOP</option><option value="BOK Puskesmas">DANA BOK PUSKESMAS</option><option value="PBJ">PENGADAAN BARANG/JASA</option>
+                            </select>
+                        </div>
+
+                        <!-- MODIFIKASI LAYOUT LOKASI VERTIKAL (SARAN PAK FIRDAUS S.KOM) -->
+                        <div class="space-y-2 px-2">
+                             <div class="text-left">
+                                <label class="text-[8.5px] text-slate-500 block mb-2 font-black italic">LOKASI KECAMATAN</label>
+                                <select id="kecamatan" required class="w-full border-hijau-kab h-[58px] font-black uppercase">
+                                    <option value="">- PILIH KECAMATAN -</option><option value="Kei Kecil">Kei Kecil</option><option value="Manyeuw">Manyeuw</option><option value="Kei Kecil Timur">Kei Kecil Timur</option><option value="Kei Kecil Timur Selatan">Kei Kecil Timur Selatan</option><option value="Kei Kecil Barat">Kei Kecil Barat</option><option value="Hoat Sorbay">Hoat Sorbay</option><option value="Kei Besar">Kei Besar</option><option value="KEI BESAR SELATAN">KEI BESAR SELATAN</option><option value="KEI BESAR SELATAN BARAT">KEI BESAR SELATAN BARAT</option><option value="KEI BESAR UTARA BARAT">KEI BESAR UTARA BARAT</option><option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
+                                </select>
+                             </div>
+                             <div class="text-left"><label class="text-[8.5px] text-slate-500 block mb-2 font-black italic">NAMA OHOI / DESA</label><input type="text" id="desa" required placeholder="INPUT OHOI" class="w-full border-hijau-kab text-red-700 text-xs h-[55px] outline-none font-black shadow-inner"></div>
+                        </div>
                     </div>
-                    
-                    <!-- REVISI KECAMATAN: FORCE COLOR BLACK -->
-                    <div class="px-2"><label class="text-[8px] text-slate-500 block mb-2 font-black italic">LOKASI KECAMATAN</label>
-                        <select id="kec" required class="w-full border-hijau-kab h-14 font-black text-xs outline-none">
-                            <option value="">- PILIH KECAMATAN -</option><option value="Kei Kecil">Kei Kecil</option><option value="Manyeuw">Manyeuw</option><option value="Kei Kecil Timur">Kei Kecil Timur</option><option value="Kei Kecil Timur Selatan">Kei Kecil Timur Selatan</option><option value="Kei Kecil Barat">Kei Kecil Barat</option><option value="Hoat Sorbay">Hoat Sorbay</option><option value="Kei Besar">Kei Besar</option><option value="KEI BESAR SELATAN">KEI BESAR SELATAN</option><option value="KEI BESAR SELATAN BARAT">KEI BESAR SELATAN BARAT</option><option value="KEI BESAR UTARA BARAT">KEI BESAR UTARA BARAT</option><option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
-                        </select>
-                    </div>
-                    <div class="px-2"><label class="text-[8px] text-slate-500 block mb-2 font-black italic">NAMA OHOI / DESA</label><input type="text" id="des" required placeholder="NAMA OHOI..." class="w-full border-hijau-kab h-14 p-5 outline-none font-black italic text-red-700 shadow-inner"></div>
-                </div>
 
                 <div class="border-hijau-kab text-center shadow-inner italic">
                     <span class="text-[10px] text-black font-black uppercase mb-7 block">DOKUMEN PENGADUAN TERTULIS (WAJIB)</span>
