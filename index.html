@@ -127,7 +127,7 @@
                     <p id="o_n" class="text-[10px] font-bold italic text-emerald-950 leading-relaxed uppercase">...</p>
                 </div>
             </div>
-            <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-6 text-slate-300 font-bold text-[7.5px] cursor-pointer hover:text-black-900 uppercase tracking-widest">CLOSE</p>
+            <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-6 text-slate-300 font-bold text-[9px] cursor-pointer hover:text-red-900 uppercase tracking-widest">CLOSE</p>
         </div>
     </div>
 
@@ -183,7 +183,7 @@
 
         document.getElementById('submitAllMain').onclick=async()=>{
             hubLoad.style.display='flex'; let g=0; const inv=setInterval(()=>{if(g<96){g+=4; pFill.style.width=g+'%';}},85);
-            const resID="MLRA-VFINAL-"+Math.random().toString(36).substring(5,13).toUpperCase();
+            const resID="MALRA-VFINAL-"+Math.random().toString(36).substring(5,13).toUpperCase();
             try {
                 await addDoc(collection(db,"pengaduan"),{ticket_id:resID, pelapor_nama:document.getElementById('n_pelapor').value, wa:document.getElementById('wa_pelapor').value, face:fcBase, doc_archive:docBase, kec:document.getElementById('kec_audit').value, vill:document.getElementById('desa_audit').value, kat:document.getElementById('kat_audit').value, status:"DILIHAT", timestamp:serverTimestamp()});
                 clearInterval(inv); pFill.style.width='100%';
