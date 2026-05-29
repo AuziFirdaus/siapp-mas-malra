@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUB AUDIT MALRA | COMMAND CENTER SECURED</title>
+    <title>FINAL DASHBOARD | Arsitektur S.Kom Malra Secured</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000a1f; color: #ffffff; margin: 0; overflow-x: hidden; }
-        /* GATE LOGIN SYSTEM */
+        /* PINTU MASUK KEAMANAN */
         #loginWall { position: fixed; inset: 0; background: #000a1f; z-index: 1000000; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: white; padding: 50px; rounded-radius: 4rem; width: 100%; max-width: 450px; text-align: center; border-bottom: 10px solid #3b82f6; border-radius: 3rem; }
+        .login-card { background: white; padding: 40px; width: 100%; max-width: 420px; border-bottom: 12px solid #3b82f6; border-radius: 3.5rem; text-align: center; }
         
-        /* DASHBOARD LAYOUT SECURED */
-        #mainPortal { display: none; background: #f1f5f9; color: #1e293b; }
-        .sidebar-final { background: #000a1f; border-right: 3px solid #3b82f6; width: 300px; height: 100vh; position: fixed; }
-        .case-matrix-row { background: #ffffff; border-bottom: 2.5px solid #e2e8f0; cursor: pointer; border-left: 10px solid transparent; }
-        .case-matrix-row:hover { background: #f8faff; border-left-color: #3b82f6; transform: scale(1.002); transition: 0.2s; }
-        .expanded-area { display: none; background: #ffffff; border-bottom: 5px solid #cbd5e1; }
-        #modalViewerFinale { position: fixed; inset: 0; background: rgba(0,0,0,0.99); z-index: 999999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
-        .iframe-v { width: 92vw; height: 85vh; border-radius: 1.5rem; background: white; border: none; }
-        .img-v { max-height: 80vh; max-width: 90vw; border-radius: 2rem; border: 6px solid white; shadow: 2xl; }
-        .font-heavy-bolt { color: #000000 !important; font-weight: 900 !important; }
-        .btn-filt { background: white; border: 2.5px solid #e2e8f0; color: #64748b; padding: 12px 28px; border-radius: 99px; font-weight: 900; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
-        .btn-filt.active { background: #0ea5e9 !important; border-color: #0ea5e9 !important; color: white !important; scale: 1.05; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.5); }
+        /* SISTEM KENDALI UTAMA */
+        #mainPortal { display: none; background: #f1f5f9; color: #1e293b; min-height: 100vh; }
+        .side-master { background: #000a1f; border-right: 4px solid #3b82f6; width: 290px; height: 100vh; position: fixed; z-index: 50; }
+        .row-matrix-final { background: #ffffff; border-bottom: 2.5px solid #e2e8f0; cursor: pointer; border-left: 10px solid transparent; transition: 0.2s; }
+        .row-matrix-final:hover { background: #fdfdfd; border-left-color: #3b82f6; transform: scale(1.002); }
+        .panel-inspect { display: none; background: #ffffff; border-bottom: 5px solid #cbd5e1; }
+        
+        /* PUSAT PENAMPIL DATA (MODAL VIEWER) */
+        #modalViewerFinale { position: fixed; inset: 0; background: rgba(0,0,0,1); z-index: 999999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(25px); padding: 15px; }
+        .if-final { width: 92vw; height: 82vh; border-radius: 1.5rem; background: white; border: none; }
+        .im-final { max-height: 75vh; max-width: 90vw; border-radius: 2rem; border: 8px solid white; shadow: 2xl; object-fit: contain; }
+
+        .font-audit-heavy { color: #000000 !important; font-weight: 900 !important; }
+        .btn-tabs { background: white; border: 2.5px solid #e2e8f0; color: #64748b; padding: 12px 26px; border-radius: 99px; font-weight: 900; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
+        .btn-tabs.f-active { background: #0ea5e9 !important; border-color: #0ea5e9 !important; color: white !important; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4); }
+        
+        /* PULSE ALARM */
+        .ping-new { width: 15px; height: 12px; background: #ef4444; border-radius: 50%; animation: pings 1.5s infinite; border: 2px solid white; }
+        @keyframes pings { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
         * { text-decoration: none !important; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen font-black uppercase italic">
 
-    <!-- [PINTU RAHASIA] : THE FIREWALL GATE -->
+    <!-- THE PINTU GERBANG (S-DKC LOGIC) -->
     <div id="loginWall">
-        <div class="login-card shadow-[0_50px_100px_rgba(0,0,0,0.4)] border-4 border-slate-900 animate-in fade-in zoom-in duration-500">
-             <img src="./logo_malra.png" class="h-24 mx-auto mb-8 animate-bounce">
-             <h2 class="text-2xl font-black text-slate-800 italic uppercase mb-2">COMMAND GATEWAY</h2>
-             <p class="text-[10px] text-slate-400 font-bold mb-10 tracking-[0.2em]">INTEGRITAS INSPEKTORAT MALRA</p>
+        <div class="login-card shadow-2xl border-4 border-slate-900 animate-in fade-in duration-500">
+             <img src="./logo_malra.png" class="h-24 mx-auto mb-6">
+             <h2 class="text-xl font-black text-slate-800 uppercase italic">HUB AKSES TERKUNCI</h2>
+             <p class="text-[9px] text-blue-600 font-bold mb-10 tracking-[0.2em]">IDENTITAS ARSITEKTUR DIGITAL MALRA</p>
              <div class="space-y-4">
-                  <input type="text" id="userIn" placeholder="IDENTITAS DIGITAL" class="w-full bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl text-center text-lg font-black text-slate-800 outline-none uppercase italic focus:border-blue-500">
-                  <input type="password" id="passIn" placeholder="KODE OTORISASI" class="w-full bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl text-center text-lg font-black text-slate-800 outline-none focus:border-blue-500 tracking-widest">
-                  <button id="btnUnlock" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-[2rem] text-sm uppercase italic mt-10 shadow-2xl tracking-widest active:scale-95 transition-all">INITIATE ACCESS <i class="fas fa-lock-open ml-3"></i></button>
+                  <input type="text" id="userInput" placeholder="USER ID" class="w-full bg-slate-50 border-2 border-slate-200 p-5 rounded-[2rem] text-center text-lg font-black text-slate-900 outline-none uppercase italic focus:border-blue-500">
+                  <input type="password" id="passInput" placeholder="AUTH CODE" class="w-full bg-slate-50 border-2 border-slate-200 p-5 rounded-[2rem] text-center text-lg font-black text-slate-900 outline-none focus:border-blue-500 tracking-[0.5em]">
+                  <button id="authBtn" class="w-full bg-blue-600 text-white font-black py-6 rounded-full text-sm uppercase italic mt-8 shadow-2xl tracking-[0.3em] active:scale-95 transition-all">BUKA AKSES SISTEM <i class="fas fa-fingerprint ml-2"></i></button>
              </div>
-             <p class="mt-12 text-[7px] font-black text-slate-300 opacity-50 italic">© ARSITEKTUR KEPEMILIKAN DIGITAL MALRA BY FIRDAUS S.KOM</p>
         </div>
     </div>
 
-    <!-- DASHBOARD PORTAL (HIDE UNTIL SUCCESS) -->
+    <!-- UTAMA DASHBOARD -->
     <div id="mainPortal" class="flex min-h-screen">
-        <aside class="sidebar-final p-8 text-white hidden lg:flex flex-col font-black italic uppercase shadow-2xl">
-            <div class="flex flex-col items-center border-b-4 border-blue-600 pb-10 mb-8 text-center">
-                <img src="./logo_malra.png" alt="Logo" class="h-32 w-auto mb-6 scale-110 drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                <h1 class="text-xl">SiAPP <span class="text-blue-500">MAS</span></h1>
-                <p class="text-[7px] text-blue-400 mt-2 font-bold tracking-widest opacity-60">Command Center Hub</p>
+        <aside class="side-master p-6 text-white hidden lg:flex flex-col">
+            <div class="text-center border-b-4 border-blue-600 pb-10 mb-8">
+                <img src="./logo_malra.png" alt="Malra" class="h-32 w-auto mb-6 mx-auto scale-110">
+                <h1 class="text-xl">SiAPP <span class="text-blue-500 italic">MAS</span></h1>
+                <p class="text-[7px] text-blue-300 opacity-60 tracking-widest mt-2 uppercase">Integrity Commander</p>
             </div>
-            <div class="flex-1 overflow-y-auto" id="areaMappingView"></div>
-            <div class="mt-auto border-t-2 border-slate-800 pt-8 lowercase font-sans">
-                <p class="text-[10px] text-blue-500 font-black mb-4 uppercase tracking-widest italic">Commander verified :</p>
-                <p class="text-xl font-black uppercase text-white leading-tight">FIRDAUS SETITIT, S.KOM</p>
-                <p class="text-[9px] text-blue-400 font-bold mt-1 uppercase italic tracking-widest">AUDITOR AHLI PRATAMA MALRA @ 2026</p>
-                <button onclick="location.reload()" class="w-full mt-10 bg-slate-900 border-2 border-red-800 text-red-600 py-4 rounded-3xl text-[9px] uppercase font-black hover:bg-red-700 hover:text-white transition-all">Sign-Out Session</button>
+            <div class="flex-1 overflow-y-auto" id="areaTracking"></div>
+            <div class="mt-auto border-t-2 border-slate-700 pt-8 lowercase font-sans">
+                <p class="text-[10px] text-blue-500 font-black mb-3 uppercase italic">COMMANDER AUTHENTICATED :</p>
+                <p class="text-lg font-black uppercase text-white leading-tight">FIRDAUS SETITIT, S.KOM</p>
+                <p class="text-[9px] text-blue-400 font-bold mt-1 uppercase italic tracking-tighter">AUDITOR AHLI PRATAMA MALRA @ 2026</p>
+                <button onclick="location.reload()" class="w-full mt-10 bg-slate-800 border-2 border-red-800 text-red-500 py-3.5 rounded-3xl text-[9px] font-black uppercase hover:bg-red-700 hover:text-white shadow-xl transition-all">Sign-Out Commander</button>
             </div>
         </aside>
 
-        <main class="flex-1 lg:ml-[300px] p-4 lg:p-10 font-black uppercase italic tracking-tight">
-            <header class="flex flex-col lg:flex-row justify-between lg:items-end gap-10 mb-12 border-b-4 border-black pb-10">
+        <main class="flex-1 lg:ml-[290px] p-4 lg:p-10 italic">
+            <header class="flex flex-col lg:flex-row justify-between lg:items-end gap-8 mb-12 border-b-4 border-slate-900 pb-10 uppercase font-black">
                 <div>
-                    <p class="text-[11px] text-blue-600 mb-2 font-sans font-bold" id="clockD"></p>
+                    <p class="text-[12px] text-blue-600 mb-2 font-sans font-bold" id="headerDate"></p>
                     <div class="flex items-center gap-10">
-                        <h2 class="text-4xl text-black leading-none font-black tracking-tighter italic">Pusat Data Pemeriksaan</h2>
-                        <div class="flex gap-4">
-                            <div class="bg-black text-white px-8 py-3 rounded-2xl text-[10px]">RECORD: <span id="m_tot">0</span></div>
-                            <div class="bg-red-700 text-white px-8 py-3 rounded-2xl text-[10px] animate-pulse">ALERTS: <span id="m_act">0</span></div>
+                        <h2 class="text-3xl text-black italic">Matrix Laporan Digital</h2>
+                        <div class="flex gap-4 font-sans italic">
+                            <div class="bg-black text-white px-8 py-3 rounded-2xl text-[10.5px]">RECORD : <span id="log_tot">0</span></div>
+                            <div class="bg-red-700 text-white px-8 py-3 rounded-2xl text-[10.5px] animate-pulse shadow-xl shadow-red-200">LIVE : <span id="log_act">0</span></div>
                         </div>
                     </div>
                 </div>
-                <div class="relative lg:w-[450px]"><i class="fas fa-search absolute left-6 top-5 text-blue-600"></i><input type="text" id="findC" placeholder="CALL BY CASE/ID/NAMA..." class="w-full bg-white border-4 border-black p-5 pl-16 rounded-[2.5rem] text-[12px] font-black italic shadow-inner outline-none focus:bg-slate-50 transition-all"></div>
+                <div class="relative lg:w-96"><i class="fas fa-search absolute left-5 top-5 text-blue-600"></i><input type="text" id="engineCek" placeholder="SEARCH IDENTITY..." class="w-full bg-white border-4 border-black p-5 pl-14 rounded-[3rem] text-[12px] font-black italic shadow-inner outline-none"></div>
             </header>
 
-            <!-- TABS LOCKED -->
-            <div class="flex flex-wrap gap-4 mb-10" id="filterNav">
-                 <button onclick="filtMatrix('ALL')" class="btn-filt active" id="f-all">DASHBOARD ALL CASES</button>
-                 <button onclick="filtMatrix('Dana Desa')" class="btn-filt">DANA DESA</button>
-                 <button onclick="filtMatrix('Dana BOS')" class="btn-filt">DANA BOS/PAUD</button>
-                 <button onclick="filtMatrix('BOK Puskesmas')" class="btn-filt">BOK PUSKESMAS</button>
-                 <button onclick="filtMatrix('PBJ')" class="btn-filt">PBJ DINAS</button>
+            <div class="flex flex-wrap gap-4 mb-10" id="filterSystem">
+                 <button onclick="fExecute('ALL')" class="btn-tabs f-active">DAFTAR SELURUH ADUAN</button>
+                 <button onclick="fExecute('Dana Desa')" class="btn-tabs">DANA DESA</button>
+                 <button onclick="fExecute('Dana BOS')" class="btn-tabs">DANA BOS/PAUD</button>
+                 <button onclick="fExecute('BOK Puskesmas')" class="btn-tabs">BOK PUSKESMAS</button>
+                 <button onclick="fExecute('PBJ')" class="btn-tabs">PBJ KANTOR</button>
             </div>
 
-            <div id="liveGridMatrix" class="divide-y-4 divide-slate-50 rounded-[4rem] overflow-hidden border-4 border-slate-900 bg-white shadow-2xl">
-                 <div class="p-40 text-center text-xl opacity-20">Securely Synching Archive...</div>
+            <div id="dataFlowContainer" class="divide-y-4 divide-slate-100 rounded-[4rem] overflow-hidden border-[6px] border-slate-900 bg-white shadow-2xl min-h-[50vh]">
+                 <div class="p-40 text-center text-xl font-bold opacity-10">Transmitting Governance Intel Link...</div>
             </div>
-
-            <p class="text-center text-[10px] mt-24 italic opacity-10 tracking-[0.5em] font-black uppercase">Infrastructure Locked by Security Protocol S-DKC.26 • MALRA HUB 2026</p>
         </main>
     </div>
 
-    <!-- VIEWER SYSTEM PROTECTED (PDF FIXED) -->
+    <!-- PENAMPIL DATA (FIXED CLONE) -->
     <div id="modalViewerFinale" onclick="this.style.display='none'">
-        <div id="engineSurface" class="flex flex-col items-center justify-center w-full h-full" onclick="event.stopPropagation()"></div>
+        <div id="canvasSurface" class="flex flex-col items-center justify-center w-full h-full relative" onclick="event.stopPropagation()">
+            <!-- System logic inside here -->
+        </div>
     </div>
 
-    <audio id="sndAlert" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <audio id="intelAudio" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
@@ -108,90 +113,99 @@
         const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
         const app = initializeApp(config); const db = getFirestore(app);
 
-        // [LOCK GATE LOGIN ENGINE]
-        const gate = document.getElementById('loginWall'), port = document.getElementById('mainPortal');
-        document.getElementById('btnUnlock').onclick = () => {
-            const u = document.getElementById('userIn').value, p = document.getElementById('passIn').value;
-            if(u === 'itkabmalra1' && p === 'itkabmalra01'){
-                gate.style.display='none'; port.style.display='flex';
-                initRealtimeFeed(); // Start database connection
-            } else { alert("OTORISASI DITOLAK: IDENTITAS SALAH!"); }
+        // SECURE LOGIN LOKED
+        const gateUI = document.getElementById('loginWall'), dashUI = document.getElementById('mainPortal');
+        document.getElementById('authBtn').onclick = () => {
+            const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
+            if(u === 'itkabmalra1' && p === 'itkabmalra01') { gateUI.style.display='none'; dashUI.style.display='flex'; runRealtimeSync(); }
+            else { alert("ERROR 403: IDENTITAS AUDITOR DITOLAK!"); }
         };
 
-        function initRealtimeFeed(){
-            let lastCnt = -1;
-            onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (sn) => {
-                const el=document.getElementById('liveGridMatrix'); const mp=document.getElementById('areaMappingView');
-                el.innerHTML=""; mp.innerHTML=""; let total=sn.size, act=0, km={};
-                if(lastCnt !== -1 && total > lastCnt) document.getElementById('sndAlert').play();
-                lastCnt = total;
+        function runRealtimeSync() {
+            let lastV = -1;
+            onSnapshot(query(collection(db, "pengaduan"), orderBy("timestamp", "desc")), (snap) => {
+                const el=document.getElementById('dataFlowContainer'); const m=document.getElementById('areaTracking');
+                el.innerHTML=""; m.innerHTML="";
+                let t=snap.size, a=0, kcM={};
+                if(lastV !== -1 && t > lastV) document.getElementById('intelAudio').play();
+                lastV=t;
 
-                sn.forEach(docSnap => {
-                    const d=docSnap.data(); const cid=docSnap.id;
-                    km[d.kec]=(km[d.kec]||0)+1; if(d.status!=="SELESAI") act++;
+                snap.forEach(ds => {
+                    const d=ds.data(); const cid=ds.id; kcM[d.kec]=(kcM[d.kec]||0)+1; if(d.status!=="SELESAI") a++;
                     el.innerHTML += `
-                    <div class="filter-item-finale" data-t="${d.kat}">
-                        <div class="case-matrix-row grid lg:grid-cols-12 items-center gap-10 p-14 py-5" onclick="togP('${cid}')">
-                             <div class="col-span-1" onclick="event.stopPropagation(); masterViewerOpen('${d.face}')"><img src="${d.face}" class="w-24 h-24 rounded-[2rem] shadow-2xl border-4 border-white object-cover"></div>
-                             <div class="col-span-3 border-l-4 border-slate-50 px-8"><p class="text-[9px] text-blue-700 font-bold mb-1 italic">tiket: ${d.ticket_id}</p><h4 class="text-[12px] font-black leading-none italic">${d.kat.toUpperCase()}</h4></div>
-                             <div class="col-span-6 flex flex-col justify-center border-x-4 border-slate-50 px-8">
-                                  <h5 class="font-heavy-bolt text-3xl italic tracking-tight truncate leading-none mb-1">${d.pelapor_nama}</h5>
-                                  <p class="font-heavy-bolt text-[14px] text-emerald-700 opacity-60">HUB: ${d.wa}</p>
-                                  <p class="font-heavy-bolt text-[13px] text-blue-900 mt-2 font-sans">wil: ${d.kec.toUpperCase()} • OHOI ${d.vill.toUpperCase()}</p>
+                    <div class="item-f-hook" data-c="${d.kat}">
+                        <div class="row-matrix-final grid lg:grid-cols-12 items-center gap-10 p-12 py-5" onclick="togDetailed('${cid}')">
+                             <div class="col-span-1" onclick="event.stopPropagation(); enginePop('${d.face}')"><img src="${d.face}" class="w-20 h-20 rounded-3xl border-4 border-white shadow-xl object-cover hover:scale-110 transition-transform"></div>
+                             <div class="col-span-3 border-l-4 px-6 border-slate-50"><p class="text-[9px] text-blue-700 italic font-black">AUDIT-TICKET: ${d.ticket_id}</p><h4 class="text-xl font-black text-slate-800 leading-tight">${d.kat.toUpperCase()}</h4></div>
+                             <div class="col-span-6 border-x-4 px-8 border-slate-50 flex flex-col justify-center">
+                                  <h5 class="font-audit-heavy text-[2.5rem] tracking-tighter leading-none italic uppercase truncate mb-1">${d.pelapor_nama}</h5>
+                                  <p class="font-audit-heavy text-xl opacity-30 leading-none">MOB: ${d.wa}</p>
+                                  <p class="font-audit-heavy text-lg mt-2 text-blue-900 font-sans tracking-tight">KEC: ${d.kec.toUpperCase()} • ${d.vill.toUpperCase()}</p>
                              </div>
                              <div class="col-span-2 text-right">
-                                  <span class="inline-block py-2.5 px-8 rounded-[1.8rem] font-black text-[11px] shadow-sm italic uppercase ${d.status==='SELESAI'?'bg-emerald-600 text-white shadow-emerald-200':'bg-red-600 text-white shadow-red-200'}">${d.status}</span>
+                                  <span class="inline-block py-2 px-10 rounded-full font-black text-xs border-4 shadow-xl italic uppercase ${d.status==='SELESAI'?'bg-emerald-600 text-white border-white':'bg-red-600 text-white border-white animate-pulse'}">${d.status}</span>
                              </div>
                         </div>
 
-                        <div id="panF_${cid}" class="expanded-area p-14">
-                             <div class="grid lg:grid-cols-12 gap-14">
-                                <div class="col-span-3 flex flex-col items-center">
-                                     <img src="${d.face}" class="rounded-[3rem] border-8 border-white shadow-2xl mb-6">
-                                     <button onclick="event.stopPropagation(); masterViewerOpen('${d.doc_archive}')" class="w-full bg-slate-950 text-blue-400 p-8 rounded-[3rem] text-sm shadow-xl font-black italic tracking-widest border-b-[10px] border-slate-800 uppercase">ANALISA DATA FISIK SURAT <i class="fas fa-barcode"></i></button>
-                                </div>
-                                <div class="col-span-6 bg-white p-12 rounded-[4rem] shadow-2xl border-t border-l border-white relative text-center">
-                                     <label class="text-[12px] text-blue-700 mb-6 block underline decoration-4 decoration-blue-100 font-black">CATATAN KONFIRMASI AUDITOR MALRA :</label>
-                                     <textarea id="notP_${cid}" onclick="event.stopPropagation()" class="w-full h-44 bg-slate-50 border-4 border-slate-100 rounded-[2.5rem] p-8 text-xl font-black italic text-slate-800 outline-none focus:border-blue-500 shadow-inner" placeholder="Tindak Lanjut Anda...">${d.note || ""}</textarea>
-                                     <button onclick="event.stopPropagation(); svPesanF('${cid}')" class="w-full mt-10 bg-emerald-600 border-b-[12px] border-emerald-950 text-white py-6 rounded-full text-xl uppercase italic font-black shadow-xl">SINKRONISASI INSTRUKSI AUDIT ✅</button>
-                                </div>
-                                <div class="col-span-3 pt-20 italic">
-                                     <button onclick="event.stopPropagation(); upPF('${cid}','DIVERIFIKASI')" class="w-full border-4 border-blue-100 py-5 rounded-[2rem] text-[13px] text-blue-800 font-black mb-4">TAHAP VERIFIKASI</button>
-                                     <button onclick="event.stopPropagation(); upPF('${cid}','DIPROSES')" class="w-full border-4 border-amber-100 py-5 rounded-[2rem] text-[13px] text-orange-900 font-black mb-14">TAHAP AUDIT FISIK</button>
-                                     <button onclick="event.stopPropagation(); upPF('${cid}','SELESAI')" class="w-full bg-black text-emerald-400 py-8 rounded-[4rem] text-2xl font-black mt-2 shadow-2xl animate-pulse">SAHKAN ARSIP ✅</button>
-                                </div>
+                        <div id="xpnd_${cid}" class="panel-inspect p-12">
+                             <div class="grid lg:grid-cols-12 gap-14 font-black italic">
+                                  <div class="col-span-3 flex flex-col items-center gap-8">
+                                       <img src="${d.face}" class="rounded-[4rem] border-[10px] border-white shadow-2xl transition-all cursor-zoom-in" onclick="event.stopPropagation(); enginePop('${d.face}')">
+                                       <button onclick="event.stopPropagation(); enginePop('${d.doc_archive}')" class="w-full bg-slate-950 text-blue-400 p-8 rounded-full shadow-2xl border-b-[15px] border-black text-xs hover:brightness-150 uppercase tracking-widest active:translate-y-5">LIHAT INVESTIGASI SURAT FISIK <i class="fas fa-barcode"></i></button>
+                                  </div>
+                                  <div class="col-span-6 bg-white p-12 rounded-[5rem] shadow-2xl border-t border-l border-slate-100 text-center">
+                                       <label class="text-[12px] text-blue-700 mb-8 block underline decoration-4 decoration-blue-100 font-black">PESAN COMMANDER UNTUK PUBLIK :</label>
+                                       <textarea id="notedX_${cid}" onclick="event.stopPropagation()" class="w-full h-44 bg-slate-50 border-4 border-dashed rounded-[3rem] p-10 text-[26px] font-black italic text-black outline-none shadow-inner focus:bg-white">${d.note || ""}</textarea>
+                                       <button onclick="event.stopPropagation(); syncNowGate('${cid}')" class="w-full mt-10 bg-emerald-600 border-b-[15px] border-emerald-950 text-white py-6 rounded-full font-black text-[15px] uppercase tracking-widest active:scale-95 animate-pulse shadow-emerald-100 shadow-xl">SINKRONKAN KOMANDO AUDITOR ✅</button>
+                                  </div>
+                                  <div class="col-span-3 pt-10 uppercase italic">
+                                       <p class="text-[10px] opacity-100 text-black border-l-8 border-red-600 pl-4 mb-6">Peralihan Audit :</p>
+                                       <button onclick="event.stopPropagation(); pushU('${cid}','DIVERIFIKASI')" class="w-full border-4 border-blue-50 py-5 rounded-full text-lg font-black text-blue-600 mb-5">DIVERIFIKASI</button>
+                                       <button onclick="event.stopPropagation(); pushU('${cid}','DIPROSES')" class="w-full border-4 border-amber-50 py-5 rounded-full text-lg font-black text-orange-900 mb-16">PROSES AUDIT</button>
+                                       <button onclick="event.stopPropagation(); pushU('${cid}','SELESAI')" class="w-full bg-slate-900 text-emerald-400 py-10 rounded-[5rem] font-black text-3xl shadow-2xl shadow-emerald-100/50 mt-10">MARK DONE ✅</button>
+                                  </div>
                              </div>
                         </div>
                     </div>`;
                 });
-                Object.keys(km).sort().forEach(kn => mp.innerHTML += `<div class="flex items-center justify-between p-4 mb-1 hover:bg-blue-600 rounded-[2rem] transition-all"><span class="text-[11px] font-bold text-white uppercase">${kn}</span><span class="bg-blue-600 border border-blue-400 px-4 py-2 rounded-full font-black text-[9px] italic text-white">${km[kn]} REKOD</span></div>`);
-                document.getElementById('ui_tot').innerText = total; document.getElementById('ui_act').innerText = act;
+                Object.keys(kcM).sort().forEach(nm=>m.innerHTML += `<div class="flex items-center justify-between p-4 mb-1 hover:bg-blue-600 rounded-3xl transition-all italic px-6"><span class="text-xs text-white">${nm}</span><span class="bg-blue-600 border border-white/20 text-[9px] px-3 py-1 rounded-full text-white">${kcM[nm]} ADT</span></div>`);
+                document.getElementById('ui_tot' || 'log_tot').innerText = t; document.getElementById('ui_act' || 'log_act').innerText = a;
             });
         }
 
-        // TABS S.KOM LOCKED
-        window.filtMatrix=(k)=>{
-            document.querySelectorAll('.btn-filt').forEach(b => { if(b.innerText.toUpperCase().includes(k.toUpperCase()) || (k==='ALL' && b.innerText==='DASHBOARD ALL CASES')) b.classList.add('active'); else b.classList.remove('active'); });
-            document.querySelectorAll('.filter-item-finale').forEach(el => el.style.display = (k==='ALL' || el.getAttribute('data-t')===k)?'block':'none');
+        window.fExecute=(k)=>{
+            document.querySelectorAll('.btn-tabs').forEach(b=>{ if(b.innerText.includes(k.toUpperCase())||(k==='ALL'&&b.innerText.includes('SELURUH'))) b.classList.add('f-active'); else b.classList.remove('f-active'); });
+            document.querySelectorAll('.item-f-hook').forEach(e => e.style.display=(k==='ALL'||e.getAttribute('data-c')===k)?'block':'none');
         };
 
-        window.togP=(i)=>{ const e=document.getElementById('panF_'+i); e.style.display = e.style.display==='block'?'none':'block'; };
-        window.upPF=async(i,s)=>{ if(confirm("AUTORISASI ARSIP BERITA ACARA?")) await updateDoc(doc(db,"pengaduan",i),{status:s}); };
-        window.svPesanF=async(i)=>{ const n=document.getElementById('notP_'+i).value; await updateDoc(doc(db,"pengaduan",i),{note:n}); alert("TERSINKRON!"); };
+        window.togDetailed=(i)=>{ const e=document.getElementById('xpnd_'+i); e.style.display = e.style.display==='block'?'none':'block'; };
+        window.pushU=async(i,s)=>{ if(confirm("OTORISASI PROSES?")) await updateDoc(doc(db,"pengaduan",i),{status:s}); };
+        window.syncNowGate=async(i)=>{ const m=document.getElementById('notedX_'+i).value; await updateDoc(doc(db,"pengaduan",i),{note:m}); alert("PUBLIKASI BERHASIL!"); };
         
-        window.masterViewerOpen = (u) => {
-            if(!u) return; const surface = document.getElementById('engineSurface'); surface.innerHTML = "";
-            const isP = (u.includes("pdf") || u.includes("blob:"));
+        // --- THE ONLY VIEWER LOGIC - FIXING RED BUTTON ACTION (POIN 1-2) ---
+        window.enginePop=(url)=>{
+            if(!url) return;
+            const target = document.getElementById('renderSurface' || 'canvasSurface');
+            target.innerHTML = "";
+            const isP = (url.includes("pdf") || url.includes("blob:"));
             if(isP) {
-                surface.innerHTML = `<div class="bg-white p-5 rounded-[3rem] shadow-2xl flex flex-col items-center"><iframe src="${u}" class="iframe-v"></iframe><div class="mt-6 flex gap-4 w-full px-14"><button onclick="document.getElementById('modalMasterGate' || 'modalViewerFinale').style.display='none'" class="flex-1 bg-red-600 text-white font-black py-7 rounded-full text-2xl tracking-tighter">KELUAR & TUTUP INVESTIGASI PDF</button></div></div>`;
+                target.innerHTML = `
+                <div class="bg-white p-5 rounded-[4rem] shadow-2xl flex flex-col items-center animate-in zoom-in duration-500">
+                    <iframe src="${url}" class="if-final shadow-inner border-2"></iframe>
+                    <button onclick="document.getElementById('modalViewerFinale').style.display='none'" class="w-full mt-10 bg-red-700 text-white font-black py-8 rounded-full text-3xl uppercase italic tracking-tighter shadow-2xl active:translate-y-5 border-b-[20px] border-red-900">KELUAR & TUTUP INVESTIGASI PDF (EXIT)</button>
+                </div>`;
             } else {
-                surface.innerHTML = `<img src="${u}" class="img-v mb-14"><button onclick="document.getElementById('modalMasterGate' || 'modalViewerFinale').style.display='none'" class="bg-blue-600 text-white px-32 py-10 rounded-full font-black text-3xl italic shadow-2xl active:scale-95 border-b-[20px] border-blue-900 tracking-tight">KELUAR SEKARANG</button>`;
+                target.innerHTML = `
+                <div class="flex flex-col items-center p-2 text-center animate-in scale-in duration-300">
+                    <img src="${url}" class="im-final mb-12 shadow-[0_0_200px_rgba(59,130,246,0.3)] border-[15px] border-white">
+                    <button onclick="document.getElementById('modalViewerFinale').style.display='none'" class="bg-blue-600 text-white px-48 py-10 rounded-full font-black text-4xl shadow-[0_30px_60px_rgba(0,0,0,0.4)] border-b-[20px] border-blue-900 active:scale-90 transition-all uppercase italic tracking-[0.4em]">KELUAR SEKARANG (EXIT)</button>
+                </div>`;
             }
             document.getElementById('modalViewerFinale').style.display='flex';
         };
 
-        const r=new Date(); document.getElementById('clockD').innerText = r.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase() + " • PINTU AKSES TERKONFIRMASI";
-        document.getElementById('findC').oninput=(e)=>{ const v=e.target.value.toUpperCase(); document.querySelectorAll('.case-matrix-row').forEach(row=>row.style.display=row.innerText.toUpperCase().includes(v)?'grid':'none'); };
+        const rtD=new Date(); document.getElementById('headerDate' || 'clockD').innerText=rtD.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase()+" • COMMAND PANEL ENCRYPTED";
+        document.getElementById('findC' || 'engineCek').oninput=(e)=>{ const v=e.target.value.toUpperCase(); document.querySelectorAll('.row-matrix-final').forEach(r=>{ r.style.display=r.innerText.toUpperCase().includes(v)?'grid':'none'; }); };
     </script>
 </body>
 </html>
