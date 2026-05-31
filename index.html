@@ -69,8 +69,8 @@
 
                 <!-- II. INPUT FIELDS -->
                 <div class="space-y-6 text-left px-1">
-                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NAMA PELAPOR (E-KTP)</label><input type="text" id="n_pelapor" required placeholder="INPUT NAMA..." class="border-hijau-kab p-5 outline-none font-black italic text-red-700 shadow-inner text-xs"></div>
-                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NOMOR WHATSAPP</label><input type="number" id="wa_pelapor" required placeholder="08..." class="border-hijau-kab p-5 outline-none font-black italic text-red-700 text-xs"></div>
+                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NAMA PELAPOR (E-KTP)</label><input type="text" id="n_pelapor" required placeholder="INPUT NAMA..." class="border-hijau-kab p-5 outline-none font-black italic text-black-700 shadow-inner text-xs"></div>
+                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NOMOR WHATSAPP</label><input type="number" id="wa_pelapor" required placeholder="08..." class="border-hijau-kab p-5 outline-none font-black italic text-black-700 text-xs"></div>
                     
                     <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">KATEGORI PENGADUAN</label>
                         <select id="kat_audit" required class="border-hijau-kab"><option value="">- Pilih -</option><option value="Dana Desa">Pengawasan Dana Desa</option><option value="Dana BOS">Dana BOS / PAUD / BOP</option><option value="BOK Puskesmas">Pengawasan BOK Puskesmas</option><option value="PBJ">Pengadaan barang/jasa</option></select>
@@ -78,12 +78,12 @@
                     <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">LOKASI KECAMATAN</label>
                         <select id="kec_audit" required class="border-hijau-kab"><option value="">- Pilih  -</option><option value="Kei Kecil">Kei Kecil</option><option value="Manyeuw">Manyeuw</option><option value="Kei Kecil Timur">Kei Kecil Timur</option><option value="Kei Kecil Timur Selatan">Kei Kecil Timur Selatan</option><option value="Kei Kecil Barat">Kei Kecil Barat</option><option value="Hoat Sorbay">Hoat Sorbay</option><option value="Kei Besar">Kei Besar</option><option value="KEI BESAR SELATAN">KEI BESAR SELATAN</option><option value="KEI BESAR SELATAN BARAT">KEI BESAR SELATAN BARAT</option><option value="KEI BESAR UTARA BARAT">KEI BESAR UTARA BARAT</option><option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option></select>
                     </div>
-                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NAMA OHOI / DESA</label><input type="text" id="desa_audit" required placeholder="Ketik..." class="border-hijau-kab p-5 outline-none font-black italic text-red-700 text-xs"></div>
+                    <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NAMA OHOI / DESA</label><input type="text" id="desa_audit" required placeholder="INPUT DESA/OHOI..." class="border-hijau-kab p-5 outline-none font-black italic text-black-700 text-xs"></div>
                 </div>
 
                 <!-- III. SCAN SURAT -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
-                    <span class="text-[10px] text-black font-black uppercase mb-7 block">UPLOAD LAPORAN PENGADUAN TERTULIS (WAJIB)</span>
+                    <span class="text-[10px] text-black font-black uppercase mb-7 block">UPLOAD LAPORAN PENGADUAN TERTULIS PDF (WAJIB) Max 950 KB</span>
                     <div class="flex flex-col gap-4 px-2">
                         <input type="file" id="f_up_input" accept="image/*, application/pdf" class="w-full text-[8.5px] italic file:bg-emerald-600 file:text-white file:py-2 file:px-6 file:rounded-xl file:border-0 font-black cursor-pointer">
                         <button type="button" id="start-doc-cam" class="bg-amber-400 text-amber-950 font-black py-4 rounded-xl text-[9px] uppercase"><i class="fas fa-camera mr-2"></i> KAMERA </button>
@@ -127,7 +127,7 @@
                     <p id="o_n" class="text-[10px] font-bold italic text-emerald-950 leading-relaxed uppercase">...</p>
                 </div>
             </div>
-            <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-6 text-slate-300 font-bold text-[9px] cursor-pointer hover:text-red-900 uppercase tracking-widest">CLOSE</p>
+            <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-6 text-slate-300 font-bold text-[9px] cursor-pointer hover:text-black-900 uppercase tracking-widest">CLOSE</p>
         </div>
     </div>
 
@@ -199,7 +199,7 @@
             if(qS.empty){ alert("DATA RECORD TIDAK DITEMUKAN PADA DATABASE MALRA!"); return; }
             const resData = qS.docs[0].data();
             document.getElementById('o_t').innerText=resData.ticket_id; document.getElementById('o_s').innerText=resData.status;
-            document.getElementById('o_n').innerText=resData.note || "Tunggu Tahap Audit Lapangan Oleh Tim Inspektorat.";
+            document.getElementById('o_n').innerText=resData.note || "Dalam Tahap Verifikasi Oleh Tim Inspektorat.";
             document.getElementById('box-result-track').classList.remove('hidden');
         };
     </script>
