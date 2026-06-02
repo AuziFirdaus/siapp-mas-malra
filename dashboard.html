@@ -125,8 +125,6 @@
                     const d = shot.data(); const cid = shot.id; kM[d.kec]=(kM[d.kec]||0)+1; 
                     if(d.status === "DILIHAT") actv++;
                     
-                    // Modifikasi Rendering Link Cloudinary untuk Efisiensi
-                    // Cloudinary mendukung transformasi otomatis jika link dimodifikasi, namun di sini kita gunakan original
                     const imageFace = d.face || ""; 
                     const imageDoc = d.doc_archive || "";
 
@@ -178,16 +176,18 @@
             });
         }
 
+        // --- INJEKSI PERBAIKAN VIEWER PDF OLEH SAHABAT AI ---
         window.see = (url) => {
+            if(!url) return alert("URL ASSET TIDAK DITEMUKAN");
             const canv = document.getElementById('canvasCore'); 
             canv.innerHTML = "";
             
-            // Logika Cloudinary Attachment (Image vs PDF)
-            // Cloudinary URL biasanya mengandalkan ekstensi di ujung .jpg atau .pdf
-            const isPDF = (url.toLowerCase().endsWith(".pdf") || url.includes("/raw/"));
+            // Logika Deteksi PDF yang lebih kuat
+            const isPDF = url.toLowerCase().includes(".pdf") || url.includes("/raw/");
 
             if(isPDF) {
-                canv.innerHTML = `<iframe src="${url}"></iframe>`;
+                // Penambahan parameter viewer untuk memaksa browser merender PDF dengan benar
+                canv.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0&scrollbar=1" style="width:90vw; height:75vh; border:none;"></iframe>`;
             } else {
                 canv.innerHTML = `<img src="${url}" class="hd-img">`;
             }
@@ -210,7 +210,6 @@
             rows.forEach(row => { row.style.display = row.innerText.toUpperCase().includes(filter) ? "block" : "none"; });
         };
         
-        // Fitur keyboard ESC untuk tutup modal gambar
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.getElementById('modalViewer').style.display='none'; });
     </script>
 </body>
