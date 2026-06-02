@@ -167,13 +167,29 @@
             });
         }
 
-        window.see = (url) => {
-            const canv = document.getElementById('canvasCore'); canv.innerHTML = "";
-            const isp = (url.includes("pdf") || url.includes("blob:"));
-            if(isp) canv.innerHTML = `<iframe src="${url}"></iframe>`;
-            else canv.innerHTML = `<img src="${url}" class="hd-img">`;
-            document.getElementById('modalViewer').style.display='flex';
-        };
+// --- SUNTIKAN KHUSUS UNTUK FIX PDF BLANK ---
+window.see = (url) => {
+    if(!url) return alert("Aset tidak ditemukan.");
+    const canv = document.getElementById('canvasCore'); 
+    canv.innerHTML = "";
+    
+    // Deteksi PDF
+    const isPDF = url.toLowerCase().includes(".pdf");
+
+    if(isPDF) {
+        // Jangan pakai Google Viewer (sering Blank). 
+        // Pakai elemen <embed> agar browser merender PDF secara native.
+        canv.innerHTML = `
+            <div style="width: 100%; height: 75vh;">
+                <embed src="${url}" type="application/pdf" width="100%" height="100%" />
+            </div>
+        `;
+    } else {
+        // Tampilan Gambar Biasa (Biometrik)
+        canv.innerHTML = `<img src="${url}" class="hd-img">`;
+    }
+    document.getElementById('modalViewer').style.display='flex';
+};
 
         window.togD = (i) => { const el = document.getElementById('ex_'+i); el.style.display = el.style.display === 'block' ? 'none' : 'block'; };
         window.upP = async(i,s) => { if(confirm("OTORISASI STATUS BARU?")) await updateDoc(doc(db,"pengaduan",i),{status:s}); };
