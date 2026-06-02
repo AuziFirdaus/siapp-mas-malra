@@ -37,6 +37,7 @@
 
     <div id="modalViewer">
         <div id="canvasCore" class="flex flex-col items-center w-full"></div>
+        <!-- TOMBOL EXIT MODAL YANG TETAP STANDAR SESUAI ARSITEKTUR ASLI -->
         <button onclick="document.getElementById('modalViewer').style.display='none'" style="background:#ef4444; color:white; width:80%; padding:22px; border-radius:2rem; font-weight:900; font-size:18px; margin-top:15px; cursor:pointer; box-shadow:0 0 40px rgba(0,0,0,0.5);">KEMBALI KE PANEL AUDITOR (EXIT)</button>
     </div>
 
@@ -62,18 +63,16 @@
                 <h2 class="text-2xl text-slate-800 uppercase font-black">Gateway Laporan Masyarakat</h2>
             </div>
             
-            <!-- REVISI BAHASA DAN SISTEM SYNC STATS (SESUAI PERINTAH) -->
             <div class="flex gap-2">
                 <div class="bg-black text-white px-5 py-2.5 rounded-xl text-[9px] shadow-lg">TOTAL DATA: <span id="ui_tot_stats">0</span></div>
                 <div class="bg-red-600 text-white px-5 py-2.5 rounded-xl text-[9px] shadow-lg">ADUAN BARU: <span id="ui_act_stats">0</span></div>
             </div>
         </header>
         
-<!-- KODE SEARCH VERSI MINI RAMPING - PAS DENGAN PANJANG ID -->
-<div style="position: relative; width: 230px; margin-bottom: 20px;">
-    <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: #2563eb; font-size: 10px;"></i>
-    <input type="text" id="srchEngine" placeholder="CARI TICKET ID..." style="width: 100%; background: #ffffff; border: 2px solid #000000; padding: 10px 10px 10px 40px; border-radius: 1.5rem; font-size: 10px; font-weight: 900; font-style: italic; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);">
-</div>
+        <div style="position: relative; width: 230px; margin-bottom: 20px;">
+            <i class="fas fa-search" style="position: absolute; left: 15px; top: 12px; color: #2563eb; font-size: 10px;"></i>
+            <input type="text" id="srchEngine" placeholder="CARI TICKET ID..." style="width: 100%; background: #ffffff; border: 2px solid #000000; padding: 10px 10px 10px 40px; border-radius: 1.5rem; font-size: 10px; font-weight: 900; font-style: italic; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);">
+        </div>
         
         <div class="flex gap-2 mb-8">
             <button onclick="filt('ALL')" class="tab-btn aktif">DASHBOARD UTAMA</button>
@@ -114,7 +113,6 @@
                 gr.innerHTML = ""; ml.innerHTML = "";
                 let kM = {}; let actv = 0;
                 
-                // POIN 1: FIX SISTEM STATISTIK DARI DATABASE REAL-TIME
                 let realSize = snap.size;
                 if(lastL !== -1 && realSize > lastL) document.getElementById('alrtSound').play();
                 lastL = realSize;
@@ -159,7 +157,6 @@
                     </div>`;
                 });
                 
-                // MENGISI DATA KE HTML (INDONESIA NAME)
                 Object.keys(kM).sort().forEach(k => ml.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(255,255,255,0.05); margin-bottom:5px; border-radius:1rem;" class="transition-all hover:bg-blue-600 font-bold uppercase"><span style="color:white; font-size:10.5px;">${k}</span><span style="background:#2563eb; color:white; padding:1px 12px; border-radius:15px; font-size:8px;">${kM[k]} DATA</span></div>`);
                 
                 document.getElementById('ui_tot_stats').innerText = realSize; 
@@ -167,27 +164,31 @@
             });
         }
 
-// --- SUNTIKAN KHUSUS UNTUK FIX PDF BLANK ---
+// --- SUNTIKAN KHUSUS UNTUK INTEGTRASI CLOUDINARY (SMART DETECTION) ---
 window.see = (url) => {
-    if(!url) return alert("Aset tidak ditemukan.");
-    const canv = document.getElementById('canvasCore'); 
-    canv.innerHTML = "";
+    if(!url || url === "" || url === "undefined") return alert("Berkas bukti belum diunggah oleh masyarakat.");
     
-    // Deteksi PDF
+    const canv = document.getElementById('canvasCore'); 
+    canv.innerHTML = ""; // Bersihkan Viewer
+    
+    // LOGIKA SUNTIKAN: Deteksi tipe file dari URL Cloudinary
     const isPDF = url.toLowerCase().includes(".pdf");
 
     if(isPDF) {
-        // Jangan pakai Google Viewer (sering Blank). 
-        // Pakai elemen <embed> agar browser merender PDF secara native.
+        // Mode Auditor: Tampilkan PDF dengan tombol download cadangan
         canv.innerHTML = `
-            <div style="width: 100%; height: 75vh;">
+            <div style="width: 100%; text-align: center; margin-bottom: 10px;">
+                <a href="${url}" target="_blank" style="background:#3b82f6; color:white; padding:10px 20px; border-radius:10px; font-size:12px;">BUKA PDF DI TAB BARU (FULLSCREEN)</a>
+            </div>
+            <div style="width: 100%; height: 70vh; background: #333; border-radius: 12px; overflow: hidden;">
                 <embed src="${url}" type="application/pdf" width="100%" height="100%" />
             </div>
         `;
     } else {
-        // Tampilan Gambar Biasa (Biometrik)
-        canv.innerHTML = `<img src="${url}" class="hd-img">`;
+        // Mode Auditor: Tampilkan Gambar Biometrik Cloudinary
+        canv.innerHTML = `<img src="${url}" class="hd-img shadow-2xl">`;
     }
+    
     document.getElementById('modalViewer').style.display='flex';
 };
 
@@ -200,22 +201,15 @@ window.see = (url) => {
         };
 
         const tD = new Date(); document.getElementById('tglReal').innerText = tD.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase() + " • PUSAT HUB INVESTIGASI";
-        document.getElementById('srchEngine').oninput=(e)=>{ const v=e.target.value.toUpperCase(); document.querySelectorAll('.row-target').forEach(r=>{ r.style.display=r.innerText.toUpperCase().includes(v)?'block':'none'; }); };
         
-        // KODE KHUSUS LOGIKA PENCARIAN S-DKC VERSION
-document.getElementById('srchEngine').oninput = (e) => {
-    const filter = e.target.value.toUpperCase();
-    const rows = document.querySelectorAll('.row-target');
-    
-    rows.forEach(row => {
-        const text = row.innerText.toUpperCase();
-        if (text.includes(filter)) {
-            row.style.display = "block";
-        } else {
-            row.style.display = "none";
-        }
-    });
-};
+        document.getElementById('srchEngine').oninput = (e) => {
+            const filter = e.target.value.toUpperCase();
+            const rows = document.querySelectorAll('.row-target');
+            rows.forEach(row => {
+                const text = row.innerText.toUpperCase();
+                row.style.display = text.includes(filter) ? "block" : "none";
+            });
+        };
         
     </script>
 </body>
