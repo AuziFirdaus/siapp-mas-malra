@@ -192,33 +192,56 @@ async function uploadToCloudinary(fileData) {
         
         document.getElementById('f_up_input').onchange=async(e)=>{ const f=e.target.files[0]; if(!f) return; if(f.type==="application/pdf"){ analyzeSense(null,'D',true); const rd=new FileReader(); rd.onload=()=>docBase=rd.result; rd.readAsDataURL(f); } else { const rd=new FileReader(); rd.onload=(ev)=>{ const im=new Image(); im.onload=async()=>{ const cc=document.createElement('canvas'); cc.width=im.width; cc.height=im.height; cc.getContext('2d').drawImage(im,0,0); await analyzeSense(cc,'D'); if(ready.d) docBase=await runHdSampler(ev.target.result); document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden'); }; im.src=ev.target.result; }; rd.readAsDataURL(f); } };
 
-        document.getElementById('submitAllMain').onclick=async()=>{
-            hubLoad.style.display='flex'; pFill.style.width='10%';
-            const resID="MALRA-VFINAL-"+Math.random().toString(36).substring(5,13).toUpperCase();
-            try {
-                // TAHAP 1: UPLOAD ASSET KE CLOUDINARY
-                pFill.style.width='30%';
-                const faceUrlCloud = await uploadToCloudinary(fcBase);
-                
-                pFill.style.width='60%';
-                const docUrlCloud = await uploadToCloudinary(docBase);
+document.getElementById('submitAllMain').onclick = async () => {
+    hubLoad.style.display = 'flex';
+    pFill.style.width = '10%';
+    const resID = "MALRA-VFINAL-" + Math.random().toString(36).substring(5, 13).toUpperCase();
+    
+    try {
+        // 1. Ambil File Dokumen Asli (Lebih cepat daripada Base64)
+        const fileInput = document.getElementById('f_up_input');
+        const originalFile = fileInput.files[0];
+        
+        // 2. Upload Wajah (Tetap pakai fcBase atau ubah ke Blob untuk kecepatan)
+        pFill.style.width = '30%';
+        const faceUrlCloud = await uploadToCloudinary(fcBase); 
 
-                if(!faceUrlCloud || !docUrlCloud) throw new Error("Gagal mengamankan aset di Cloudinary.");
+        // 3. Upload Dokumen PDF/FOTO (Binary Mode - Kilat)
+        pFill.style.width = '60%';
+        // Jika dokumen diambil dari kamera (docBase), kita pakai docBase, 
+        // tapi jika dari file input, kita pakai originalFile agar kencang!
+        const documentToUpload = originalFile ? originalFile : docBase; 
+        const docUrlCloud = await uploadToCloudinary(documentToUpload);
 
-                // TAHAP 2: SIMPAN DATA DENGAN URL KE FIRESTORE
-                pFill.style.width='85%';
-                await addDoc(collection(db,"pengaduan"),{
-                    ticket_id:resID, 
-                    pelapor_nama:document.getElementById('n_pelapor').value, 
-                    wa:document.getElementById('wa_pelapor').value, 
-                    face:faceUrlCloud, // Simpan URL, Bukan Base64
-                    doc_archive:docUrlCloud, // Simpan URL, Bukan Base64
-                    kec:document.getElementById('kec_audit').value, 
-                    vill:document.getElementById('desa_audit').value, 
-                    kat:document.getElementById('kat_audit').value, 
-                    status:"DILIHAT", 
-                    timestamp:serverTimestamp()
-                });
+        if (!faceUrlCloud || !docUrlCloud) throw new Error("Gagal mengamankan aset.");
+
+        // 4. Simpan ke Firestore
+        pFill.style.width = '85%';
+        await addDoc(collection(db, "pengaduan"), {
+            ticket_id: resID,
+            pelapor_nama: document.getElementById('n_pelapor').value,
+            wa: document.getElementById('wa_pelapor').value,
+            face: faceUrlCloud,
+            doc_archive: docUrlCloud,
+            kec: document.getElementById('kec_audit').value,
+            vill: document.getElementById('desa_audit').value,
+            kat: document.getElementById('kat_audit').value,
+            status: "DILIHAT",
+            timestamp: serverTimestamp()
+        });
+
+        pFill.style.width = '100%';
+        setTimeout(() => { 
+            hubLoad.style.display = 'none'; 
+            document.getElementById('txtResId').innerText = resID; 
+            document.getElementById('resiDigital').style.display = 'flex'; 
+        }, 500);
+
+    } catch (e) {
+        hubLoad.style.display = 'none';
+        alert("Gagal Kirim: " + e.message);
+    }
+};
 
                 pFill.style.width='100%';
                 setTimeout(()=>{ hubLoad.style.display='none'; document.getElementById('txtResId').innerText=resID; document.getElementById('resiDigital').style.display='flex'; },500);
