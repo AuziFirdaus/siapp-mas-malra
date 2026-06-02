@@ -157,14 +157,27 @@
         document.getElementById('open-cloudinary-widget').addEventListener("click", () => myWidget.open(), false);
 
         // Upload Helper untuk Base64 Foto Wajah
-        async function uploadFaceCloudinary(base64) {
-            const formData = new FormData();
-            formData.append("file", base64);
-            formData.append("upload_preset", "ml_default");
-            const res = await fetch(`https://api.cloudinary.com/v1_1/dfqwrkoqm/image/upload`, { method: "POST", body: formData });
-            const d = await res.json();
-            return d.secure_url;
-        }
+async function uploadToCloudinary(base64Data) {
+    const cloudName = "dfqwrkoqm";
+    // Pastikan di dashboard Cloudinary Bapak sudah ada preset "ml_default" dengan mode UNSIGNED
+    const uploadPreset = "ml_default"; 
+    
+    const formData = new FormData();
+    formData.append("file", base64Data);
+    formData.append("upload_preset", uploadPreset);
+
+    try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: "POST",
+            body: formData
+        });
+        const data = await response.json();
+        return data.secure_url;
+    } catch (err) {
+        console.error("Cloudinary Error:", err);
+        return null;
+    }
+}
 
         // Logic Validasi Global
         function vChk(){ if(ready.w && ready.d){ sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); sSubmit.innerText="KIRIM ADUAN SEKARANG"; sSubmit.classList.add('bg-slate-900','animate-pulse'); } }
