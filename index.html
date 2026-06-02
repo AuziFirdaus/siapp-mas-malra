@@ -120,147 +120,123 @@
             <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-6 text-slate-300 font-bold text-[9px] cursor-pointer hover:text-black-900 uppercase tracking-widest">CLOSE</p>
         </div>
     </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-
-        const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
-        const app = initializeApp(config); const db = getFirestore(app);
-
-        let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
-        const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
-
-        // --- SUNTIKAN KODE CLOUDINARY (DFQWRKOQM) ---
-async function uploadToCloudinary(fileData) {
-    const cloudName = "dfqwrkoqm";
-    const uploadPreset = "ml_default"; 
     
-    const formData = new FormData();
-    formData.append("file", fileData); // Mengirim Binary Blob, bukan String Base64
-    formData.append("upload_preset", uploadPreset);
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-    try {
-        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
-            method: "POST",
-            body: formData
-        });
-        const data = await response.json();
-        return data.secure_url;
-    } catch (err) {
-        console.error("Cloudinary Error:", err);
-        return null;
-    }
-}
+    const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
+    const app = initializeApp(config); const db = getFirestore(app);
 
-        async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
-        async function runHdSampler(blob){ return new Promise(r=>{const img=new Image();img.src=blob;img.onload=()=>{const c=document.createElement('canvas');const m=1100;let w=img.width,h=img.height;if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,h);r(c.toDataURL('image/jpeg',0.62))};}); }
-        
-        function vChk(){ if(ready.w && ready.d){ sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); sSubmit.innerText="IDENTITAS SAH : KIRIM ADUAN SEKARANG"; sSubmit.classList.add('bg-slate-900','animate-pulse'); } }
+    let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
+    const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
-        async function analyzeSense(cv,mod,by=false){
-            if(by){ ready.d=true; vChk(); document.getElementById('q-status-d').classList.remove('hidden'); return; }
-            const p=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data; let lu=0; for(let i=0;i<p.length;i+=4) lu+=(p[i]+p[i+1]+p[i+2])/3; lu/=(p.length/4);
-            const pass = lu > 40;
-            if(mod==='W'){ ready.w=pass; document.getElementById('q-status-w').classList.remove('hidden'); document.getElementById('badge-w').innerText=pass?"PIKSEL WAJAH VALID":"AREA KURANG TERANG!"; document.getElementById('badge-w').className=pass?"quality-badge status-pass":"quality-badge status-fail"; }
-            else { ready.d=pass; } vChk();
+    // --- FUNGSI CLOUDINARY KILAT (BINARY/BLOB) ---
+    async function uploadToCloudinary(fileData) {
+        if(!fileData) return null;
+        const cloudName = "dfqwrkoqm";
+        const uploadPreset = "ml_default"; 
+        const formData = new FormData();
+        formData.append("file", fileData);
+        formData.append("upload_preset", uploadPreset);
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            return data.secure_url;
+        } catch (err) {
+            console.error("Cloudinary Error:", err);
+            return null;
         }
-
-        document.getElementById('start-camera').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{width:720, height:720}}); const v=document.getElementById('video-preview'); v.srcObject=curStream; v.style.display="block"; document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block"; };
-        document.getElementById('take-photo').onclick=async()=>{ 
-            const v=document.getElementById('video-preview'), c=document.getElementById('face-canvas');
-            c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
-            await analyzeSense(c,'W');
-            if(ready.w){
-                fcBase = await runHdSampler(c.toDataURL('image/jpeg'));
-                document.getElementById('face-result').src=fcBase; document.getElementById('face-result').classList.remove('hidden'); v.style.display="none"; document.getElementById('take-photo').style.display="none";
-                await camClose();
-            }
-        };
-
-        document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('docVideoBox').classList.remove('hidden'); };
-        document.getElementById('snap-doc-btn').onclick=async()=>{ 
-            const v=document.getElementById('doc-preview-cam'), cd=document.createElement('canvas');
-            cd.width=v.videoWidth; cd.height=v.videoHeight; cd.getContext('2d').drawImage(v,0,0);
-            await analyzeSense(cd,'D');
-            if(ready.d){
-                docBase = await runHdSampler(cd.toDataURL('image/jpeg'));
-                document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden'); document.getElementById('docVideoBox').classList.add('hidden');
-                await camClose();
-            }
-        };
-        
-        document.getElementById('f_up_input').onchange=async(e)=>{ const f=e.target.files[0]; if(!f) return; if(f.type==="application/pdf"){ analyzeSense(null,'D',true); const rd=new FileReader(); rd.onload=()=>docBase=rd.result; rd.readAsDataURL(f); } else { const rd=new FileReader(); rd.onload=(ev)=>{ const im=new Image(); im.onload=async()=>{ const cc=document.createElement('canvas'); cc.width=im.width; cc.height=im.height; cc.getContext('2d').drawImage(im,0,0); await analyzeSense(cc,'D'); if(ready.d) docBase=await runHdSampler(ev.target.result); document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden'); }; im.src=ev.target.result; }; rd.readAsDataURL(f); } };
-
-document.getElementById('submitAllMain').onclick = async () => {
-    hubLoad.style.display = 'flex';
-    pFill.style.width = '10%';
-    const resID = "MALRA-VFINAL-" + Math.random().toString(36).substring(5, 13).toUpperCase();
-    
-    try {
-        // 1. Ambil File Dokumen Asli (Lebih cepat daripada Base64)
-        const fileInput = document.getElementById('f_up_input');
-        const originalFile = fileInput.files[0];
-        
-        // 2. Upload Wajah (Tetap pakai fcBase atau ubah ke Blob untuk kecepatan)
-        pFill.style.width = '30%';
-        const faceUrlCloud = await uploadToCloudinary(fcBase); 
-
-        // 3. Upload Dokumen PDF/FOTO (Binary Mode - Kilat)
-        pFill.style.width = '60%';
-        // Jika dokumen diambil dari kamera (docBase), kita pakai docBase, 
-        // tapi jika dari file input, kita pakai originalFile agar kencang!
-        const documentToUpload = originalFile ? originalFile : docBase; 
-        const docUrlCloud = await uploadToCloudinary(documentToUpload);
-
-        if (!faceUrlCloud || !docUrlCloud) throw new Error("Gagal mengamankan aset.");
-
-        // 4. Simpan ke Firestore
-        pFill.style.width = '85%';
-        await addDoc(collection(db, "pengaduan"), {
-            ticket_id: resID,
-            pelapor_nama: document.getElementById('n_pelapor').value,
-            wa: document.getElementById('wa_pelapor').value,
-            face: faceUrlCloud,
-            doc_archive: docUrlCloud,
-            kec: document.getElementById('kec_audit').value,
-            vill: document.getElementById('desa_audit').value,
-            kat: document.getElementById('kat_audit').value,
-            status: "DILIHAT",
-            timestamp: serverTimestamp()
-        });
-
-        pFill.style.width = '100%';
-        setTimeout(() => { 
-            hubLoad.style.display = 'none'; 
-            document.getElementById('txtResId').innerText = resID; 
-            document.getElementById('resiDigital').style.display = 'flex'; 
-        }, 500);
-
-    } catch (e) {
-        hubLoad.style.display = 'none';
-        alert("Gagal Kirim: " + e.message);
     }
-};
 
-                pFill.style.width='100%';
-                setTimeout(()=>{ hubLoad.style.display='none'; document.getElementById('txtResId').innerText=resID; document.getElementById('resiDigital').style.display='flex'; },500);
-            } catch(e){ 
-                hubLoad.style.display='none'; 
-                alert("Fail Processing Submission: " + e.message); 
-            }
-        };
+    // --- KODE ASLI BAPAK (KAMERA & BIOMETRIK) ---
+    async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
+    async function runHdSampler(blob){ return new Promise(r=>{const img=new Image();img.src=blob;img.onload=()=>{const c=document.createElement('canvas');const m=1100;let w=img.width,h=img.height;if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,h);r(c.toDataURL('image/jpeg',0.62))};}); }
+    
+    function vChk(){ if(ready.w && ready.d){ sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); sSubmit.innerText="IDENTITAS SAH : KIRIM ADUAN SEKARANG"; sSubmit.classList.add('bg-slate-900','animate-pulse'); } }
 
-        document.getElementById('btnTrackerTrigger').onclick=()=>document.getElementById('trackPanel').style.display='flex';
-        document.getElementById('runCheckAudit').onclick=async()=>{
-            const targetID = document.getElementById('tiket-id-in').value.trim().toUpperCase(); if(!targetID) return;
-            const qS = await getDocs(query(collection(db, "pengaduan"), where("ticket_id","==",targetID)));
-            if(qS.empty){ alert("DATA RECORD TIDAK DITEMUKAN PADA DATABASE MALRA!"); return; }
-            const resData = qS.docs[0].data();
-            document.getElementById('o_t').innerText=resData.ticket_id; document.getElementById('o_s').innerText=resData.status;
-            document.getElementById('o_n').innerText=resData.note || "Dalam Tahap Verifikasi Oleh Tim Inspektorat.";
-            document.getElementById('box-result-track').classList.remove('hidden');
-        };
-    </script>
-</body>
+    async function analyzeSense(cv,mod,by=false){
+        if(by){ ready.d=true; vChk(); document.getElementById('q-status-d').classList.remove('hidden'); return; }
+        const p=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data; let lu=0; for(let i=0;i<p.length;i+=4) lu+=(p[i]+p[i+1]+p[i+2])/3; lu/=(p.length/4);
+        const pass = lu > 40;
+        if(mod==='W'){ ready.w=pass; document.getElementById('q-status-w').classList.remove('hidden'); document.getElementById('badge-w').innerText=pass?"PIKSEL WAJAH VALID":"AREA KURANG TERANG!"; document.getElementById('badge-w').className=pass?"quality-badge status-pass":"quality-badge status-fail"; }
+        else { ready.d=pass; } vChk();
+    }
+
+    // HANDLER KAMERA ASLI BAPAK
+    document.getElementById('start-camera').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{width:720, height:720}}); const v=document.getElementById('video-preview'); v.srcObject=curStream; v.style.display="block"; document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block"; };
+    document.getElementById('take-photo').onclick=async()=>{ 
+        const v=document.getElementById('video-preview'), c=document.getElementById('face-canvas');
+        c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
+        await analyzeSense(c,'W');
+        if(ready.w){
+            fcBase = await runHdSampler(c.toDataURL('image/jpeg'));
+            document.getElementById('face-result').src=fcBase; document.getElementById('face-result').classList.remove('hidden'); v.style.display="none"; document.getElementById('take-photo').style.display="none";
+            await camClose();
+        }
+    };
+
+    document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('docVideoBox').classList.remove('hidden'); };
+    document.getElementById('snap-doc-btn').onclick=async()=>{ 
+        const v=document.getElementById('doc-preview-cam'), cd=document.createElement('canvas');
+        cd.width=v.videoWidth; cd.height=v.videoHeight; cd.getContext('2d').drawImage(v,0,0);
+        await analyzeSense(cd,'D');
+        if(ready.d){
+            docBase = await runHdSampler(cd.toDataURL('image/jpeg'));
+            document.getElementById('doc-result').src=docBase; document.getElementById('doc-result').classList.remove('hidden'); document.getElementById('docVideoBox').classList.add('hidden');
+            await camClose();
+        }
+    };
+    
+    document.getElementById('f_up_input').onchange=async(e)=>{ const f=e.target.files[0]; if(!f) return; if(f.type==="application/pdf"){ analyzeSense(null,'D',true); const rd=new FileReader(); rd.onload=()=>docBase=f; rd.readAsArrayBuffer(f); } else { const rd=new FileReader(); rd.onload=(ev)=>{ const im=new Image(); im.onload=async()=>{ const cc=document.createElement('canvas'); cc.width=im.width; cc.height=im.height; cc.getContext('2d').drawImage(im,0,0); await analyzeSense(cc,'D'); if(ready.d) docBase=f; document.getElementById('doc-result').src=ev.target.result; document.getElementById('doc-result').classList.remove('hidden'); }; im.src=ev.target.result; }; rd.readAsDataURL(f); } };
+
+    // --- TOMBOL KIRIM KILAT (PENYUNTIKAN AMAN) ---
+    sSubmit.onclick=async()=>{
+        hubLoad.style.display='flex'; pFill.style.width='10%';
+        const resID="MALRA-VFINAL-"+Math.random().toString(36).substring(5,13).toUpperCase();
+        try {
+            // Upload Foto Wajah
+            pFill.style.width='30%';
+            const faceUrl = await uploadToCloudinary(fcBase);
+            
+            // Upload Dokumen (Langsung ambil file asli/Blob agar kilat)
+            pFill.style.width='60%';
+            const docUrl = await uploadToCloudinary(docBase);
+
+            if(!faceUrl || !docUrl) throw new Error("Gagal mengamankan berkas di Cloud.");
+
+            pFill.style.width='85%';
+            await addDoc(collection(db,"pengaduan"),{
+                ticket_id:resID, 
+                pelapor_nama:document.getElementById('n_pelapor').value, 
+                wa:document.getElementById('wa_pelapor').value, 
+                face:faceUrl, doc_archive:docUrl,
+                kec:document.getElementById('kec_audit').value, 
+                vill:document.getElementById('desa_audit').value, 
+                kat:document.getElementById('kat_audit').value, 
+                status:"DILIHAT", 
+                timestamp:serverTimestamp()
+            });
+
+            pFill.style.width='100%';
+            setTimeout(()=>{ hubLoad.style.display='none'; document.getElementById('txtResId').innerText=resID; document.getElementById('resiDigital').style.display='flex'; },500);
+        } catch(e){ hubLoad.style.display='none'; alert("Gagal Memproses: " + e.message); }
+    };
+
+    // TRACKER SISTEM TETAP UTUH
+    document.getElementById('btnTrackerTrigger').onclick=()=>document.getElementById('trackPanel').style.display='flex';
+    document.getElementById('runCheckAudit').onclick=async()=>{
+        const targetID = document.getElementById('tiket-id-in').value.trim().toUpperCase(); if(!targetID) return;
+        const qS = await getDocs(query(collection(db, "pengaduan"), where("ticket_id","==",targetID)));
+        if(qS.empty){ alert("DATA TIDAK DITEMUKAN!"); return; }
+        const resData = qS.docs[0].data();
+        document.getElementById('o_t').innerText=resData.ticket_id; document.getElementById('o_s').innerText=resData.status;
+        document.getElementById('o_n').innerText=resData.note || "Verifikasi sedang berlangsung.";
+        document.getElementById('box-result-track').classList.remove('hidden');
+    };
+</script>
+    </body>
 </html>
