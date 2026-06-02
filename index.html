@@ -131,47 +131,59 @@
     let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
     const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
-    // --- FUNGSI CLOUDINARY KILAT (BINARY/BLOB) ---
-    async function uploadToCloudinary(fileData) {
-    if(!fileData) return null;
-    const cloudName = "dfqwrkoqm";
-    const uploadPreset = "ml_default"; 
-    
+// Konfigurasi Cloudinary Bapak
+const CLOUD_NAME = "dfqwrkoqm";
+const UPLOAD_PRESET = "siappmas"; // Ini diambil dari screenshot Bapak
+
+async function uploadKeCloudinary(file) {
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
     const formData = new FormData();
     
-    // Perbaikan untuk HP: Berikan identitas file manual agar tidak dianggap "file sampah" oleh Cloudinary
-    const timestamp = Date.now();
-    const fileName = `laporan_${timestamp}.pdf`; // Atau .jpg sesuai data
-
-    // Cek apakah fileData itu String Base64 atau File Blob asli
-    if(typeof fileData === 'string' && fileData.startsWith('data:')) {
-        formData.append("file", fileData);
-    } else {
-        // Jika dari input file HP (Binary Blob)
-        formData.append("file", fileData, fileName); 
-    }
-    
-    formData.append("upload_preset", uploadPreset);
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
 
     try {
-        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+        const response = await fetch(url, {
             method: "POST",
-            body: formData,
-            // Perbaikan untuk Mobile: Mode cors agar tidak di blokir browser HP
-            mode: 'cors' 
+            body: formData
         });
-        
-        if(!response.ok) {
-            const errDetail = await response.json();
-            console.error("Cloudinary Detail Error:", errDetail);
-            return null;
+
+        if (!response.ok) {
+            throw new Error("Gagal mengunggah ke server Cloudinary");
         }
 
         const data = await response.json();
-        return data.secure_url;
+        return data.secure_url; // Ini adalah link file/foto yang sudah jadi
+    } catch (error) {
+        console.error("Detail Error:", error);
+        throw error;
+    }
+}
+
+// Fungsi utama saat warga klik "Kirim Laporan"
+async function kirimAduan() {
+    const btnKirim = document.getElementById('btnKirim'); // sesuaikan id tombol
+    const fileInput = document.getElementById('fileInput'); // sesuaikan id input file
+    
+    try {
+        btnKirim.disabled = true;
+        btnKirim.innerText = "Sedang Mengamankan Berkas...";
+
+        let fileUrl = "";
+        if (fileInput.files.length > 0) {
+            // Proses Upload ke Cloudinary
+            fileUrl = await uploadKeCloudinary(fileInput.files[0]);
+        }
+
+        // LANJUTKAN KE PROSES SIMPAN DATABASE (Google Sheets/Firebase)
+        // Masukkan fileUrl ke dalam data yang akan dikirim ke database
+        simpanKeDatabase(fileUrl); 
+
     } catch (err) {
-        console.error("Cloudinary Connection Error:", err);
-        return null;
+        alert("Waduh, Gagal! Masalahnya: " + err.message);
+    } finally {
+        btnKirim.disabled = false;
+        btnKirim.innerText = "Kirim Aduan";
     }
 }
 
