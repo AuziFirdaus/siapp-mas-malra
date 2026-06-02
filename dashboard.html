@@ -176,23 +176,31 @@
             });
         }
 
-        // --- INJEKSI PERBAIKAN VIEWER PDF OLEH SAHABAT AI ---
-        window.see = (url) => {
-            if(!url) return alert("URL ASSET TIDAK DITEMUKAN");
-            const canv = document.getElementById('canvasCore'); 
-            canv.innerHTML = "";
-            
-            // Logika Deteksi PDF yang lebih kuat
-            const isPDF = url.toLowerCase().includes(".pdf") || url.includes("/raw/");
+// --- SAHABAT AI: INJEKSI ENGINE VIEWER ANTI-BLANK ---
+window.see = (url) => {
+    if(!url) return alert("URL ASSET TIDAK DITEMUKAN");
+    const canv = document.getElementById('canvasCore'); 
+    canv.innerHTML = "";
+    
+    // Deteksi PDF yang lebih presisi
+    const isPDF = url.toLowerCase().includes(".pdf") || url.toLowerCase().includes("v1/raw/");
 
-            if(isPDF) {
-                // Penambahan parameter viewer untuk memaksa browser merender PDF dengan benar
-                canv.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0&scrollbar=1" style="width:90vw; height:75vh; border:none;"></iframe>`;
-            } else {
-                canv.innerHTML = `<img src="${url}" class="hd-img">`;
-            }
-            document.getElementById('modalViewer').style.display='flex';
-        };
+    if(isPDF) {
+        // TEKNIK BYPASS: Gunakan Google Doc Viewer untuk memastikan PDF dirender 100% Tanpa Error
+        const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+        
+        canv.innerHTML = `
+            <div style="position: relative; width: 100%; height: 75vh;">
+                <div id="loadingPdf" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:12px; font-weight:900; color:white; z-index:0;">MEMPROSES DOKUMEN PDF...</div>
+                <iframe src="${googleViewerUrl}" style="width:100%; height:100%; border:none; position:relative; z-index:1;" onload="document.getElementById('loadingPdf').style.display='none'"></iframe>
+            </div>
+        `;
+    } else {
+        // Tampilan Gambar Biasa (Biometrik)
+        canv.innerHTML = `<img src="${url}" class="hd-img">`;
+    }
+    document.getElementById('modalViewer').style.display='flex';
+};
 
         window.togD = (i) => { const el = document.getElementById('ex_'+i); el.style.display = el.style.display === 'block' ? 'none' : 'block'; };
         window.upP = async(i,s) => { if(confirm(`YAKIN UBAH STATUS KE ${s}?`)) await updateDoc(doc(db,"pengaduan",i),{status:s}); };
