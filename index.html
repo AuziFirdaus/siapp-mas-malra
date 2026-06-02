@@ -133,24 +133,47 @@
 
     // --- FUNGSI CLOUDINARY KILAT (BINARY/BLOB) ---
     async function uploadToCloudinary(fileData) {
-        if(!fileData) return null;
-        const cloudName = "dfqwrkoqm";
-        const uploadPreset = "ml_default"; 
-        const formData = new FormData();
+    if(!fileData) return null;
+    const cloudName = "dfqwrkoqm";
+    const uploadPreset = "ml_default"; 
+    
+    const formData = new FormData();
+    
+    // Perbaikan untuk HP: Berikan identitas file manual agar tidak dianggap "file sampah" oleh Cloudinary
+    const timestamp = Date.now();
+    const fileName = `laporan_${timestamp}.pdf`; // Atau .jpg sesuai data
+
+    // Cek apakah fileData itu String Base64 atau File Blob asli
+    if(typeof fileData === 'string' && fileData.startsWith('data:')) {
         formData.append("file", fileData);
-        formData.append("upload_preset", uploadPreset);
-        try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
-                method: "POST",
-                body: formData
-            });
-            const data = await response.json();
-            return data.secure_url;
-        } catch (err) {
-            console.error("Cloudinary Error:", err);
+    } else {
+        // Jika dari input file HP (Binary Blob)
+        formData.append("file", fileData, fileName); 
+    }
+    
+    formData.append("upload_preset", uploadPreset);
+
+    try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+            method: "POST",
+            body: formData,
+            // Perbaikan untuk Mobile: Mode cors agar tidak di blokir browser HP
+            mode: 'cors' 
+        });
+        
+        if(!response.ok) {
+            const errDetail = await response.json();
+            console.error("Cloudinary Detail Error:", errDetail);
             return null;
         }
+
+        const data = await response.json();
+        return data.secure_url;
+    } catch (err) {
+        console.error("Cloudinary Connection Error:", err);
+        return null;
     }
+}
 
     // --- KODE ASLI BAPAK (KAMERA & BIOMETRIK) ---
     async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
