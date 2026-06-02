@@ -128,16 +128,19 @@
         let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
         const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
-        // --- CLOUDINARY INTEGRATION ENGINE ---
+        // --- CLOUDINARY INTEGRATION ENGINE (FIXED PDF COMPATIBILITY) ---
         async function uploadToCloudinary(base64Data) {
             const cloudName = "dfqwrkoqm";
-            const uploadPreset = "siapp_malra_preset"; // GANTI DENGAN NAMA PRESET YANG DIBUAT DI DASHBOARD CLOUDINARY
+            const uploadPreset = "siapp_malra_preset"; 
             const formData = new FormData();
             formData.append("file", base64Data);
             formData.append("upload_preset", uploadPreset);
+            // Tambahan Pak Firdaus: Gunakan "auto" agar Cloudinary mendeteksi dokumen/gambar secara cerdas
+            formData.append("resource_type", "auto"); 
 
             try {
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                // Endpoint diubah ke /auto/upload agar support PDF
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
                     method: "POST",
                     body: formData
                 });
@@ -209,8 +212,8 @@
                     ticket_id:resID, 
                     pelapor_nama:document.getElementById('n_pelapor').value, 
                     wa:document.getElementById('wa_pelapor').value, 
-                    face: faceUrl, // Menyimpan Link, bukan Base64
-                    doc_archive: docUrl, // Menyimpan Link, bukan Base64
+                    face: faceUrl, 
+                    doc_archive: docUrl, 
                     kec:document.getElementById('kec_audit').value, 
                     vill:document.getElementById('desa_audit').value, 
                     kat:document.getElementById('kat_audit').value, 
