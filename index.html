@@ -89,7 +89,6 @@
         <p class="text-center text-[8.5px] font-black opacity-10 tracking-[0.4em] mb-12 italic uppercase">Developed Under Integration. Design By : [ AuziFirdaus ] INSPEKTORAT MALRA @ 2026</p>
     </main>
 
-    <!-- SUCCESS RECEIPT -->
     <div id="resiDigital" class="modal-base">
         <div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl">
             <i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i>
@@ -100,7 +99,6 @@
         </div>
     </div>
 
-    <!-- TRACKER SYSTEM -->
     <div id="trackPanel" class="modal-base">
         <div class="bg-white rounded-[3.8rem] p-10 max-w-md w-full border-[10px] border-emerald-500 italic shadow-2xl uppercase">
             <h4 class="text-center font-black text-[11px] mb-8 text-slate-900">VERIFIKASI TIKET</h4>
@@ -128,25 +126,24 @@
     let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
     const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
-    // --- SUNTIKAN PERBAIKAN: CLOUDINARY INTEGRATION BY AI STUDIO ---
+    // --- PATCH FINAL BY AI STUDIO: UNIVERSAL MOBILE CLOUDINARY HANDLER ---
     const CLOUD_NAME = "dfqwrkoqm";
     const UPLOAD_PRESET = "siappmas";
 
-    // FUNGSI INI SUDAH DISINKRONKAN NAMANYA DENGAN BARIS 207 & 211
-    async function uploadToCloudinary(fileData) {
-        if(!fileData) return null;
+    async function uploadToCloudinary(base64Data) {
+        if(!base64Data) return null;
         const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
         const formData = new FormData();
-        formData.append("file", fileData);
+        formData.append("file", base64Data);
         formData.append("upload_preset", UPLOAD_PRESET);
 
         try {
             const response = await fetch(url, { method: "POST", body: formData });
-            if (!response.ok) throw new Error("Server Cloudinary Menolak Akses.");
             const data = await response.json();
-            return data.secure_url;
+            if (data.secure_url) return data.secure_url;
+            throw new Error(data.error ? data.error.message : "Handshake Failed");
         } catch (error) {
-            console.error("Cloud Error:", error);
+            console.error("Critical Cloud Error:", error);
             throw new Error("Gagal mengamankan berkas di Cloud.");
         }
     }
@@ -188,24 +185,38 @@
         }
     };
     
-    document.getElementById('f_up_input').onchange=async(e)=>{ const f=e.target.files[0]; if(!f) return; if(f.type==="application/pdf"){ analyzeSense(null,'D',true); docBase=f; } else { const rd=new FileReader(); rd.onload=(ev)=>{ const im=new Image(); im.onload=async()=>{ const cc=document.createElement('canvas'); cc.width=im.width; cc.height=im.height; cc.getContext('2d').drawImage(im,0,0); await analyzeSense(cc,'D'); if(ready.d) docBase=f; document.getElementById('doc-result').src=ev.target.result; document.getElementById('doc-result').classList.remove('hidden'); }; im.src=ev.target.result; }; rd.readAsDataURL(f); } };
+    // --- PENYUNTIKAN MODUL KEAMANAN BERKAS ANDROID (UNIVERSAL BASE64) ---
+    document.getElementById('f_up_input').onchange=function(e){ 
+        const f=e.target.files[0]; if(!f) return; 
+        const reader = new FileReader();
+        reader.onload = async (ev) => {
+            const res = ev.target.result;
+            if(f.type==="application/pdf"){ 
+                analyzeSense(null,'D',true); docBase = res; 
+            } else { 
+                const im=new Image(); 
+                im.onload=async()=>{ 
+                    const cc=document.createElement('canvas'); cc.width=im.width; cc.height=im.height; cc.getContext('2d').drawImage(im,0,0); 
+                    await analyzeSense(cc,'D'); if(ready.d) docBase=res; 
+                    document.getElementById('doc-result').src=res; document.getElementById('doc-result').classList.remove('hidden'); 
+                }; 
+                im.src=res; 
+            }
+        };
+        reader.readAsDataURL(f);
+    };
 
-    // --- PROSES KIRIM: KONEKSI FIREBASE & CLOUDINARY SUDAH DISINKRONKAN ---
     sSubmit.onclick=async()=>{
         hubLoad.style.display='flex'; pFill.style.width='10%';
         const resID="MALRA-VFINAL-"+Math.random().toString(36).substring(5,13).toUpperCase();
         try {
-            // Step 1: Upload Foto Wajah (Sudah sinkron nama fungsinya)
             pFill.style.width='30%';
             const faceUrl = await uploadToCloudinary(fcBase);
-            
-            // Step 2: Upload Dokumen/Surat (Sudah sinkron nama fungsinya)
             pFill.style.width='60%';
             const docUrl = await uploadToCloudinary(docBase);
 
             if(!faceUrl || !docUrl) throw new Error("Gagal mengamankan berkas di Cloud.");
 
-            // Step 3: Kirim Data Ke Database
             pFill.style.width='85%';
             await addDoc(collection(db,"pengaduan"),{
                 ticket_id:resID, 
