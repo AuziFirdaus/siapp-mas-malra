@@ -38,14 +38,14 @@
     <div id="modalViewer">
         <div id="canvasCore" class="flex flex-col items-center w-full"></div>
         <!-- TOMBOL EXIT MODAL YANG TETAP STANDAR SESUAI ARSITEKTUR ASLI -->
-        <button onclick="document.getElementById('modalViewer').style.display='none'" style="background:#ef4444; color:white; width:80%; padding:22px; border-radius:2rem; font-weight:900; font-size:18px; margin-top:15px; cursor:pointer; box-shadow:0 0 40px rgba(0,0,0,0.5);">KEMBALI KE PANEL AUDITOR (EXIT)</button>
+        <button onclick="document.getElementById('modalViewer').style.display='none'" style="background:#ef4444; color:white; width:80%; padding:22px; border-radius:2rem; font-weight:900; font-size:14px; margin-top:15px; cursor:pointer; box-shadow:0 0 40px rgba(0,0,0,0.5);">KEMBALI KE PANEL AUDITOR (EXIT)</button>
     </div>
 
     <aside class="sidebar p-6 flex flex-col italic font-black uppercase text-white">
         <div class="border-b border-slate-700 pb-8 mb-6 text-center">
             <img src="./logo_malra.png" class="h-28 mx-auto mb-3">
             <h1 class="text-lg">SiAPP <span class="text-blue-500">MAS</span></h1>
-            <p class="text-[7px] tracking-[0.2em] opacity-40 italic">Command Gateway Hub</p>
+            <p class="text-[7px] tracking-[0.2em] opacity-40 italic">Command Gateway</p>
         </div>
         <div class="flex-1 overflow-y-auto" id="areaListKec"></div>
         <div class="mt-auto border-t-2 border-slate-700 pt-6 font-sans">
@@ -77,9 +77,9 @@
         <div class="flex gap-2 mb-8">
             <button onclick="filt('ALL')" class="tab-btn aktif">DASHBOARD UTAMA</button>
             <button onclick="filt('Dana Desa')" class="tab-btn">DANA DESA</button>
-            <button onclick="filt('Dana BOS')" class="tab-btn">DANA BOS</button>
+            <button onclick="filt('Dana BOS-BOP')" class="tab-btn">DANA BOS-BOP</button>
             <button onclick="filt('BOK Puskesmas')" class="tab-btn">DANA BOK</button>
-            <button onclick="filt('PBJ')" class="tab-btn">PBJ KANTOR</button>
+            <button onclick="filt('PBJ')" class="tab-btn">PBJ DINAS</button>
         </div>
 
         <div id="dataGrid" class="divide-y-2 bg-white border-2 border-slate-900 rounded-[3rem] overflow-hidden shadow-2xl">
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="col-span-3 flex flex-col gap-4 pt-10">
                                     <button onclick="event.stopPropagation(); upP('${cid}','DIVERIFIKASI')" class="w-full py-4 rounded-[1.5rem] font-black text-xs bg-slate-50 border border-blue-200 text-blue-700 uppercase">SET VERIFIED</button>
-                                    <button onclick="event.stopPropagation(); upP('${cid}','DIPROSES')" class="w-full py-4 rounded-[1.5rem] font-black text-xs bg-slate-50 border border-orange-200 text-orange-700 uppercase">MULAI AUDIT</button>
+                                    <button onclick="event.stopPropagation(); upP('${cid}','DIPROSES')" class="w-full py-4 rounded-[1.5rem] font-black text-xs bg-slate-50 border border-orange-200 text-orange-700 uppercase">SET PROCESS</button>
                                     <button onclick="event.stopPropagation(); upP('${cid}','SELESAI')" class="w-full bg-slate-900 text-emerald-400 py-6 mt-12 rounded-[4rem] text-[13px] uppercase shadow-2xl font-black">MARK AS DONE ✅</button>
                                 </div>
                             </div>
