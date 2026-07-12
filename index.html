@@ -70,12 +70,10 @@
                         <label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">KATEGORI PENGADUAN</label>
                         <select id="kat_audit" required class="border-hijau-kab">
                             <option value="">- Pilih Kategori -</option>
-                            <!-- Kategori Lama -->
                             <option value="Dana Desa">Pengawasan Dana Desa</option>
                             <option value="Dana BOS">Dana BOS / PAUD / BOP</option>
                             <option value="BOK Puskesmas">Pengawasan BOK Puskesmas</option>
                             <option value="PBJ">Pengadaan barang/jasa</option>
-                            <!-- Kategori Baru Hasil Presentasi (Injection) -->
                             <option value="Penyalahgunaan Jabatan/Wewenang">Penyalahgunaan Jabatan/Wewenang</option>
                             <option value="Pelanggaran Administratif">Pelanggaran Administratif</option>
                             <option value="Korupsi, Kolusi, dan Nepotisme (KKN)">Korupsi, Kolusi, dan Nepotisme (KKN)</option>
@@ -87,13 +85,38 @@
                     <div><label class="text-[8px] text-slate-500 block mb-1 font-black italic px-2">NAMA OHOI / DESA</label><input type="text" id="desa_audit" required placeholder="INPUT DESA/OHOI..." class="border-hijau-kab p-5 outline-none font-black italic text-black-700 text-xs"></div>
                 </div>
 
+                <!-- III. AREA UPLOAD BERKAS: PENYUNTIKAN MODE DOKUMEN BANYAK HALAMAN -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
-                    <span class="text-[10px] text-black font-black uppercase mb-7 block">UPLOAD LAPORAN PENGADUAN TERTULIS PDF (WAJIB) MAX 5 MB</span>
+                    <span class="text-[10px] text-black font-black uppercase mb-7 block">UPLOAD BERKAS PENDUKUNG (PDF / GALERI)</span>
+                    
                     <div class="flex flex-col gap-4 px-2">
-                        <input type="file" id="f_up_input" accept="image/*, application/pdf" class="w-full text-[8.5px] italic file:bg-emerald-600 file:text-white file:py-2 file:px-6 file:rounded-xl file:border-0 font-black cursor-pointer">
-                        <button type="button" id="start-doc-cam" class="bg-amber-400 text-amber-950 font-black py-4 rounded-xl text-[9px] uppercase"><i class="fas fa-camera mr-2"></i> KAMERA </button>
+                        <!-- INPUT FILE TERSEMBUNYI NAMUN BISA DIAKSES VIA LABEL SEBAGAI TOMBOL -->
+                        <input type="file" id="f_up_input" accept="image/*, application/pdf" class="hidden">
+                        <label for="f_up_input" class="w-full bg-emerald-600 text-white font-black py-5 rounded-2xl text-[10px] uppercase cursor-pointer flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
+                             <i class="fas fa-file-pdf text-xl"></i> AKSES GALERI / FILE PDF
+                        </label>
+
+                        <div class="flex items-center gap-2 my-2 text-[8px] text-slate-400 font-black">
+                            <hr class="flex-1 border-slate-200"> ATAU <hr class="flex-1 border-slate-200">
+                        </div>
+
+                        <!-- TOMBOL KAMERA SEBAGAI OPSI CADANGAN UNTUK SATU FOTO CEPAT -->
+                        <button type="button" id="start-doc-cam" class="bg-amber-400 text-amber-950 font-black py-4 rounded-xl text-[9px] uppercase shadow-md flex items-center justify-center gap-2">
+                            <i class="fas fa-camera text-base"></i> FOTO LANGSUNG
+                        </button>
                     </div>
-                    <div id="docVideoBox" class="mt-8 hidden"><video id="doc-preview-cam" autoplay playsinline></video><button type="button" id="snap-doc-btn" class="w-full bg-red-600 text-white py-4 mt-4 rounded-xl font-black text-[9.5px] active:scale-95">CAPTURE SURAT SELESAI</button></div>
+
+                    <div id="docVideoBox" class="mt-8 hidden">
+                        <video id="doc-preview-cam" autoplay playsinline></video>
+                        <button type="button" id="snap-doc-btn" class="w-full bg-red-600 text-white py-4 mt-4 rounded-xl font-black text-[9.5px] active:scale-95">CAPTURE SURAT SELESAI</button>
+                    </div>
+
+                    <!-- AREA STATUS FILE: PENTING UNTUK MEMBERI INFO KE WARGA JIKA FILE SUDAH SIAP -->
+                    <div id="file-ready-zone" class="hidden mt-4 p-5 bg-emerald-50 rounded-[1.5rem] border-2 border-emerald-200 animate-bounce">
+                        <p id="file-name-preview" class="text-[9px] text-emerald-800 font-black truncate uppercase italic"></p>
+                        <span class="text-[7.5px] text-emerald-600 font-black tracking-widest mt-1 block">✓ BERKAS SIAP DIAMANKAN</span>
+                    </div>
+
                     <img id="doc-result" class="mt-4 rounded-3xl hidden border-2 border-emerald-100 shadow-md w-full h-52 object-cover">
                     <div id="q-status-d" class="hidden mt-4 italic font-black text-[7.5px] text-emerald-600 uppercase tracking-widest">Digital Audit Valid</div>
                 </div>
@@ -143,6 +166,7 @@
     let curStream=null, fcBase=null, docBase=null, ready={w:false, d:false};
     const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
 
+    // CONFIG INTEGRATION ASLI MILIK FIRDAUS
     const CLOUD_NAME = "dfqwrkoqm";
     const UPLOAD_PRESET = "siappmas";
 
@@ -201,13 +225,22 @@
         }
     };
     
+    // --- PENYUNTIKAN HANDLER INPUT BERKAS BARU ---
     document.getElementById('f_up_input').onchange=function(e){ 
         const f=e.target.files[0]; if(!f) return; 
         const reader = new FileReader();
         reader.onload = async (ev) => {
             const res = ev.target.result;
+            // UPDATE: Menampilkan info file terpilih di UI
+            const zone = document.getElementById('file-ready-zone');
+            const p = document.getElementById('file-name-preview');
+            zone.classList.remove('hidden');
+            p.innerText = "BERKAS: " + f.name.substring(0,25) + "...";
+
             if(f.type==="application/pdf"){ 
-                analyzeSense(null,'D',true); docBase = res; 
+                analyzeSense(null,'D',true); 
+                docBase = res; 
+                document.getElementById('doc-result').classList.add('hidden'); 
             } else { 
                 const im=new Image(); 
                 im.onload=async()=>{ 
