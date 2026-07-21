@@ -91,7 +91,6 @@
                         </select>
                     </div>
 
-                    <!-- RESTRUKTURISASI PENUH: 11 KECAMATAN MALRA -->
                     <div>
                         <label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black italic">Lokasi Kecamatan</label>
                         <select id="kec_audit" required class="border-hijau-kab">
@@ -115,7 +114,7 @@
 
                 <!-- II. SCANNER LAPORAN -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
-                    <span class="text-[10px] text-yellow font-yellow uppercase mb-3 block">I. SCAN LAPORAN PENGADUAN (MAKS 15 HALAMAN)</span>
+                    <span class="text-[10px] text-black font-black uppercase mb-3 block">I. SCAN LAPORAN PENGADUAN (MAKS 15 HALAMAN)</span>
                     <div id="antreanDokumen" class="mb-5 bg-slate-50 rounded-[1.5rem] border-2 border-dashed border-slate-200"></div>
                     <div id="boxKameraScanner" class="hidden mb-6">
                         <video id="doc-preview-cam" autoplay playsinline class="mx-auto border-4 border-slate-900"></video>
@@ -136,14 +135,35 @@
             </div>
         </form>
 
+        <!-- TOMBOL TRACKER: TRIGGER UTAMA -->
         <button id="btnTrackerTrigger" class="w-full bg-white border-2 border-slate-900 p-5 rounded-[2.5rem] font-black text-[10px] shadow-xl uppercase italic mb-20">CEK STATUS ADUAN ANDA <i class="fas fa-search-plus ml-2"></i></button>
         <p class="text-center text-[8.5px] font-black opacity-10 tracking-[0.4em] mb-12 uppercase italic">Developed Under Integration. Design By : [ AuziFirdaus ] INSPEKTORAT MALRA @ 2026</p>
     </main>
 
-    <!-- RESI SUCCESS & PREVIEW MODAL -->
-    <div id="resiDigital" class="modal-base"><div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl"><i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i><div class="bg-slate-50 p-6 rounded-3xl my-6 text-2xl font-black text-emerald-800 tracking-tighter">ID TIKET:<br><span id="txtResId"></span></div><button onclick="location.reload()" class="w-full bg-slate-900 text-white py-5 rounded-[2.5rem] text-[9.5px] font-black italic shadow-lg">SELESAI</button></div></div>
+    <!-- MODAL RESI SUCCESS -->
+    <div id="resiDigital" class="modal-base"><div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl uppercase"><i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i><div class="bg-slate-50 p-6 rounded-3xl my-6 text-2xl font-black text-emerald-800 tracking-tighter">ID TIKET:<br><span id="txtResId"></span></div><button onclick="location.reload()" class="w-full bg-slate-900 text-white py-5 rounded-[2.5rem] text-[9.5px] font-black italic shadow-lg">SELESAI</button></div></div>
+    
+    <!-- MODAL POP-UP PREVIEW -->
     <div id="previewPopup" class="modal-base" onclick="this.style.display='none'"><div class="max-w-md w-full p-4"><img id="imgPopupZoom" class="w-full rounded-[2.5rem] border-8 border-white"></div></div>
 
+    <!-- SUNTIKAN: MODAL TRACKER PANEL (INI YANG TADI HILANG) -->
+    <div id="trackPanel" class="modal-base">
+        <div class="bg-white rounded-[3.8rem] p-10 max-w-md w-full border-[10px] border-emerald-500 italic shadow-2xl uppercase">
+            <h4 class="text-center font-black text-[11px] mb-8 text-slate-900">VERIFIKASI TIKET</h4>
+            <input type="text" id="tiket-id-in" placeholder="MALRA-SCAN-..." class="w-full bg-slate-100 border-2 border-emerald-50 rounded-2xl p-5 mb-5 text-center text-lg font-black text-emerald-950 outline-none italic shadow-inner uppercase">
+            <button id="runCheckAudit" class="w-full bg-emerald-600 text-white py-5 rounded-3xl font-black text-[9.5px] shadow-lg mb-8 uppercase italic active:translate-y-2">START SEARCH</button>
+            <div id="box-result-track" class="hidden pt-6 border-t space-y-4 text-left font-sans italic text-[8.5px]">
+                <div class="flex justify-between border-b pb-2"><span>case identifier:</span><span id="o_t" class="font-black uppercase text-emerald-600 tracking-widest"></span></div>
+                <div class="flex justify-between border-b pb-2"><span>current progress:</span><span id="o_s" class="font-black uppercase text-emerald-600"></span></div>
+                <div class="bg-emerald-50 p-5 rounded-[2.5rem] text-slate-900 border border-emerald-200 shadow-inner">
+                    <p class="opacity-40 mb-2 italic uppercase font-black text-[7px]">Auditor Feedback Response:</p>
+                    <p id="o_n" class="text-[10px] font-bold italic text-emerald-950 leading-relaxed uppercase">...</p>
+                </div>
+            </div>
+            <p onclick="document.getElementById('trackPanel').style.display='none'" class="text-center mt-8 text-slate-600 font-bold text-[11px] cursor-pointer hover:text-black-900 uppercase tracking-widest">CLOSE</p>
+        </div>
+    </div>
+    
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
@@ -167,34 +187,10 @@
     }
 
     async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
-    
-    // --- HD SHARPENER (CRYSTAL CLEAR MODE) ---
-    async function runHdSampler(blob){ 
-        return new Promise(r=>{
-            const img=new Image(); img.src=blob; img.onload=()=>{
-                const c=document.createElement('canvas'); const m=2048; // BOOSTER HD
-                let w=img.width,h=img.height; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}
-                c.width=w;c.height=h; const x=c.getContext('2d');
-                x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high';
-                x.drawImage(img,0,0,w,h); r(c.toDataURL('image/jpeg', 0.9));
-            };
-        }); 
-    }
+    async function runHdSampler(blob){ return new Promise(r=>{const img=new Image(); img.src=blob; img.onload=()=>{const c=document.createElement('canvas'); const m=2048; let w=img.width,h=img.height; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}c.width=w;c.height=h; const x=c.getContext('2d'); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(img,0,0,w,h); r(c.toDataURL('image/jpeg', 0.9)); }; }); }
 
-    function vChk(){ 
-        ready.d = (docPages.length > 0);
-        if(ready.w && ready.d){ 
-            sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); 
-            sSubmit.innerText="VALID : KIRIM "+docPages.length+" HALAMAN"; 
-            sSubmit.classList.add('bg-slate-900','animate-pulse'); 
-        } else {
-            sSubmit.disabled=true; sSubmit.classList.add('opacity-30');
-            sSubmit.innerText="LENGKAPI IDENTITAS ANDA !";
-            sSubmit.classList.remove('bg-slate-900','animate-pulse');
-        }
-    }
+    function vChk(){ ready.d = (docPages.length > 0); if(ready.w && ready.d){ sSubmit.disabled=false; sSubmit.classList.remove('opacity-30'); sSubmit.innerText="VALID : KIRIM "+docPages.length+" HALAMAN"; sSubmit.classList.add('bg-slate-900','animate-pulse'); } else { sSubmit.disabled=true; sSubmit.classList.add('opacity-30'); sSubmit.innerText="LENGKAPI IDENTITAS ANDA !"; sSubmit.classList.remove('bg-slate-900','animate-pulse'); } }
 
-    // BIOMETRIK SCAN - AMAN
     document.getElementById('start-camera').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{width:720}}); const v=document.getElementById('video-preview'); v.srcObject=curStream; v.style.display="block"; document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block"; };
     document.getElementById('take-photo').onclick=async()=>{ 
         const v=document.getElementById('video-preview'), c=document.getElementById('face-canvas');
@@ -204,47 +200,17 @@
         ready.w=true; vChk(); await camClose();
     };
 
-    // --- SCANNER LOOP WITH DELETE FEATURE ---
     const antrean = document.getElementById('antreanDokumen');
-
-    function refreshAntrean() {
-        antrean.innerHTML = "";
-        docPages.forEach((data64, idx) => {
-            const wrap = document.createElement('div');
-            wrap.className = 'thumb-wrap';
-            wrap.innerHTML = `<span class="del-page-btn" onclick="event.stopPropagation(); window.delPage(${idx})"><i class="fas fa-times"></i></span><span class="page-counter">${idx+1}</span><img src="${data64}" class="thumb-img" onclick="viewScan('${data64}')">`;
-            antrean.appendChild(wrap);
-        });
-        document.getElementById('lblHalKe').innerText = docPages.length + 1;
-        vChk();
-    }
+    function refreshAntrean() { antrean.innerHTML = ""; docPages.forEach((data64, idx) => { const wrap = document.createElement('div'); wrap.className = 'thumb-wrap'; wrap.innerHTML = `<span class="del-page-btn" onclick="event.stopPropagation(); window.delPage(${idx})"><i class="fas fa-times"></i></span><span class="page-counter">${idx+1}</span><img src="${data64}" class="thumb-img" onclick="viewScan('${data64}')">`; antrean.appendChild(wrap); }); document.getElementById('lblHalKe').innerText = docPages.length + 1; vChk(); }
 
     window.delPage = (idx) => { if(confirm("Hapus lembaran ini?")) { docPages.splice(idx,1); refreshAntrean(); } };
     window.viewScan = (u) => { document.getElementById('imgPopupZoom').src = u; document.getElementById('previewPopup').style.display = 'flex'; };
 
     document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:2048}}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('boxKameraScanner').classList.remove('hidden'); document.getElementById('btnSelesaiScan').classList.remove('hidden'); };
-
-    document.getElementById('btnJepretLagi').onclick=async()=>{ 
-        if(docPages.length >= 15) return alert("MAKSIMAL 15 HALAMAN");
-        const v=document.getElementById('doc-preview-cam'), cd=document.createElement('canvas');
-        cd.width=v.videoWidth; cd.height=v.videoHeight; cd.getContext('2d').drawImage(v,0,0);
-        docPages.push(await runHdSampler(cd.toDataURL('image/jpeg')));
-        refreshAntrean(); antrean.scrollLeft = antrean.scrollWidth;
-    };
-
+    document.getElementById('btnJepretLagi').onclick=async()=>{ if(docPages.length >= 15) return alert("MAKSIMAL 15 HALAMAN"); const v=document.getElementById('doc-preview-cam'), cd=document.createElement('canvas'); cd.width=v.videoWidth; cd.height=v.videoHeight; cd.getContext('2d').drawImage(v,0,0); docPages.push(await runHdSampler(cd.toDataURL('image/jpeg'))); refreshAntrean(); antrean.scrollLeft = antrean.scrollWidth; };
     document.getElementById('btnSelesaiScan').onclick=async()=>{ document.getElementById('boxKameraScanner').classList.add('hidden'); document.getElementById('btnSelesaiScan').classList.add('hidden'); await camClose(); };
 
-    document.getElementById('f_up_input').onchange=function(e){ 
-        const f=e.target.files[0]; if(!f) return; 
-        const r = new FileReader();
-        r.onload = async (ev) => {
-            if(f.type==="application/pdf"){ 
-                docPages = [ev.target.result]; antrean.innerHTML = `<div class="p-5 text-[8px] font-black uppercase text-emerald-600">PDF Terlampir: ${f.name}</div>`; vChk();
-            } else { 
-                const im=new Image(); im.onload=async()=>{ docPages.push(await runHdSampler(ev.target.result)); refreshAntrean(); }; im.src=ev.target.result; 
-            }
-        }; r.readAsDataURL(f);
-    };
+    document.getElementById('f_up_input').onchange=function(e){ const f=e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = async (ev) => { if(f.type==="application/pdf"){ docPages = [ev.target.result]; antrean.innerHTML = `<div class="p-5 text-[8px] font-black uppercase text-emerald-600">PDF Terlampir: ${f.name}</div>`; vChk(); } else { const im=new Image(); im.onload=async()=>{ docPages.push(await runHdSampler(ev.target.result)); refreshAntrean(); }; im.src=ev.target.result; } }; r.readAsDataURL(f); };
 
     sSubmit.onclick=async()=>{
         hubLoad.style.display='flex'; pFill.style.width='10%';
@@ -252,13 +218,41 @@
         try {
             const fUrl = await uploadToCloudinary(fcBase); pFill.width='30%';
             let linkA = [];
-            for(let i=0; i < docPages.length; i++){
-                linkA.push(await uploadToCloudinary(docPages[i]));
-                pFill.style.width = (30 + (i*40/docPages.length)) + '%';
-            }
+            for(let i=0; i < docPages.length; i++){ linkA.push(await uploadToCloudinary(docPages[i])); pFill.style.width = (30 + (i*40/docPages.length)) + '%'; }
             await addDoc(collection(db,"pengaduan"),{ ticket_id:resID, pelapor_nama:document.getElementById('n_pelapor').value, wa:document.getElementById('wa_pelapor').value, face:fUrl, doc_archive:linkA.join("|"), kec:document.getElementById('kec_audit').value, vill:document.getElementById('desa_audit').value, kat:document.getElementById('kat_audit').value, status:"TERIMA", timestamp:serverTimestamp() });
             pFill.style.width='100%'; setTimeout(()=>{ hubLoad.style.display='none'; document.getElementById('txtResId').innerText=resID; document.getElementById('resiDigital').style.display='flex'; },500);
         } catch(e){ hubLoad.style.display='none'; alert("Error: " + e.message); }
+    };
+
+    // --- SUNTIKAN: LOGIKA SEARCH TRACKER ENGINE ---
+    document.getElementById('btnTrackerTrigger').onclick = () => {
+        document.getElementById('trackPanel').style.display = 'flex';
+    };
+
+    document.getElementById('runCheckAudit').onclick = async () => {
+        const targetID = document.getElementById('tiket-id-in').value.trim().toUpperCase();
+        if(!targetID) {
+            alert("MASUKKAN ID TIKET TERLEBIH DAHULU!");
+            return;
+        }
+
+        try {
+            const q = query(collection(db, "pengaduan"), where("ticket_id", "==", targetID));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                alert("MAAF, ID TIKET TIDAK DITEMUKAN.");
+                document.getElementById('box-result-track').classList.add('hidden');
+            } else {
+                const data = querySnapshot.docs[0].data();
+                document.getElementById('o_t').innerText = data.ticket_id;
+                document.getElementById('o_s').innerText = data.status;
+                document.getElementById('o_n').innerText = data.note || "SEDANG DALAM TAHAP VERIFIKASI AWAL.";
+                document.getElementById('box-result-track').classList.remove('hidden');
+            }
+        } catch (error) {
+            alert("KONEKSI KE DATABASE GAGAL: " + error.message);
+        }
     };
 </script>
 </body>
