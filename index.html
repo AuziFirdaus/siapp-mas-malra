@@ -12,20 +12,20 @@
         .border-hijau-kab { border: 2.8px solid #10b981 !important; border-radius: 2rem !important; background: #ffffff; padding: 25px; margin-bottom: 25px; display: block; width: 100%; box-sizing: border-box; }
         select.border-hijau-kab { color: #000000 !important; font-weight: 800 !important; background: white !important; appearance: none; padding: 18px 25px !important; font-size: 11.5px !important; cursor: pointer; }
         
-        /* SUNTIKAN MODIFIKASI DIMENSI KAMERA (330px & PROPORSI SCANNER) */
-        #video-preview { border-radius: 25px; width: 100%; max-width: 320px; margin: 0 auto; display: none; background: #000; border: 5px solid white; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transform: scaleX(-1); }
+        /* FIX VISUAL KAMERA WAJAH (BUlat & Pas) */
+        #video-preview { border-radius: 2rem; width: 100%; height: 350px; margin: 0 auto; display: none; background: #000; border: 4px solid #10b981; object-fit: cover; transform: scaleX(-1); }
         
+        /* PERBAIKAN TOTAL KAMERA SCANNER (GAGAH & TINGGI) */
         #doc-preview-cam { 
-            border-radius: 25px; 
-            width: 100%; 
-            max-width: 330px; /* Lebar Baru 330px sesuai Instruksi Pak Firdaus */
-            aspect-ratio: 4 / 3; /* Anti-Tinggi: Membuat rasio Scanner Profesional */
-            object-fit: cover; 
-            margin: 0 auto; 
+            border-radius: 1.5rem; 
+            width: 100% !important; /* Memenuhi Kotak Hijau */
+            height: 500px !important; /* Tinggi Tegak seperti kertas A4 */
+            object-fit: cover; /* Gambar tetap proporsional tidak gepeng */
             display: none; 
             background: #000; 
-            border: 5px solid white; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+            border: 5px solid #1e293b; /* Frame gelap agar elegan */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15); 
+            margin: 0 auto;
         }
 
         .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 15px; border-radius: 99px; text-transform: uppercase; }
@@ -39,7 +39,7 @@
         .thumb-wrap { position: relative; flex-shrink: 0; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .thumb-img { width: 85px; height: 110px; border-radius: 1rem; object-fit: cover; border: 2.5px solid #10b981; }
         .page-counter { position: absolute; top: -10px; left: -10px; background: #2563eb; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; border: 2px solid white; }
-        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; }
+        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 266px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; width: 26px; height: 26px; }
         #antreanDokumen { display: flex; gap: 15px; overflow-x: auto; padding: 15px 10px; min-height: 140px; scrollbar-width: none; }
         #antreanDokumen::-webkit-scrollbar { display: none; }
         .btn-capture-loop { background: #ef4444; animation: pulseCapture 2s infinite; }
@@ -69,7 +69,7 @@
     <main class="max-w-lg mx-auto px-5 py-8 text-center">
         <div class="mb-10">
             <p class="text-red-700 text-[14px]">SISTEM APLIKASI PENGADUAN MASYARAKAT</p>
-            <p class="text-slate-300 text-[9px] tracking-widest mt-1 uppercase italic font-black">Privacy System Encrypted</p>
+            <p class="text-slate-300 text-[9px] tracking-widest mt-1 uppercase italic font-black">Identitas Anda Dijamin Rahasia</p>
             <p class="pt-5 mt-5 border-t border-red-50 text-[10px] text-slate-800 leading-tight font-sans font-bold uppercase italic text-center">"IDENTITAS PELAPOR DIJAMIN KERAHASIAANNYA 100% SESUAI ATURAN NEGARA."</p>
         </div>
 
@@ -81,10 +81,9 @@
                     <span class="text-[9px] text-emerald-600 mb-6 block font-black uppercase">I. VALIDASI BIOMETRIK (SCAN WAJAH AI)</span>
                     <video id="video-preview" autoplay playsinline></video>
                     <canvas id="face-canvas" class="hidden"></canvas>
-                    <img id="face-result" class="mx-auto rounded-[2.2rem] hidden border-4 border-emerald-500 w-32 h-32 object-cover shadow-xl">
-                    <div id="q-status-w" class="hidden my-4"><span id="badge-w" class="quality-badge status-fail italic">MEMUAT SENSOR...</span></div>
-                    <button type="button" id="start-camera" class="w-full bg-sky-500 text-white font-black py-5 rounded-2xl text-[9px] uppercase active:scale-95 transition-all shadow-md">KAMERA WAJAH</button>
-                    <button type="button" id="take-photo" class="w-full bg-red-600 text-white font-black py-5 rounded-2xl hidden animate-pulse text-[9.5px]">OK: KONFIRMASI WAJAH SAH</button>
+                    <img id="face-result" class="mx-auto rounded-[2.2rem] hidden border-4 border-emerald-500 w-48 h-48 object-cover shadow-xl">
+                    <button type="button" id="start-camera" class="w-full bg-sky-500 text-white font-black py-5 rounded-2xl text-[9px] uppercase active:scale-95 transition-all shadow-md mt-4">AKTIFKAN KAMERA WAJAH</button>
+                    <button type="button" id="take-photo" class="w-full bg-red-600 text-white font-black py-5 rounded-2xl hidden animate-pulse text-[9.5px] mt-4">KONFIRMASI WAJAH SELESAI</button>
                 </div>
 
                 <div class="space-y-6 text-left px-1">
@@ -106,7 +105,6 @@
                         </select>
                     </div>
 
-                    <!-- KECAMATAN LENGKAP - AMAN -->
                     <div>
                         <label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black italic">Lokasi Kecamatan</label>
                         <select id="kec_audit" required class="border-hijau-kab">
@@ -124,16 +122,15 @@
                             <option value="KEI BESAR UTARA TIMUR">KEI BESAR UTARA TIMUR</option>
                         </select>
                     </div>
-
                     <div><label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black">Nama Ohoi / Desa</label><input type="text" id="desa_audit" required placeholder="NAMA DESA..." class="border-hijau-kab p-5 shadow-inner text-xs"></div>
                 </div>
 
-                <!-- II. SCANNER LAPORAN DENGAN PROPORSI BARU -->
+                <!-- II. SCANNER LAPORAN - LAYAR GAGAH -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">II. SCAN DOKUMEN LAPORAN (MAKS 15 HALAMAN)</span>
                     <div id="antreanDokumen" class="mb-5 bg-slate-50 rounded-[1.5rem] border-2 border-dashed border-slate-200"></div>
                     <div id="boxKameraScanner" class="hidden mb-6">
-                        <video id="doc-preview-cam" autoplay playsinline class="mx-auto border-4 border-slate-900"></video>
+                        <video id="doc-preview-cam" autoplay playsinline></video>
                         <button type="button" id="btnJepretLagi" class="btn-capture-loop w-full text-white py-6 mt-4 rounded-3xl font-black text-xs uppercase shadow-xl">
                             <i class="fas fa-camera mr-2"></i> JEPRET HALAMAN KE-<span id="lblHalKe">1</span>
                         </button>
@@ -151,7 +148,7 @@
         </form>
 
         <button id="btnTrackerTrigger" class="w-full bg-white border-2 border-slate-900 p-5 rounded-[2.5rem] font-black text-[10px] shadow-xl uppercase italic mb-20">CEK STATUS ADUAN ANDA <i class="fas fa-search-plus ml-2"></i></button>
-        <p class="text-center text-[8.5px] font-black opacity-10 tracking-[0.4em] mb-12 uppercase italic">Developed Under Integration. Design By : [ AuziFirdaus ] INSPEKTORAT MALRA @ 2026</p>
+        <p class="text-center text-[8.5px] font-black opacity-30 tracking-[0.4em] mb-12 uppercase italic">SiAPP MAS MALRA &copy; 2026 | FIRDAUS SETITIT, S.KOM</p>
     </main>
 
     <!-- RESI SUCCESS & PREVIEW MODAL -->
@@ -168,7 +165,7 @@
                 <div class="flex justify-between border-b pb-2"><span>case identifier:</span><span id="o_t" class="font-black uppercase text-emerald-600 tracking-widest"></span></div>
                 <div class="flex justify-between border-b pb-2"><span>current progress:</span><span id="o_s" class="font-black uppercase text-emerald-600"></span></div>
                 <div class="bg-emerald-50 p-5 rounded-[2.5rem] text-slate-900 border border-emerald-200 shadow-inner">
-                    <p class="opacity-40 mb-2 italic uppercase font-black text-[7px]">Auditor Feedback Response:</p>
+                    <p class="opacity-40 mb-2 italic uppercase font-black text-[7px]">Auditor Feedback:</p>
                     <p id="o_n" class="text-[10px] font-bold italic text-emerald-950 leading-relaxed uppercase">...</p>
                 </div>
             </div>
@@ -200,15 +197,14 @@
 
     async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
     
-    // --- HD SHARPENER ---
     async function runHdSampler(blob){ 
         return new Promise(r=>{
             const img=new Image(); img.src=blob; img.onload=()=>{
-                const c=document.createElement('canvas'); const m=2048; 
+                const c=document.createElement('canvas'); const m=1800; 
                 let w=img.width,h=img.height; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}}
                 c.width=w;c.height=h; const x=c.getContext('2d');
                 x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high';
-                x.drawImage(img,0,0,w,h); r(c.toDataURL('image/jpeg', 0.9));
+                x.drawImage(img,0,0,w,h); r(c.toDataURL('image/jpeg', 0.85));
             };
         }); 
     }
@@ -226,7 +222,7 @@
         }
     }
 
-    document.getElementById('start-camera').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{width:720}}); const v=document.getElementById('video-preview'); v.srcObject=curStream; v.style.display="block"; document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block"; };
+    document.getElementById('start-camera').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user", width:1080}}); const v=document.getElementById('video-preview'); v.srcObject=curStream; v.style.display="block"; document.getElementById('start-camera').style.display="none"; document.getElementById('take-photo').style.display="block"; };
     document.getElementById('take-photo').onclick=async()=>{ 
         const v=document.getElementById('video-preview'), c=document.getElementById('face-canvas');
         c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
@@ -251,7 +247,7 @@
     window.delPage = (idx) => { if(confirm("Hapus lembaran ini?")) { docPages.splice(idx,1); refreshAntrean(); } };
     window.viewScan = (u) => { document.getElementById('imgPopupZoom').src = u; document.getElementById('previewPopup').style.display = 'flex'; };
 
-    document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:2048}}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('boxKameraScanner').classList.remove('hidden'); document.getElementById('btnSelesaiScan').classList.remove('hidden'); };
+    document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:1920}, height:{ideal:1080}}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('boxKameraScanner').classList.remove('hidden'); document.getElementById('btnSelesaiScan').classList.remove('hidden'); };
 
     document.getElementById('btnJepretLagi').onclick=async()=>{ 
         if(docPages.length >= 15) return alert("MAKSIMAL 15 HALAMAN");
@@ -290,7 +286,6 @@
         } catch(e){ hubLoad.style.display='none'; alert("Error: " + e.message); }
     };
 
-    // TRACKER ENGINE SINKRON
     document.getElementById('btnTrackerTrigger').onclick = () => { document.getElementById('trackPanel').style.display = 'flex'; };
     document.getElementById('runCheckAudit').onclick = async () => {
         const targetID = document.getElementById('tiket-id-in').value.trim().toUpperCase();
