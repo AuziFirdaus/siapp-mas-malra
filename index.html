@@ -15,7 +15,7 @@
         /* FIX VISUAL KAMERA WAJAH (BUlat & Pas) */
         #video-preview { border-radius: 2rem; width: 100%; height: 350px; margin: 0 auto; display: none; background: #000; border: 4px solid #10b981; object-fit: cover; transform: scaleX(-1); }
         
-        /* PERBAIKAN TOTAL KAMERA SCANNER (GAGAH & TINGGI) */
+        /* [OPTIMALISASI LEBAR] KAMERA SCANNER GAGAH & WIDE */
         #doc-preview-cam { 
             border-radius: 1.5rem; 
             width: 100% !important; /* Dibuat lebar maksimal */
@@ -36,7 +36,7 @@
         * { text-decoration: none !important; outline: none !important; }
 
         /* SCANNER & DELETE STYLES */
-       .thumb-wrap { position: relative; flex-shrink: 0; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .thumb-wrap { position: relative; flex-shrink: 0; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .thumb-img { width: 85px; height: 110px; border-radius: 1rem; object-fit: cover; border: 2.5px solid #10b981; }
         .page-counter { position: absolute; top: -10px; left: -10px; background: #2563eb; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; border: 2px solid white; }
         .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; width: 26px; height: 26px; }
@@ -126,15 +126,15 @@
                     <div><label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black">Nama Ohoi / Kelurahan</label><input type="text" id="desa_audit" required placeholder="NAMA OHOI/KELURAHAN" class="border-hijau-kab p-5 shadow-inner text-xs"></div>
                 </div>
 
-                <!-- II. SCANNER LAPORAN - LAYAR GAGAH -->
-                <div class="border-hijau-kab text-center shadow-inner italic">
+                <!-- II. SCANNER LAPORAN - LAYAR GAGAH & WIDE -->
+                <div class="border-hijau-kab text-center shadow-inner italic" style="padding: 25px 8px;">
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">I. SCAN LAPORAN PENGADUAN (MAKS 15 HALAMAN)</span>
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">II. UPLOAD LAPORAN PENGADUAN PDF (MAKS 10 MB)</span>
                     <div id="antreanDokumen" class="mb-5 bg-slate-50 rounded-[1.5rem] border-2 border-dashed border-slate-200"></div>
-                    <div id="boxKameraScanner" class="hidden mb-6">
+                    <div id="boxKameraScanner" class="hidden mb-6 px-0">
                         <video id="doc-preview-cam" autoplay playsinline></video>
-                        <button type="button" id="btnJepretLagi" class="btn-capture-loop w-full text-white py-6 mt-4 rounded-3xl font-black text-xs uppercase shadow-xl">
-                            <i class="fas fa-camera mr-2"></i> JEPRET HALAMAN KE-<span id="lblHalKe">1</span>
+                        <button type="button" id="btnJepretLagi" class="btn-capture-loop w-full text-white py-6 mt-6 rounded-3xl font-black text-sm uppercase shadow-2xl flex items-center justify-center gap-3">
+                            <i class="fas fa-camera text-xl"></i> JEPRET HALAMAN KE-<span id="lblHalKe">1</span>
                         </button>
                     </div>
                     <div class="grid grid-cols-2 gap-4 px-2">
@@ -153,7 +153,7 @@
         <p class="text-center text-[8.5px] font-black opacity-30 tracking-[0.4em] mb-12 uppercase italic">SiAPP MAS &copy; 2026 | INSPEKTORAT MALRA</p>
     </main>
 
-    <!-- RESI SUCCESS & PREVIEW MODAL -->
+    <!-- RESI SUCCESS MODAL -->
     <div id="resiDigital" class="modal-base">
         <div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl">
             <i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i>
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <!-- MODAL POP-UP PREVIEW UNTUK MELIHAT HASIL SCAN -->
+    <!-- PREVIEW SCAN MODAL -->
     <div id="previewPopup" class="modal-base" onclick="this.style.display='none'">
         <div class="max-w-md w-full p-4">
             <img id="imgPopupZoom" class="w-full rounded-[2.5rem] border-8 border-white shadow-2xl">
@@ -172,11 +172,11 @@
         </div>
     </div>
 
-    <!-- TRACK PANEL MODAL -->
+    <!-- TRACK PANEL MODAL (STAY FINAL) -->
     <div id="trackPanel" class="modal-base">
         <div class="bg-white rounded-[3.8rem] p-10 max-w-md w-full border-[10px] border-emerald-500 italic shadow-2xl uppercase">
             <h4 class="text-center font-black text-[11px] mb-8 text-slate-900">VERIFIKASI TIKET</h4>
-            <input type="text" id="tiket-id-in" placeholder="ITKAB-MALRA-..." class="w-full bg-slate-100 border-2 border-emerald-50 rounded-2xl p-5 mb-5 text-center text-lg font-black text-emerald-950 outline-none italic shadow-inner uppercase">
+            <input type="text" id="tiket-id-in" placeholder="MALRA-SCAN-..." class="w-full bg-slate-100 border-2 border-emerald-50 rounded-2xl p-5 mb-5 text-center text-lg font-black text-emerald-950 outline-none italic shadow-inner uppercase">
             <button id="runCheckAudit" class="w-full bg-emerald-600 text-white py-5 rounded-3xl font-black text-[9.5px] shadow-lg mb-8 uppercase italic active:translate-y-2">START SEARCH</button>
             <div id="box-result-track" class="hidden pt-6 border-t space-y-4 text-left font-sans italic text-[8.5px]">
                 <div class="flex justify-between border-b pb-2"><span>case identifier:</span><span id="o_t" class="font-black uppercase text-emerald-600 tracking-widest"></span></div>
@@ -280,11 +280,8 @@
         const f=e.target.files[0]; if(!f) return; 
         const r = new FileReader();
         r.onload = async (ev) => {
-            if(f.type==="application/pdf"){ 
-                docPages = [ev.target.result]; antrean.innerHTML = `<div class="p-5 text-[8px] font-black uppercase text-emerald-600">PDF Terlampir: ${f.name}</div>`; vChk();
-            } else { 
-                const im=new Image(); im.onload=async()=>{ docPages.push(await runHdSampler(ev.target.result)); refreshAntrean(); }; im.src=ev.target.result; 
-            }
+            if(f.type==="application/pdf"){ docPages = [ev.target.result]; antrean.innerHTML = `<div class="p-5 text-[10px] text-emerald-600 font-bold">PDF TERLAMPIR</div>`; vChk();
+            } else { const im=new Image(); im.onload=async()=>{ docPages.push(await runHdSampler(ev.target.result)); refreshAntrean(); }; im.src=ev.target.result; }
         }; r.readAsDataURL(f);
     };
 
@@ -296,13 +293,14 @@
             let linkA = [];
             for(let i=0; i < docPages.length; i++){
                 linkA.push(await uploadToCloudinary(docPages[i]));
-                pFill.style.width = (30 + (i*40/docPages.length)) + '%';
+                pFill.style.width = (30 + (i*60/docPages.length)) + '%';
             }
             await addDoc(collection(db,"pengaduan"),{ ticket_id:resID, pelapor_nama:document.getElementById('n_pelapor').value, wa:document.getElementById('wa_pelapor').value, face:fUrl, doc_archive:linkA.join("|"), kec:document.getElementById('kec_audit').value, vill:document.getElementById('desa_audit').value, kat:document.getElementById('kat_audit').value, status:"TERIMA", timestamp:serverTimestamp() });
             pFill.style.width='100%'; setTimeout(()=>{ hubLoad.style.display='none'; document.getElementById('txtResId').innerText=resID; document.getElementById('resiDigital').style.display='flex'; },500);
         } catch(e){ hubLoad.style.display='none'; alert("Error: " + e.message); }
     };
 
+    /* FITUR TRACKER FINAL BAPAK */
     document.getElementById('btnTrackerTrigger').onclick = () => { document.getElementById('trackPanel').style.display = 'flex'; };
     document.getElementById('runCheckAudit').onclick = async () => {
         const targetID = document.getElementById('tiket-id-in').value.trim().toUpperCase();
