@@ -154,8 +154,23 @@
     </main>
 
     <!-- RESI SUCCESS & PREVIEW MODAL -->
-    <div id="resiDigital" class="modal-base"><div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl"><i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i><div class="bg-slate-50 p-6 rounded-3xl my-6 text-2xl font-black text-emerald-800 tracking-tighter">ID TIKET:<br><span id="txtResId"></span></div><button onclick="location.reload()" class="w-full bg-slate-900 text-white py-5 rounded-[2.5rem] text-[9.5px] font-black italic shadow-lg">SELESAI</button></div></div>
-    <div id="previewPopup" class="modal-base" onclick="this.style.display='none'"><div class="max-w-md w-full p-4"><img id="imgPopupZoom" class="w-full rounded-[2.5rem] border-8 border-white"></div></div>
+    <div id="resiDigital" class="modal-base">
+        <div class="bg-white rounded-[3.5rem] p-10 max-w-sm w-full text-center border-t-8 border-emerald-500 shadow-2xl">
+            <i class="fas fa-shield-heart text-emerald-500 text-5xl mb-6"></i>
+            <h3 class="font-black text-xs text-slate-800 mb-2 italic">BERHASIL TERKIRIM</h3>
+            <div class="bg-slate-50 p-6 rounded-3xl my-6"><span class="text-[8.5px] opacity-40 font-bold block mb-1">ID TICKET:</span><span id="txtResId" class="text-2xl text-emerald-800 tracking-tighter font-black uppercase">MALRA</span></div>
+            <p class="text-red-700 text-[10px] font-black leading-tight mb-8">(WAJIB) SCREENSHOT ID UNTUK KEPENTINGAN CEK STATUS ADUAN ANDA!</p>
+            <button onclick="location.reload()" class="w-full bg-slate-900 text-white py-5 rounded-[2.5rem] text-[9.5px] font-black italic shadow-lg">SELESAI</button>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP PREVIEW UNTUK MELIHAT HASIL SCAN -->
+    <div id="previewPopup" class="modal-base" onclick="this.style.display='none'">
+        <div class="max-w-md w-full p-4">
+            <img id="imgPopupZoom" class="w-full rounded-[2.5rem] border-8 border-white shadow-2xl">
+            <p class="text-white text-center mt-5 font-black text-xs uppercase tracking-widest">TAP DIMANA SAJA UNTUK MENUTUP</p>
+        </div>
+    </div>
 
     <!-- TRACK PANEL MODAL -->
     <div id="trackPanel" class="modal-base">
