@@ -15,18 +15,29 @@
         /* FIX VISUAL KAMERA WAJAH (BUlat & Pas) */
         #video-preview { border-radius: 2rem; width: 100%; height: 350px; margin: 0 auto; display: none; background: #000; border: 4px solid #10b981; object-fit: cover; transform: scaleX(-1); }
         
-        /* PERBAIKAN TOTAL KAMERA SCANNER (GAGAH & TINGGI) */
-        #doc-preview-cam { 
-            border-radius: 1.5rem; 
-            width: 100% !important; /* Memenuhi Kotak Hijau */
-            height: 500px !important; /* Tinggi Tegak seperti kertas A4 */
-            object-fit: cover; /* Gambar tetap proporsional tidak gepeng */
-            display: none; 
-            background: #000; 
-            border: 5px solid #1e293b; /* Frame gelap agar elegan */
-            box-shadow: 0 15px 45px rgba(0,0,0,0.15); 
-            margin: 0 auto;
-        }
+        /* PERBAIKAN TOTAL KAMERA SCANNER (LEBIH LEBAR & GAGAH) */
+#doc-preview-cam { 
+    border-radius: 1rem; /* Sedikit lebih tajam agar presisi di pojok bingkai */
+    width: calc(100% + 50px) !important; /* Menambah lebar untuk menembus padding parent (25px kiri + 25px kanan) */
+    margin-left: -25px; /* Menggeser ke kiri agar simetris kembali */
+    margin-right: -25px; /* Menggeser ke kanan */
+    height: 500px !important; /* Tetap Tinggi Tegak */
+    object-fit: cover; 
+    display: none; 
+    background: #000; 
+    border-top: 4px solid #10b981; /* Garis pembatas atas agar terlihat menyatu dengan box */
+    border-bottom: 4px solid #10b981; 
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5); 
+    position: relative;
+}
+
+/* Memastikan Container Kamera tidak terpotong (overflow) */
+#boxKameraScanner {
+    width: 100%;
+    overflow: hidden; /* Penting agar video tidak keluar dari radius box hijau */
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
 
         .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 15px; border-radius: 99px; text-transform: uppercase; }
         .status-fail { background: #ef4444; color: white; } .status-pass { background: #10b981; color: white; }
