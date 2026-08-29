@@ -290,7 +290,7 @@
 
     sSubmit.onclick=async()=>{
         hubLoad.style.display='flex'; pFill.style.width='10%';
-        const resID="MALRA-SCAN-"+Math.random().toString(36).substring(5,13).toUpperCase();
+        const resID="ITKAB-MALRA-"+Math.random().toString(36).substring(5,13).toUpperCase();
         try {
             const fUrl = await uploadToCloudinary(fcBase); pFill.style.width='30%';
             let linkA = [];
