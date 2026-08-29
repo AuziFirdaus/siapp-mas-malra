@@ -15,29 +15,26 @@
         /* FIX VISUAL KAMERA WAJAH (BUlat & Pas) */
         #video-preview { border-radius: 2rem; width: 100%; height: 350px; margin: 0 auto; display: none; background: #000; border: 4px solid #10b981; object-fit: cover; transform: scaleX(-1); }
         
-        /* PERBAIKAN TOTAL KAMERA SCANNER (LEBIH LEBAR & GAGAH) */
-#doc-preview-cam { 
-    border-radius: 1rem; /* Sedikit lebih tajam agar presisi di pojok bingkai */
-    width: calc(100% + 50px) !important; /* Menambah lebar untuk menembus padding parent (25px kiri + 25px kanan) */
-    margin-left: -25px; /* Menggeser ke kiri agar simetris kembali */
-    margin-right: -25px; /* Menggeser ke kanan */
-    height: 500px !important; /* Tetap Tinggi Tegak */
-    object-fit: cover; 
-    display: none; 
-    background: #000; 
-    border-top: 4px solid #10b981; /* Garis pembatas atas agar terlihat menyatu dengan box */
-    border-bottom: 4px solid #10b981; 
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5); 
-    position: relative;
-}
+        /* PERBAIKAN TOTAL KAMERA SCANNER (GAGAH, TINGGI, & LEBAR MAKSIMAL) */
+        #boxKameraScanner { 
+            width: calc(100% + 50px); /* Menarik lebar melebihi padding parent */
+            margin-left: -25px; /* Kompensasi padding kiri parent */
+            margin-right: -25px; /* Kompensasi padding kanan parent */
+            overflow: hidden; /* Agar sudut video tetap terpotong rapi mengikuti border radius box */
+            margin-bottom: 20px;
+        }
 
-/* Memastikan Container Kamera tidak terpotong (overflow) */
-#boxKameraScanner {
-    width: 100%;
-    overflow: hidden; /* Penting agar video tidak keluar dari radius box hijau */
-    margin-top: 15px;
-    margin-bottom: 20px;
-}
+        #doc-preview-cam { 
+            width: 100% !important; 
+            height: 500px !important; /* Tetap Tinggi untuk dokumen A4 */
+            object-fit: cover; 
+            display: none; 
+            background: #000; 
+            border-top: 5px solid #1e293b;
+            border-bottom: 5px solid #1e293b;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15); 
+            margin: 0 auto;
+        }
 
         .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 15px; border-radius: 99px; text-transform: uppercase; }
         .status-fail { background: #ef4444; color: white; } .status-pass { background: #10b981; color: white; }
@@ -50,7 +47,7 @@
         .thumb-wrap { position: relative; flex-shrink: 0; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .thumb-img { width: 85px; height: 110px; border-radius: 1rem; object-fit: cover; border: 2.5px solid #10b981; }
         .page-counter { position: absolute; top: -10px; left: -10px; background: #2563eb; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; border: 2px solid white; }
-        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 266px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; width: 26px; height: 26px; }
+        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; }
         #antreanDokumen { display: flex; gap: 15px; overflow-x: auto; padding: 15px 10px; min-height: 140px; scrollbar-width: none; }
         #antreanDokumen::-webkit-scrollbar { display: none; }
         .btn-capture-loop { background: #ef4444; animation: pulseCapture 2s infinite; }
@@ -137,17 +134,24 @@
                     <div><label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black">Nama Ohoi / Kelurahan</label><input type="text" id="desa_audit" required placeholder="NAMA OHOI/KELURAHAN" class="border-hijau-kab p-5 shadow-inner text-xs"></div>
                 </div>
 
-                <!-- II. SCANNER LAPORAN - LAYAR GAGAH -->
+                <!-- II. SCANNER LAPORAN - LEBAR GAGAH -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">I. SCAN LAPORAN PENGADUAN (MAKS 15 HALAMAN)</span>
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">II. UPLOAD LAPORAN PENGADUAN PDF (MAKS 10 MB)</span>
-                    <div id="antreanDokumen" class="mb-5 bg-slate-50 rounded-[1.5rem] border-2 border-dashed border-slate-200"></div>
-                    <div id="boxKameraScanner" class="hidden mb-6">
+                    
+                    <!-- BOX SCANNER (TEKNIK LEBAR MAKSIMAL S.KOM) -->
+                    <div id="boxKameraScanner" class="hidden">
                         <video id="doc-preview-cam" autoplay playsinline></video>
-                        <button type="button" id="btnJepretLagi" class="btn-capture-loop w-full text-white py-6 mt-4 rounded-3xl font-black text-xs uppercase shadow-xl">
+                    </div>
+                    
+                    <div id="antreanDokumen" class="mb-5 bg-slate-50 rounded-[1.5rem] border-2 border-dashed border-slate-200"></div>
+                    
+                    <div id="action-doc-tools" class="grid grid-cols-1 gap-4">
+                        <button type="button" id="btnJepretLagi" class="btn-capture-loop hidden w-full text-white py-6 rounded-3xl font-black text-xs uppercase shadow-xl mb-4">
                             <i class="fas fa-camera mr-2"></i> JEPRET HALAMAN KE-<span id="lblHalKe">1</span>
                         </button>
                     </div>
+
                     <div class="grid grid-cols-2 gap-4 px-2">
                         <button type="button" id="start-doc-cam" class="bg-amber-400 text-amber-950 font-black py-4 rounded-xl text-[9px] uppercase shadow-md"><i class="fas fa-print mr-2"></i> MESIN SCAN </button>
                         <label for="f_up_input" class="bg-emerald-600 text-white font-black py-4 rounded-xl text-[9px] uppercase flex items-center justify-center cursor-pointer shadow-md"><i class="fas fa-file-pdf mr-2"></i> FILE/PDF</label>
@@ -275,7 +279,15 @@
     window.delPage = (idx) => { if(confirm("Hapus lembaran ini?")) { docPages.splice(idx,1); refreshAntrean(); } };
     window.viewScan = (u) => { document.getElementById('imgPopupZoom').src = u; document.getElementById('previewPopup').style.display = 'flex'; };
 
-    document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:1920}, height:{ideal:1080}}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('boxKameraScanner').classList.remove('hidden'); document.getElementById('btnSelesaiScan').classList.remove('hidden'); };
+    document.getElementById('start-doc-cam').onclick=async()=>{ 
+        await camClose(); 
+        curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:1920}, height:{ideal:1080}}}); 
+        document.getElementById('doc-preview-cam').srcObject=curStream; 
+        document.getElementById('doc-preview-cam').style.display="block"; 
+        document.getElementById('boxKameraScanner').classList.remove('hidden'); 
+        document.getElementById('btnJepretLagi').classList.remove('hidden'); 
+        document.getElementById('btnSelesaiScan').classList.remove('hidden'); 
+    };
 
     document.getElementById('btnJepretLagi').onclick=async()=>{ 
         if(docPages.length >= 15) return alert("MAKSIMAL 15 HALAMAN");
@@ -285,7 +297,12 @@
         refreshAntrean(); antrean.scrollLeft = antrean.scrollWidth;
     };
 
-    document.getElementById('btnSelesaiScan').onclick=async()=>{ document.getElementById('boxKameraScanner').classList.add('hidden'); document.getElementById('btnSelesaiScan').classList.add('hidden'); await camClose(); };
+    document.getElementById('btnSelesaiScan').onclick=async()=>{ 
+        document.getElementById('boxKameraScanner').classList.add('hidden'); 
+        document.getElementById('btnJepretLagi').classList.add('hidden'); 
+        document.getElementById('btnSelesaiScan').classList.add('hidden'); 
+        await camClose(); 
+    };
 
     document.getElementById('f_up_input').onchange=function(e){ 
         const f=e.target.files[0]; if(!f) return; 
