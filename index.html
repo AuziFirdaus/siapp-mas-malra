@@ -12,21 +12,23 @@
         .border-hijau-kab { border: 2.8px solid #10b981 !important; border-radius: 2rem !important; background: #ffffff; padding: 25px; margin-bottom: 25px; display: block; width: 100%; box-sizing: border-box; }
         select.border-hijau-kab { color: #000000 !important; font-weight: 800 !important; background: white !important; appearance: none; padding: 18px 25px !important; font-size: 11.5px !important; cursor: pointer; }
         
-        /* FIX VISUAL KAMERA WAJAH (BUlat & Pas) */
+        /* FIX VISUAL KAMERA WAJAH */
         #video-preview { border-radius: 2rem; width: 100%; height: 350px; margin: 0 auto; display: none; background: #000; border: 4px solid #10b981; object-fit: cover; transform: scaleX(-1); }
         
-        /* PERBAIKAN: KAMERA SCANNER DIBUAT LEBIH LEBAR (MEMENUHI CONTAINER) */
+        /* PERBAIKAN TOTAL: KAMERA SCANNER MENTOK BORDER HIJAU */
         #doc-preview-cam { 
-            border-radius: 1.5rem; 
-            width: 100% !important; /* Memenuhi Kotak Hijau Secara Maksimal */
-            height: 500px !important; /* Tinggi tetap dipertahankan sesuai permintaan */
-            object-fit: fill; /* Mendorong gambar agar memenuhi seluruh area kotak tanpa cropping samping */
+            width: calc(100% + 50px) !important; /* Menambah lebar 50px untuk lawan padding 25px kiri-kanan */
+            margin-left: -25px; /* Geser mentok kiri */
+            margin-right: -25px; /* Geser mentok kanan */
+            height: 500px !important; /* Tinggi tetap gagah sesuai permintaan */
+            object-fit: cover; /* Video penuh tanpa ruang kosong */
             display: none; 
             background: #000; 
-            border: 5px solid #1e293b; 
-            box-shadow: 0 15px 45px rgba(0,0,0,0.15); 
-            margin: 0 auto;
+            border-top: 3px solid #10b981;
+            border-bottom: 3px solid #10b981;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
+        #boxKameraScanner { overflow: hidden; border-radius: 1.2rem; }
 
         .quality-badge { font-size: 8px; font-weight: 900; padding: 4px 15px; border-radius: 99px; text-transform: uppercase; }
         .status-fail { background: #ef4444; color: white; } .status-pass { background: #10b981; color: white; }
@@ -39,7 +41,7 @@
         .thumb-wrap { position: relative; flex-shrink: 0; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .thumb-img { width: 85px; height: 110px; border-radius: 1rem; object-fit: cover; border: 2.5px solid #10b981; }
         .page-counter { position: absolute; top: -10px; left: -10px; background: #2563eb; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; border: 2px solid white; }
-        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 266px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; width: 26px; height: 26px; }
+        .del-page-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); z-index: 10; cursor: pointer; width: 26px; height: 26px; }
         #antreanDokumen { display: flex; gap: 15px; overflow-x: auto; padding: 15px 10px; min-height: 140px; scrollbar-width: none; }
         #antreanDokumen::-webkit-scrollbar { display: none; }
         .btn-capture-loop { background: #ef4444; animation: pulseCapture 2s infinite; }
@@ -50,7 +52,7 @@
 
     <div class="loader-hub" id="loadingLayer">
         <i class="fas fa-shield-alt text-emerald-500 text-6xl animate-pulse"></i>
-        <p id="txtLoadProg" class="text-white text-[10px] mt-8 tracking-[0.4em]">SYNC DATA SECURITY...</p>
+        <p class="text-white text-[10px] mt-8 tracking-[0.4em]" id="loadText">SYNC DATA SECURITY...</p>
         <div class="w-64 h-2 bg-slate-800 rounded-full mt-6 overflow-hidden"><div id="progressFill" class="bar-fill shadow-[0_0_15px_#10b981]"></div></div>
     </div>
 
@@ -126,7 +128,7 @@
                     <div><label class="text-[8px] text-slate-500 block mb-1 px-2 uppercase font-black">Nama Ohoi / Kelurahan</label><input type="text" id="desa_audit" required placeholder="NAMA OHOI/KELURAHAN" class="border-hijau-kab p-5 shadow-inner text-xs"></div>
                 </div>
 
-                <!-- II. SCANNER LAPORAN -->
+                <!-- II. SCANNER LAPORAN - FIX LEBAR MENTOK -->
                 <div class="border-hijau-kab text-center shadow-inner italic">
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">I. SCAN LAPORAN PENGADUAN (MAKS 15 HALAMAN)</span>
                     <span class="text-[10px] text-black font-black uppercase mb-3 block">II. UPLOAD LAPORAN PENGADUAN PDF (MAKS 10 MB)</span>
@@ -150,7 +152,7 @@
         </form>
 
         <button id="btnTrackerTrigger" class="w-full bg-white border-2 border-slate-900 p-5 rounded-[2.5rem] font-black text-[10px] shadow-xl uppercase italic mb-20">CEK STATUS ADUAN ANDA <i class="fas fa-search-plus ml-2"></i></button>
-        <p class="text-center text-[8.5px] font-black opacity-30 tracking-[0.4em] mb-12 uppercase italic">SiAPP MAS &copy; 2026 | INSPEKTORAT MALRA</p>
+        <p class="text-center text-[8.5px] font-black opacity-30 tracking-[0.4em] mb-12 uppercase italic">SiAPP MAS &copy; 2026 | Firdaus Setitit, S.Kom</p>
     </main>
 
     <!-- RESI SUCCESS & PREVIEW MODAL -->
@@ -197,27 +199,22 @@
     const config = { apiKey: "AIzaSyA3hAV-t9EYHBXpiUW9crY1q-tgM48wdRc", authDomain: "siapp-mas-malra-aa6c4.firebaseapp.com", projectId: "siapp-mas-malra-aa6c4", storageBucket: "siapp-mas-malra-aa6c4.firebasestorage.app", messagingSenderId: "18948056709", appId: "1:18948056709:web:6c5877826c206ac2e6ebec" };
     const app = initializeApp(config); const db = getFirestore(app);
 
-    // KONFIGURASI CLOUDINARY
+    // INTEGRASI CLOUDINARY (FIRDAUS S.KOM 2026)
     const CLOUD_NAME = "dfqwrkoqm", UPLOAD_PRESET = "siappmas";
 
     let curStream=null, fcBase=null, docPages=[], ready={w:false, d:false};
-    const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill');
+    const sSubmit = document.getElementById('submitAllMain'), hubLoad = document.getElementById('loadingLayer'), pFill = document.getElementById('progressFill'), loadText = document.getElementById('loadText');
 
-    // FUNGSI INJEKSI CLOUDINARY
-    async function uploadToCloudinary(base64Data) {
-        if(!base64Data) return null;
+    async function pushCloud(b64) {
+        if(!b64) return null;
         try {
-            const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
             const formData = new FormData();
-            formData.append("file", base64Data); 
+            formData.append("file", b64);
             formData.append("upload_preset", UPLOAD_PRESET);
-            const res = await fetch(url, { method: "POST", body: formData });
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, { method: "POST", body: formData });
             const data = await res.json();
             return data.secure_url;
-        } catch (err) {
-            console.error("Upload Error:", err);
-            return null;
-        }
+        } catch (e) { return null; }
     }
 
     async function camClose(){ if(curStream) curStream.getTracks().forEach(t=>t.stop()); curStream=null; }
@@ -272,7 +269,6 @@
     window.delPage = (idx) => { if(confirm("Hapus lembaran ini?")) { docPages.splice(idx,1); refreshAntrean(); } };
     window.viewScan = (u) => { document.getElementById('imgPopupZoom').src = u; document.getElementById('previewPopup').style.display = 'flex'; };
 
-    // BUTTON SCAN - LEBIH LEBAR KARENA CSS object-fit: fill
     document.getElementById('start-doc-cam').onclick=async()=>{ await camClose(); curStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment", width:{ideal:1920}, height:{ideal:1080}}}); document.getElementById('doc-preview-cam').srcObject=curStream; document.getElementById('doc-preview-cam').style.display="block"; document.getElementById('boxKameraScanner').classList.remove('hidden'); document.getElementById('btnSelesaiScan').classList.remove('hidden'); };
 
     document.getElementById('btnJepretLagi').onclick=async()=>{ 
@@ -297,48 +293,44 @@
         }; r.readAsDataURL(f);
     };
 
-    // SUBMIT DATA - PROSES UPLOAD KE CLOUDINARY
+    // PROCESS SUBMIT TO FIREBASE + CLOUDINARY (INJECTED)
     sSubmit.onclick=async()=>{
         hubLoad.style.display='flex'; pFill.style.width='5%';
-        document.getElementById('txtLoadProg').innerText = "MENYIAPKAN DATA...";
-        const resID="ITKAB-MALRA-"+Math.random().toString(36).substring(5,13).toUpperCase();
+        loadText.innerText = "MENGAMANKAN KONEKSI...";
+        const resID="ITKAB-"+Math.random().toString(36).substring(6,12).toUpperCase();
         try {
-            document.getElementById('txtLoadProg').innerText = "UPLOADING BIOMETRIK...";
-            const fUrl = await uploadToCloudinary(fcBase); pFill.style.width='30%';
-
-            let linkA = [];
-            for(let i=0; i < docPages.length; i++){
-                document.getElementById('txtLoadProg').innerText = `UPLOADING DOKUMEN ${i+1}/${docPages.length}...`;
-                const uploadedUrl = await uploadToCloudinary(docPages[i]);
-                if(uploadedUrl) linkA.push(uploadedUrl);
-                pFill.style.width = (30 + (i*50/docPages.length)) + '%';
+            loadText.innerText = "UPLOADING IDENTITAS WAJAH...";
+            const faceUrl = await pushCloud(fcBase); pFill.style.width='25%';
+            
+            let reportLinks = [];
+            for(let i=0; i<docPages.length; i++) {
+                loadText.innerText = `UPLOADING DOKUMEN HALAMAN ${i+1}/${docPages.length}...`;
+                const dUrl = await pushCloud(docPages[i]);
+                if(dUrl) reportLinks.push(dUrl);
+                pFill.style.width = (25 + ((i+1) * 60 / docPages.length)) + '%';
             }
 
-            document.getElementById('txtLoadProg').innerText = "MENYIMPAN DATA ADUAN...";
+            loadText.innerText = "MENYIMPAN DATA KE SERVER INSPEKTORAT...";
             await addDoc(collection(db,"pengaduan"),{ 
-                ticket_id:resID, 
-                pelapor_nama:document.getElementById('n_pelapor').value, 
-                wa:document.getElementById('wa_pelapor').value, 
-                face:fUrl, 
-                doc_archive:linkA.join("|"), 
-                kec:document.getElementById('kec_audit').value, 
-                vill:document.getElementById('desa_audit').value, 
-                kat:document.getElementById('kat_audit').value, 
-                status:"TERIMA", 
-                timestamp:serverTimestamp(),
-                owner: "Firdaus Setitit, S.Kom"
+                ticket_id: resID, 
+                pelapor_nama: document.getElementById('n_pelapor').value, 
+                wa: document.getElementById('wa_pelapor').value, 
+                face: faceUrl, 
+                doc_archive: reportLinks.join("|"), 
+                kec: document.getElementById('kec_audit').value, 
+                vill: document.getElementById('desa_audit').value, 
+                kat: document.getElementById('kat_audit').value, 
+                status: "TERIMA", 
+                timestamp: serverTimestamp() 
             });
-
+            
             pFill.style.width='100%'; 
             setTimeout(()=>{ 
                 hubLoad.style.display='none'; 
                 document.getElementById('txtResId').innerText=resID; 
                 document.getElementById('resiDigital').style.display='flex'; 
-            },500);
-        } catch(e){ 
-            hubLoad.style.display='none'; 
-            alert("Kesalahan Sistem: " + e.message); 
-        }
+            }, 800);
+        } catch(e){ hubLoad.style.display='none'; alert("Gagal Simpan: " + e.message); }
     };
 
     document.getElementById('btnTrackerTrigger').onclick = () => { document.getElementById('trackPanel').style.display = 'flex'; };
